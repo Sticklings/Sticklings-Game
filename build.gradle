@@ -14,4 +14,9 @@ dependencies {
 sourceCompatibility = "1.8"
 
 jar {
+	manifest {
+		attributes(
+			'Main-Class': 'sticklings.SticklingsMain'
+		)
+	}
 }

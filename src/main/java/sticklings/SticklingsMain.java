@@ -3,6 +3,7 @@ package sticklings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.ui.ScreenManager;
+import sticklings.ui.ScreenTest;
 import sticklings.util.GameTimer;
 
 /**
@@ -27,6 +28,10 @@ public class SticklingsMain extends Application {
 		
 		// Launch the game
 		Game game = new Game(screenManager);
+		
+		// DEBUG, Test screens
+		ScreenTest test = new ScreenTest(screenManager);
+		screenManager.gotoScreen(test);
 		
 		GameTimer timer = new GameTimer(game);
 		timer.start();

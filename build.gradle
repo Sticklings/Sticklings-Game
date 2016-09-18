@@ -8,6 +8,7 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
+	compile 'com.google.guava:guava:19.0'
     testCompile 'junit:junit:4.12'
 }
 

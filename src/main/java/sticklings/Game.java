@@ -21,6 +21,7 @@ public class Game {
 	 * @param deltaTime The time between start of last frame and this frame in seconds
 	 */
 	public void update(double deltaTime) {
+		screenManager.update(deltaTime);
 		// TODO: Game update method
 	}
 	

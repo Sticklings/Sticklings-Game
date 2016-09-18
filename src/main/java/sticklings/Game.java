@@ -10,6 +10,8 @@ public class Game {
 	private final ScreenManager screenManager;
 	private final TextureManager textureManager;
 	
+	private Scene scene;
+	
 	/**
 	 * Constructs a new game with the needed managers
 	 * @param screenManager The screen manager for updating the UI
@@ -17,6 +19,9 @@ public class Game {
 	public Game(ScreenManager screenManager) {
 		this.screenManager = screenManager;
 		this.textureManager = new TextureManager();
+		
+		// DEBUG, will be created on level load
+		scene = new Scene();
 	}
 	
 	/**
@@ -26,11 +31,19 @@ public class Game {
 	public void update(double deltaTime) {
 		screenManager.update(deltaTime);
 		textureManager.update(deltaTime);
+		
+		if (scene != null) {
+			scene.update(deltaTime);
+		}
 		// TODO: Game update method
 	}
 	
+	/**
+	 * Gets the current scene if any
+	 * @return An optional that may or may not have a scene 
+	 */
 	public Optional<Scene> getScene() {
-		throw new UnsupportedOperationException("Not yet implemented");
+		return Optional.ofNullable(scene);
 	}
 	
 	/**

@@ -1,26 +1,25 @@
 package sticklings.ui;
 
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 public class ScreenTest extends Screen {
-	private ScreenManager screenManager;
+	private Image frameImage;
 	
-	public ScreenTest(ScreenManager screenManager) {
-		this.screenManager = screenManager;
+	public ScreenTest(Image frameImage) {
+		this.frameImage = frameImage;
 	}
 	
 	@Override
 	public Parent initialize() {
 		BorderPane root = new BorderPane();
-		root.setCenter(new Label("This is a test screen"));
-		root.setBottom(new Label("This is checking layout works"));
+		ImageView view = new ImageView(frameImage);
 		
-		Button button = new Button("Change Screen");
-		button.setOnAction(e -> screenManager.gotoScreen(new ScreenTest2()));
-		root.setTop(button);
+		root.setCenter(view);
+		root.setBottom(new Label("This is checking layout works"));
 		
 		return root;
 	}

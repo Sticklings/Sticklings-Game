@@ -2,11 +2,13 @@ package sticklings;
 
 import java.util.Optional;
 
+import sticklings.render.TextureManager;
 import sticklings.scene.Scene;
 import sticklings.ui.ScreenManager;
 
 public class Game {
 	private final ScreenManager screenManager;
+	private final TextureManager textureManager;
 	
 	/**
 	 * Constructs a new game with the needed managers
@@ -14,6 +16,7 @@ public class Game {
 	 */
 	public Game(ScreenManager screenManager) {
 		this.screenManager = screenManager;
+		this.textureManager = new TextureManager();
 	}
 	
 	/**
@@ -22,6 +25,7 @@ public class Game {
 	 */
 	public void update(double deltaTime) {
 		screenManager.update(deltaTime);
+		textureManager.update(deltaTime);
 		// TODO: Game update method
 	}
 	
@@ -36,5 +40,13 @@ public class Game {
 	 */
 	public ScreenManager getScreenManager() {
 		return screenManager;
+	}
+	
+	/**
+	 * Gets the texture manager
+	 * @return The texture manager
+	 */
+	public TextureManager getTextureManager() {
+		return textureManager;
 	}
 }

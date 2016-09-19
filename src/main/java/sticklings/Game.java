@@ -21,7 +21,7 @@ public class Game {
 		this.textureManager = new TextureManager();
 		
 		// DEBUG, will be created on level load
-		scene = new Scene();
+		scene = new Scene(500, 500);
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package sticklings.scene;
 
 import sticklings.render.DebugTexture;
+import sticklings.util.Location;
 
 public class EntityTest extends Entity {
 	private int dirX;
@@ -15,22 +16,25 @@ public class EntityTest extends Entity {
 	
 	@Override
 	public void update(double deltaTime) {
-		if (getX() < 0) {
+		Location previous = getLocation();
+		
+		if (previous.x < 0) {
 			dirX = 1;
 		}
 		
-		if (getY() < 0) {
+		if (previous.y < 0) {
 			dirY = 1;
 		}
 		
-		if (getX() > 500) {
+		if (previous.x >= getScene().getWidth()) {
 			dirX = -1;
 		}
 		
-		if (getY() > 400) {
+		if (previous.y > getScene().getHeight()) {
 			dirY = -1;
 		}
 		
-		setLocation(getX() + dirX, getY() + dirY);
+		previous.x += dirX;
+		previous.y += dirY;
 	}
 }

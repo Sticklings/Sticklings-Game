@@ -24,10 +24,16 @@ public class Scene {
 	
 	private int nextEntityId;
 	
+	private final int sceneWidth;
+	private final int sceneHeight;
+	
 	/**
 	 * Constructs a new empty scene
 	 */
-	public Scene() {
+	public Scene(int width, int height) {
+		this.sceneWidth = width;
+		this.sceneHeight = height;
+		
 		entityMap = Maps.newHashMap();
 		
 		isUpdating = false;
@@ -35,6 +41,24 @@ public class Scene {
 		toRemove = Sets.newHashSet();
 		
 		nextEntityId = 0;
+	}
+	
+	/**
+	 * Gets the width of the scene.
+	 * This is not a hard limit
+	 * @return The width
+	 */
+	public int getWidth() {
+		return sceneWidth;
+	}
+	
+	/**
+	 * Gets the height of the scene.
+	 * This is not a hard limit
+	 * @return The height
+	 */
+	public int getHeight() {
+		return sceneHeight;
 	}
 	
 	/**

@@ -5,6 +5,7 @@ import sticklings.render.AbstractTexture;
 import sticklings.render.FrameDrawer;
 import sticklings.scene.Entity;
 import sticklings.scene.Scene;
+import sticklings.util.Location;
 
 public class GameRenderer {
 	private final FrameDrawer frameDrawer;
@@ -27,7 +28,8 @@ public class GameRenderer {
 			for (Entity entity : scene.getAllEntities()) {
 				AbstractTexture texture = entity.getTexture();
 				// TODO: How to decide where to render the texture
-				frameDrawer.draw(texture, entity.getX() - texture.getWidth()/2, entity.getY() - texture.getHeight()/2);
+				Location position = entity.getLocation();
+				frameDrawer.draw(texture, (int)(position.x - texture.getWidth()/2), (int)(position.y - texture.getHeight()/2));
 			}
 		}
 		frameDrawer.endFrame();

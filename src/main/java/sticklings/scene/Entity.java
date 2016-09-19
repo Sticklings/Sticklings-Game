@@ -4,13 +4,13 @@ import com.google.common.base.Preconditions;
 
 import sticklings.render.AbstractTexture;
 import sticklings.render.NullTexture;
+import sticklings.util.Location;
 
 /**
  * Represents an entity in a scene
  */
 public abstract class Entity {
-	private int posX;
-	private int posY;
+	private Location pos;
 	private AbstractTexture texture;
 	
 	private int entityId;
@@ -21,6 +21,7 @@ public abstract class Entity {
 	 */
 	public Entity() {
 		this.texture = NullTexture.get();
+		pos = new Location();
 	}
 	
 	/**
@@ -45,35 +46,20 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * Gets the X coordinate of the entity
-	 * @return The X coord
+	 * Gets the location of this entity
+	 * @return The location
 	 */
-	public final int getX() {
-		return posX;
+	public Location getLocation() {
+		return pos;
 	}
 	
 	/**
-	 * Gets the Y coordinate of the entity
-	 * @return The Y coord
+	 * Sets the position of this entity
+	 * @param location The new position
 	 */
-	public final int getY() {
-		return posY;
-	}
-	
-	/**
-	 * Sets the X coord of the entity
-	 * @param x The new X coord
-	 */
-	public void setX(int x) {
-		posX = x;
-	}
-	
-	/**
-	 * Sets the Y coord of the entity
-	 * @param y The new Y coord
-	 */
-	public void setY(int y) {
-		posY = y;
+	public void setLocation(Location location) {
+		Preconditions.checkNotNull(location);
+		pos = location;
 	}
 	
 	/**
@@ -82,8 +68,7 @@ public abstract class Entity {
 	 * @param y The new Y coord
 	 */
 	public void setLocation(int x, int y) {
-		posX = x;
-		posY = y;
+		pos = new Location(x, y);
 	}
 	
 	/**

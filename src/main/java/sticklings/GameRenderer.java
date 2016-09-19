@@ -27,9 +27,13 @@ public class GameRenderer {
 			
 			for (Entity entity : scene.getAllEntities()) {
 				AbstractTexture texture = entity.getTexture();
-				// TODO: How to decide where to render the texture
+				
 				Location position = entity.getLocation();
-				frameDrawer.draw(texture, (int)(position.x - texture.getWidth()/2), (int)(position.y - texture.getHeight()/2));
+				Location offset = entity.getTextureOffset();
+				double x = position.x + offset.x;
+				double y = position.y + offset.y;
+				
+				frameDrawer.draw(texture, (int)x, (int)y);
 			}
 		}
 		frameDrawer.endFrame();

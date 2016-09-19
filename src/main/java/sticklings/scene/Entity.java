@@ -12,6 +12,7 @@ import sticklings.util.Location;
 public abstract class Entity {
 	private Location pos;
 	private AbstractTexture texture;
+	private Location textureOffset;
 	
 	private int entityId;
 	private Scene scene;
@@ -20,7 +21,8 @@ public abstract class Entity {
 	 * Creates a new entity.
 	 */
 	public Entity() {
-		this.texture = NullTexture.get();
+		texture = NullTexture.get();
+		textureOffset = new Location();
 		pos = new Location();
 	}
 	
@@ -97,6 +99,37 @@ public abstract class Entity {
 		} else {
 			this.texture = texture;
 		}
+	}
+	
+	/**
+	 * Shortcut for setting the texture and texture offset
+	 * @param texture The texture to set
+	 * @param offset The offset of the texture
+	 */
+	public void setTexture(AbstractTexture texture, Location offset) {
+		setTexture(texture);
+		setTextureOffset(offset);
+	}
+	
+	/**
+	 * Changes the relative position of the texture to
+	 * the entities location
+	 * @param offset The offset. null to reset
+	 */
+	public void setTextureOffset(Location offset) {
+		if (offset == null) {
+			textureOffset = new Location();
+		} else {
+			textureOffset = offset;
+		}
+	}
+	
+	/**
+	 * Gets the texture offset
+	 * @return The offset
+	 */
+	public Location getTextureOffset() {
+		return textureOffset;
 	}
 	
 	/**

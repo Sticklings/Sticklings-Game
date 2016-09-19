@@ -9,7 +9,7 @@ public class EntityTest extends Entity {
 	
 	public EntityTest() {
 		setTexture(new DebugTexture(32, 32));
-		
+		setTextureOffset(new Location(-16, -16));
 		dirX = 1;
 		dirY = 1;
 	}

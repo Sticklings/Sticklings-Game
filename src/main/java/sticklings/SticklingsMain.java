@@ -2,6 +2,7 @@ package sticklings;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sticklings.levels.Level;
 import sticklings.scene.EntityTest;
 import sticklings.scene.Scene;
 import sticklings.ui.ScreenManager;
@@ -36,7 +37,8 @@ public class SticklingsMain extends Application {
 		GameRenderer renderer = new GameRenderer(game, WIDTH, HEIGHT);
 		
 		// DEBUG
-		Scene scene = game.getScene().get();
+		Level debugLevel = new Level("DEBUG");
+		Scene scene = game.loadLevel(debugLevel);
 		scene.addEntity(new EntityTest());
 		
 		ScreenTest test = new ScreenTest(renderer.getFrameImage());

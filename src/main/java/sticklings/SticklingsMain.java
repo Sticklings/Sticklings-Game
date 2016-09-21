@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.scene.EntityTest;
 import sticklings.scene.Scene;
+import sticklings.ui.MainScreen;
 import sticklings.ui.ScreenManager;
 import sticklings.ui.ScreenTest;
 import sticklings.util.GameTimer;
@@ -39,7 +40,10 @@ public class SticklingsMain extends Application {
 		Scene scene = game.getScene().get();
 		scene.addEntity(new EntityTest());
 		
-		ScreenTest test = new ScreenTest(renderer.getFrameImage());
+                
+                
+		//ScreenTest test = new ScreenTest(renderer.getFrameImage());
+                MainScreen test = new MainScreen();
 		screenManager.gotoScreen(test);
 		
 		GameTimer timer = new GameTimer(game, renderer);

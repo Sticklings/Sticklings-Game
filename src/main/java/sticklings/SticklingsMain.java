@@ -51,7 +51,7 @@ public class SticklingsMain extends Application {
 		
 		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, HEIGHT);
 		
-		ScreenTest test = new ScreenTest(renderer.getFrameImage());
+		ScreenTest test = new ScreenTest(renderer);
 		screenManager.gotoScreen(test);
 		
 		GameTimer timer = new GameTimer(game, renderer);

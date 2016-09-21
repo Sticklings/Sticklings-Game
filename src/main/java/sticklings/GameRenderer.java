@@ -1,5 +1,6 @@
 package sticklings;
 
+import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import sticklings.render.AbstractTexture;
 import sticklings.render.FrameDrawer;
@@ -14,6 +15,10 @@ public class GameRenderer {
 	private final TextureManager textureManager;
 	private final Scene scene;
 	
+	private final int screenWidth;
+	private final int screenHeight;
+	private Location viewOffset;
+	
 	private TerrainTexture terrainTexture;
 	
 	public GameRenderer(TextureManager textureManager, Scene scene, TerrainTexture terrainTexture, int screenWidth, int screenHeight) {
@@ -21,7 +26,29 @@ public class GameRenderer {
 		this.scene = scene;
 		this.terrainTexture = terrainTexture;
 		
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+		
 		frameDrawer = new FrameDrawer(screenWidth, screenHeight);
+		viewOffset = new Location();
+	}
+	
+	/**
+	 * Sets the top left coord of the view, relative to the scene.
+	 * The size of the view is the same as the screen size
+	 * @param position The new offset
+	 */
+	public void setViewOffset(Location position) {
+		this.viewOffset = position;
+	}
+	
+	/**
+	 * Gets the top left most coord of the view start relative to the scene.
+	 * The size of the view is the same as the screen size
+	 * @return The view offset location
+	 */
+	public Location getViewOffset() {
+		return viewOffset;
 	}
 	
 	public Image getFrameImage() {
@@ -31,10 +58,10 @@ public class GameRenderer {
 	public void draw() {
 		frameDrawer.beginFrame();
 		
-		// TODO: View port
+		BoundingBox viewport = new BoundingBox(viewOffset.x, viewOffset.y, screenWidth, screenHeight);
 		
 		// Render terrain
-		frameDrawer.draw(terrainTexture, 0, 0);
+		frameDrawer.draw(terrainTexture, 0, 0, (int)viewport.getMinX(), (int)viewport.getMinY(), screenWidth, screenHeight);
 		
 		// Render entities
 		for (Entity entity : scene.getAllEntities()) {
@@ -45,7 +72,12 @@ public class GameRenderer {
 			double x = position.x + offset.x;
 			double y = position.y + offset.y;
 			
-			frameDrawer.draw(texture, (int)x, (int)y);
+			// Viewport check
+			if (!viewport.intersects(x, y, texture.getWidth(), texture.getHeight())) {
+				continue;
+			}
+			
+			frameDrawer.draw(texture, (int)(x - viewport.getMinX()), (int)(y - viewport.getMinY()));
 		}
 		
 		frameDrawer.endFrame();

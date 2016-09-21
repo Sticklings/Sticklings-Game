@@ -1,5 +1,6 @@
 package sticklings;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import com.google.common.base.Preconditions;
@@ -44,11 +45,11 @@ public class Game {
 	 * @param level The level to load
 	 * @return The scene holding the loaded state
 	 */
-	public Scene loadLevel(Level level) {
+	public Scene loadLevel(Level level) throws IOException {
 		Preconditions.checkNotNull(level);
 		
 		// TODO: Cleanup existing scene
-		scene = new Scene(level.getWidth(), level.getHeight());
+		scene = Scene.fromLevel(level);
 		currentLevel = level;
 		
 		return scene;

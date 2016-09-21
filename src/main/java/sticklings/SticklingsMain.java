@@ -37,7 +37,7 @@ public class SticklingsMain extends Application {
 		GameRenderer renderer = new GameRenderer(game, WIDTH, HEIGHT);
 		
 		// DEBUG
-		Level debugLevel = new Level("DEBUG");
+		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"));
 		Scene scene = game.loadLevel(debugLevel);
 		scene.addEntity(new EntityTest());
 		

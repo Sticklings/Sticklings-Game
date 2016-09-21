@@ -27,7 +27,7 @@ public class TerrainData {
 	 * 			data array does not match the given width and height
 	 */
 	public TerrainData(TerrainType[] terrainType, int width, int height) throws IllegalArgumentException {
-		Preconditions.checkArgument(terrainType.length != width*height, "Size doesnt match");
+		Preconditions.checkArgument(terrainType.length == width*height, "Size doesnt match");
 		
 		this.terrainType = terrainType;
 		this.width = width;

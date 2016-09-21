@@ -20,6 +20,7 @@ public class Game {
 	/**
 	 * Constructs a new game with the needed managers
 	 * @param screenManager The screen manager for updating the UI
+	 * @param renderer The game renderer for updating the scene
 	 */
 	public Game(ScreenManager screenManager) {
 		this.screenManager = screenManager;

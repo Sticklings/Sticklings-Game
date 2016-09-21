@@ -7,6 +7,7 @@ import sticklings.scene.Scene;
 import sticklings.ui.MainScreen;
 import sticklings.ui.ScreenManager;
 import sticklings.ui.ScreenTest;
+import sticklings.ui.WorldView;
 import sticklings.util.GameTimer;
 
 /**
@@ -43,7 +44,8 @@ public class SticklingsMain extends Application {
                 
                 
 		//ScreenTest test = new ScreenTest(renderer.getFrameImage());
-                MainScreen test = new MainScreen();
+                //MainScreen test = new MainScreen();
+                WorldView test = new WorldView();
 		screenManager.gotoScreen(test);
 		
 		GameTimer timer = new GameTimer(game, renderer);

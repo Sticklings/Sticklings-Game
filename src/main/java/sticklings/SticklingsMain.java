@@ -11,6 +11,7 @@ import sticklings.terrain.TerrainType;
 import sticklings.ui.MainScreen;
 import sticklings.ui.ScreenManager;
 import sticklings.ui.ScreenTest;
+import sticklings.ui.WorldView;
 import sticklings.util.GameTimer;
 
 /**
@@ -52,7 +53,9 @@ public class SticklingsMain extends Application {
 		
 		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, HEIGHT);
 		
-        MainScreen test = new MainScreen();
+        //MainScreen test = new MainScreen();
+        
+        WorldView test = new WorldView();
 		screenManager.gotoScreen(test);
 		
 		GameTimer timer = new GameTimer(game, renderer);

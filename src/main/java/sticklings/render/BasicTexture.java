@@ -8,7 +8,7 @@ import javafx.scene.image.PixelFormat;
 /**
  * Represents a static image based texture
  */
-class BasicTexture extends AbstractTexture {
+public class BasicTexture extends AbstractTexture {
 	private final Image image;
 	private final IntBuffer texData;
 	

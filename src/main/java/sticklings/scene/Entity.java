@@ -2,8 +2,10 @@ package sticklings.scene;
 
 import com.google.common.base.Preconditions;
 
+import javafx.geometry.BoundingBox;
 import sticklings.render.AbstractTexture;
 import sticklings.render.NullTexture;
+import sticklings.util.Bounds;
 import sticklings.util.Location;
 
 /**
@@ -13,6 +15,8 @@ public abstract class Entity {
 	private Location pos;
 	private AbstractTexture texture;
 	private Location textureOffset;
+	private int width;
+	private int height;
 	
 	private int entityId;
 	private Scene scene;
@@ -24,6 +28,8 @@ public abstract class Entity {
 		texture = NullTexture.get();
 		textureOffset = new Location();
 		pos = new Location();
+		width = 1;
+		height = 1;
 	}
 	
 	/**
@@ -71,6 +77,24 @@ public abstract class Entity {
 	 */
 	public void setLocation(int x, int y) {
 		pos = new Location(x, y);
+	}
+	
+	/**
+	 * Sets the bounds of the entity
+	 * @param width The width of it
+	 * @param height The height of it
+	 */
+	protected void setBounds(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+	
+	/**
+	 * Gets the bounding box of the entity
+	 * @return The bounding box
+	 */
+	public BoundingBox getBounds() {
+		return new BoundingBox(pos.x-width/2, pos.y-height/2, width, height);
 	}
 	
 	/**

@@ -35,10 +35,14 @@ public class Scene {
 	private final int sceneWidth;
 	private final int sceneHeight;
 	
+	// Game stats
+	private int totalSticklings;
+	private int remainingSticklings;
+	
 	/**
 	 * Constructs a new empty scene
 	 */
-	public Scene(TerrainData terrain) {
+	public Scene(TerrainData terrain, Level levelDefinition) {
 		this.terrainData = terrain;
 		this.sceneWidth = terrain.getWidth();
 		this.sceneHeight = terrain.getHeight();
@@ -50,6 +54,11 @@ public class Scene {
 		toRemove = Sets.newHashSet();
 		
 		nextEntityId = 0;
+		
+		// Load settings from level
+		// DEBUG STUFF
+		totalSticklings = 10;
+		remainingSticklings = totalSticklings;
 	}
 	
 	/**
@@ -169,6 +178,31 @@ public class Scene {
 	}
 	
 	/**
+	 * Gets the total number of sticklings that will be spawned
+	 * @return The number that will be spawned
+	 */
+	public int getTotalSticklings() {
+		return totalSticklings;
+	}
+	
+	/**
+	 * Gets the number of sticklings remaining
+	 * @return The number remaining
+	 */
+	public int getRemainingSticklings() {
+		return remainingSticklings;
+	}
+	
+	/**
+	 * Updates the number of remaining sticklings
+	 * @param remaining The remaining sticklings
+	 */
+	public void setRemainingSticklings(int remaining) {
+		Preconditions.checkArgument(remaining >= 0 && remaining <= totalSticklings);
+		remainingSticklings = remaining;
+	}
+	
+	/**
 	 * Creates a scene from a level object
 	 * @param level The level to load
 	 * @return The Scene with the loaded terrain data
@@ -180,6 +214,6 @@ public class Scene {
 		Image terrainMask = new Image(level.getTerrainMaskURL().openStream());
 		
 		TerrainData terrainData = TerrainLoader.load(terrainMask);
-		return new Scene(terrainData);
+		return new Scene(terrainData, level);
 	}
 }

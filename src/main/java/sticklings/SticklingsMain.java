@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.Level;
 import sticklings.render.TextureManager;
-import sticklings.scene.EntityTest;
 import sticklings.scene.Scene;
+import sticklings.scene.StartGate;
 import sticklings.terrain.TerrainTexture;
 import sticklings.terrain.TerrainType;
 import sticklings.ui.MainScreen;
@@ -42,7 +42,9 @@ public class SticklingsMain extends Application {
 		// DEBUG
 		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"));
 		Scene scene = game.loadLevel(debugLevel);
-		scene.addEntity(new EntityTest());
+		StartGate gate = new StartGate();
+		gate.setLocation(200, 180);
+		scene.addEntity(gate);
 		
 		TerrainTexture terrainTex = new TerrainTexture(scene.getTerrain());
 		terrainTex.setTexture(TerrainType.AIR, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-background.png")));
@@ -52,7 +54,7 @@ public class SticklingsMain extends Application {
 		
 		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, HEIGHT);
 		
-        MainScreen test = new MainScreen();
+        ScreenTest test = new ScreenTest(renderer);
 		screenManager.gotoScreen(test);
 		
 		GameTimer timer = new GameTimer(game, renderer);

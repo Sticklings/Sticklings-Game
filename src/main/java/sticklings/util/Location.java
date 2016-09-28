@@ -47,4 +47,8 @@ public class Location {
 
 		return hash;
 	}
+	
+	public Location copy() {
+		return new Location(x, y);
+	}
 }

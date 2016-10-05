@@ -38,6 +38,8 @@ public class Scene {
 	// Game stats
 	private int totalSticklings;
 	private int remainingSticklings;
+	private int successfulSticklings;
+	
 	
 	/**
 	 * Constructs a new empty scene
@@ -56,8 +58,7 @@ public class Scene {
 		nextEntityId = 0;
 		
 		// Load settings from level
-		// DEBUG STUFF
-		totalSticklings = 10;
+		totalSticklings = levelDefinition.getTotalSticklings();
 		remainingSticklings = totalSticklings;
 	}
 	
@@ -200,6 +201,22 @@ public class Scene {
 	public void setRemainingSticklings(int remaining) {
 		Preconditions.checkArgument(remaining >= 0 && remaining <= totalSticklings);
 		remainingSticklings = remaining;
+	}
+	
+	/**
+	 * Gets the number of sticklings that have reached the goal
+	 * @return The amount
+	 */
+	public int getSuccessfulSticklings() {
+		return successfulSticklings;
+	}
+	
+	/**
+	 * Sets the number of sticklings that have reached the goal
+	 * @param count The number 
+	 */
+	public void setSuccessfulSticklings(int count) {
+		successfulSticklings = count;
 	}
 	
 	/**

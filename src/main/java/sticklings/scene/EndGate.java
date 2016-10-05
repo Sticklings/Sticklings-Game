@@ -13,6 +13,7 @@ public class EndGate extends Entity implements Collideable {
 	@Override
 	public Action onCollide(Entity entity) {
 		if (entity instanceof Stickling) {
+			getScene().setSuccessfulSticklings(getScene().getSuccessfulSticklings()+1);
 			entity.remove();
 		}
 		return Action.NONE;

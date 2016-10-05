@@ -41,7 +41,8 @@ public class SticklingsMain extends Application {
 		Game game = new Game(screenManager);
 		
 		// DEBUG
-		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"));
+		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"), 30, 20);
+		
 		Scene scene = game.loadLevel(debugLevel);
 		StartGate gate = new StartGate();
 		gate.setLocation(200, 180);

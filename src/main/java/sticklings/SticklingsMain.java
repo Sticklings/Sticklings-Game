@@ -3,14 +3,12 @@ package sticklings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.Level;
-import sticklings.render.TextureManager;
-import sticklings.scene.EntityTest;
+import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
+import sticklings.scene.StartGate;
 import sticklings.terrain.TerrainTexture;
 import sticklings.terrain.TerrainType;
-import sticklings.ui.MainScreen;
 import sticklings.ui.ScreenManager;
-import sticklings.ui.ScreenTest;
 import sticklings.ui.WorldView;
 import sticklings.util.GameTimer;
 
@@ -41,9 +39,16 @@ public class SticklingsMain extends Application {
 		Game game = new Game(screenManager);
 		
 		// DEBUG
-		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"));
+		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"), 30, 20);
+		
 		Scene scene = game.loadLevel(debugLevel);
-		scene.addEntity(new EntityTest());
+		StartGate gate = new StartGate();
+		gate.setLocation(200, 180);
+		scene.addEntity(gate);
+		
+		EndGate end = new EndGate();
+		end.setLocation(400, 300);
+		scene.addEntity(end);
 		
 		TerrainTexture terrainTex = new TerrainTexture(scene.getTerrain());
 		terrainTex.setTexture(TerrainType.AIR, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-background.png")));
@@ -51,12 +56,10 @@ public class SticklingsMain extends Application {
 		terrainTex.setTexture(TerrainType.WATER, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-water.png")));
 		game.getTextureManager().addDynanic(terrainTex);
 		
-		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, HEIGHT);
+		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, 385);
 		
-        //MainScreen test = new MainScreen();
-        
-        WorldView test = new WorldView();
-		screenManager.gotoScreen(test);
+		WorldView uitest = new WorldView(scene, renderer);
+		screenManager.gotoScreen(uitest);
 		
 		GameTimer timer = new GameTimer(game, renderer);
 		timer.start();

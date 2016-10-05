@@ -9,7 +9,7 @@ import javafx.scene.image.WritablePixelFormat;
 /**
  * Represents an animated texture based off of a sprite sheet.
  */
-class AnimatedTexture extends DynamicTexture {
+public class AnimatedTexture extends DynamicTexture {
 	private static final double MILLIS_PER_SECOND = 1000.0;
 	
 	private IntBuffer[] frames;

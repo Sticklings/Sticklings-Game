@@ -10,7 +10,7 @@ import sticklings.GameRenderer;
  * Game timer will update the game at approximately 60htz
  */
 public class GameTimer extends AnimationTimer {
-	private static final long NANO_PER_SEC = TimeUnit.SECONDS.toNanos(1);
+	private static final double NANO_PER_SEC = TimeUnit.SECONDS.toNanos(1);
 	
 	private final Game game;
 	private final GameRenderer renderer;

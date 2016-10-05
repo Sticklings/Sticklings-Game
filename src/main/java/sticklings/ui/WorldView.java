@@ -14,7 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -22,6 +22,9 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
+import sticklings.GameRenderer;
+import sticklings.scene.Scene;
+
 
 /**
  *
@@ -34,10 +37,39 @@ public class WorldView extends Screen{
     int btn_stickling_width = 50;
     int label_height = 20;
     
+    private Label lbl_progress; 
+    
+    private final Scene scene;
+    private final GameRenderer renderer;
+    
+    public WorldView(Scene scene, GameRenderer renderer) {
+    	this.scene = scene;
+    	this.renderer = renderer;
+    }
+    
+    public Label set_qty_label(Button btn, Label lbl){
+        lbl.setText("0");
+        lbl.setMinSize(btn_stickling_width, label_height);
+        lbl.setAlignment(Pos.CENTER);
+        lbl.setLayoutX(btn.getLayoutX());
+        lbl.setLayoutY(btn.getLayoutY() - label_height);
+        return lbl;
+    }
+    
+    public Label set_name_label(String s, Button btn, Label lbl){
+        lbl.setText(s);
+        lbl.setMinSize(btn_stickling_width, label_height);
+        lbl.setAlignment(Pos.CENTER);
+        lbl.setLayoutX(btn.getLayoutX());
+        lbl.setLayoutY(btn.getLayoutY() + btn_stickling_height);
+        return lbl;
+    }
+    
     @Override
     public Parent initialize() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Pane root = new Pane();
+        
+        SceneWindow window = new SceneWindow(renderer);
         
         Button btn_speed_normal = new Button();
         Button btn_speed_fast = new Button();
@@ -64,18 +96,16 @@ public class WorldView extends Screen{
         Label  qty_exploder = new Label();
         
         
+        lbl_progress = new Label();
         Label lbl_goal = new Label();
-        Label lbl_progress = new Label();
         
         BackgroundSize  btn_stickling_bg_size = new BackgroundSize(btn_stickling_width, btn_stickling_height, true, true, true, false);
         
-       
         final Image img_miner = new Image(WorldView.class.getResourceAsStream("/ui/btn_miner.png"));
         final Image img_floater = new Image(WorldView.class.getResourceAsStream("/ui/btn_floater.png"));
         final Image img_blocker = new Image(WorldView.class.getResourceAsStream("/ui/btn_blocker.png"));
         final Image img_swimmer = new Image(WorldView.class.getResourceAsStream("/ui/btn_swimmer.png"));
         final Image img_exploder = new Image(WorldView.class.getResourceAsStream("/ui/btn_exploder.png"));
-      
         
         //---------------------------------------------------------------------- 
         BackgroundImage btn_miner_image_bg = new BackgroundImage(img_miner, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
@@ -93,17 +123,10 @@ public class WorldView extends Screen{
             }
         });
        
-        qty_miner.setText("0");
-        qty_miner.setMinSize(btn_stickling_width, label_height);
-        qty_miner.setAlignment(Pos.CENTER);
-        qty_miner.setLayoutX(btn_miner.getLayoutX());
-        qty_miner.setLayoutY(btn_miner.getLayoutY() - label_height);        
+        qty_miner = set_qty_label(btn_miner, qty_miner);      
         
-        lbl_miner.setText("Miner");
-        lbl_miner.setMinSize(btn_stickling_width, label_height);
-        lbl_miner.setAlignment(Pos.CENTER);
-        lbl_miner.setLayoutX(btn_miner.getLayoutX());
-        lbl_miner.setLayoutY(btn_miner.getLayoutY() + btn_stickling_height);
+        lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);
+        
         //---------------------------------------------------------------------- 
         BackgroundImage btn_floater_image_bg = new BackgroundImage(img_floater,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
         Background btn_floater_bg = new Background(btn_floater_image_bg);
@@ -120,17 +143,10 @@ public class WorldView extends Screen{
             }
         });
         
-        qty_floater.setText("0");
-        qty_floater.setMinSize(btn_stickling_width, label_height);
-        qty_floater.setAlignment(Pos.CENTER);
-        qty_floater.setLayoutX(btn_floater.getLayoutX());
-        qty_floater.setLayoutY(btn_floater.getLayoutY() - label_height);   
+        qty_floater = set_qty_label(btn_floater, qty_floater);
         
-        lbl_floater.setText("Floater");
-        lbl_floater.setMinSize(btn_stickling_width, label_height);
-        lbl_floater.setAlignment(Pos.CENTER);
-        lbl_floater.setLayoutX(btn_floater.getLayoutX());
-        lbl_floater.setLayoutY(btn_floater.getLayoutY() + btn_stickling_height);
+        lbl_floater = set_name_label("Floater", btn_floater, lbl_floater);
+
         //---------------------------------------------------------------------- 
         BackgroundImage btn_blocker_image_bg = new BackgroundImage(img_blocker, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
         Background btn_blocker_bg = new Background(btn_blocker_image_bg);
@@ -147,17 +163,10 @@ public class WorldView extends Screen{
             }
         });
         
-        qty_blocker.setText("0");
-        qty_blocker.setMinSize(btn_stickling_width, label_height);
-        qty_blocker.setAlignment(Pos.CENTER);
-        qty_blocker.setLayoutX(btn_blocker.getLayoutX());
-        qty_blocker.setLayoutY(btn_blocker.getLayoutY() - label_height);   
+        qty_blocker = set_qty_label(btn_blocker, qty_blocker);
         
-        lbl_blocker.setText("Blocker");
-        lbl_blocker.setMinSize(btn_stickling_width, label_height);
-        lbl_blocker.setAlignment(Pos.CENTER);
-        lbl_blocker.setLayoutX(btn_blocker.getLayoutX());
-        lbl_blocker.setLayoutY(btn_blocker.getLayoutY() + btn_stickling_height);
+        lbl_blocker = set_name_label("Blocker", btn_blocker, lbl_blocker);
+        
         //----------------------------------------------------------------------
         BackgroundImage btn_swimmer_image_bg = new BackgroundImage(img_swimmer, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
         Background btn_swimmer_bg = new Background(btn_swimmer_image_bg);
@@ -174,17 +183,10 @@ public class WorldView extends Screen{
             }
         });
           
-        qty_swimmer.setText("0");
-        qty_swimmer.setMinSize(btn_stickling_width, label_height);
-        qty_swimmer.setAlignment(Pos.CENTER);
-        qty_swimmer.setLayoutX(btn_swimmer.getLayoutX());
-        qty_swimmer.setLayoutY(btn_swimmer.getLayoutY() - label_height);   
-                
-        lbl_swimmer.setText("Swimmer");
-        lbl_swimmer.setMinSize(btn_stickling_width, label_height);
-        lbl_swimmer.setAlignment(Pos.CENTER);
-        lbl_swimmer.setLayoutX(btn_swimmer.getLayoutX());
-        lbl_swimmer.setLayoutY(btn_swimmer.getLayoutY() + btn_stickling_height);        
+        qty_swimmer = set_qty_label(btn_swimmer, qty_swimmer);
+        
+        lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
+       
         //----------------------------------------------------------------------
         BackgroundImage btn_exploder_image_bg = new BackgroundImage(img_exploder, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
         Background btn_exploder_bg = new Background(btn_exploder_image_bg);
@@ -201,17 +203,10 @@ public class WorldView extends Screen{
             }
         });
         
-        qty_exploder.setText("0");
-        qty_exploder.setMinSize(btn_stickling_width, label_height);
-        qty_exploder.setAlignment(Pos.CENTER);
-        qty_exploder.setLayoutX(btn_exploder.getLayoutX());
-        qty_exploder.setLayoutY(btn_exploder.getLayoutY() - label_height);   
-                
-        lbl_exploder.setText("Exploder");
-        lbl_exploder.setMinSize(btn_stickling_width, label_height);
-        lbl_exploder.setAlignment(Pos.CENTER);
-        lbl_exploder.setLayoutX(btn_exploder.getLayoutX());
-        lbl_exploder.setLayoutY(btn_exploder.getLayoutY() + btn_stickling_height);
+        qty_exploder = set_qty_label(btn_exploder, qty_exploder);
+        
+        lbl_exploder = set_name_label("Exploder", btn_exploder, lbl_exploder);
+
         //----------------------------------------------------------------------
         btn_speed_normal.setText(">");
         btn_speed_normal.setTextAlignment(TextAlignment.CENTER);
@@ -250,14 +245,16 @@ public class WorldView extends Screen{
         lbl_goal.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_goal.setLayoutY(btn_speed_faster.getLayoutY());
         
-        lbl_progress.setText("0 / 150");
         lbl_progress.setTextAlignment(TextAlignment.CENTER);
         lbl_progress.setFont(javafx.scene.text.Font.font(20));
         lbl_progress.setMinSize(60, 25);
         lbl_progress.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_progress.setLayoutY(btn_reset.getLayoutY());
         
-  
+        window.setLayoutX(0);
+        window.setLayoutY(0);
+        
+        
         //Image star = new Image(WorldView.class.getResourceAsStream("/star.png"));
         //ImageView star1 = new ImageView(star);
         //star1.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
@@ -299,23 +296,34 @@ public class WorldView extends Screen{
         
         root.getChildren().add(lbl_goal);
         root.getChildren().add(lbl_progress);
+        root.getChildren().add(window);
         
+        root.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("mouse click detected! " + mouseEvent.getSource());
+                if (mouseEvent.isSecondaryButtonDown()){
+                    System.out.println("Secondary mouse pressed!");
+                    root.setCursor(Cursor.DEFAULT);
+                }
+            }
+        });
+                
         return root;
     }
 
     @Override
     public void onShow() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void onHide() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void update(double deltaTime) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	lbl_progress.setText(String.format("%d/%d", scene.getSuccessfulSticklings(), scene.getTotalSticklings()));
     }
-    
 }

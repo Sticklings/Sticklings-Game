@@ -25,6 +25,7 @@ import javafx.scene.layout.Pane;
  *
  * @author swann
  */
+
 public class MainScreen extends Screen {
     public int btn_height = 75;
     public int btn_width = 150;

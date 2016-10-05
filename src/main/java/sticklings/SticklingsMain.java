@@ -3,15 +3,13 @@ package sticklings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.Level;
-import sticklings.render.TextureManager;
 import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
 import sticklings.scene.StartGate;
 import sticklings.terrain.TerrainTexture;
 import sticklings.terrain.TerrainType;
-import sticklings.ui.MainScreen;
 import sticklings.ui.ScreenManager;
-import sticklings.ui.ScreenTest;
+import sticklings.ui.WorldView;
 import sticklings.util.GameTimer;
 
 /**
@@ -60,8 +58,8 @@ public class SticklingsMain extends Application {
 		
 		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, HEIGHT);
 		
-        ScreenTest test = new ScreenTest(renderer);
-		screenManager.gotoScreen(test);
+		WorldView uitest = new WorldView();
+		screenManager.gotoScreen(uitest);
 		
 		GameTimer timer = new GameTimer(game, renderer);
 		timer.start();

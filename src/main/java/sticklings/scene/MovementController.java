@@ -119,7 +119,7 @@ public class MovementController {
 				if (bounds.intersects(targetBounds)) {
 					if (collidingWith.add(entity)) {
 						// New collision
-						if (collideable.onCollide(entity) == Action.BLOCK) {
+						if (collideable.onCollide(this.entity) == Action.BLOCK) {
 							// TODO: Not sure if this will be enough
 							this.entity.setFacing(this.entity.getFacing().getOpposite());
 						}

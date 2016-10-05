@@ -1,5 +1,6 @@
 package sticklings.scene;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -9,6 +10,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
+import javafx.scene.image.Image;
+import sticklings.levels.Level;
+import sticklings.terrain.TerrainData;
+import sticklings.terrain.TerrainLoader;
 
 /**
  * Represents an entire scene, including the entities and terrain
@@ -24,15 +30,18 @@ public class Scene {
 	
 	private int nextEntityId;
 	
+	private final TerrainData terrainData;
+	
 	private final int sceneWidth;
 	private final int sceneHeight;
 	
 	/**
 	 * Constructs a new empty scene
 	 */
-	public Scene(int width, int height) {
-		this.sceneWidth = width;
-		this.sceneHeight = height;
+	public Scene(TerrainData terrain) {
+		this.terrainData = terrain;
+		this.sceneWidth = terrain.getWidth();
+		this.sceneHeight = terrain.getHeight();
 		
 		entityMap = Maps.newHashMap();
 		
@@ -59,6 +68,14 @@ public class Scene {
 	 */
 	public int getHeight() {
 		return sceneHeight;
+	}
+	
+	/**
+	 * Gets the terrain data for this scene
+	 * @return The terrain data
+	 */
+	public TerrainData getTerrain() {
+		return terrainData;
 	}
 	
 	/**
@@ -149,5 +166,20 @@ public class Scene {
 	 */
 	public Collection<Entity> getAllEntities() {
 		return Collections.unmodifiableCollection(entityMap.values());
+	}
+	
+	/**
+	 * Creates a scene from a level object
+	 * @param level The level to load
+	 * @return The Scene with the loaded terrain data
+	 * @throws IOException Thrown if an error occurd while loading the terrain mask
+	 */
+	public static Scene fromLevel(Level level) throws IOException {
+		Preconditions.checkNotNull(level);
+		
+		Image terrainMask = new Image(level.getTerrainMaskURL().openStream());
+		
+		TerrainData terrainData = TerrainLoader.load(terrainMask);
+		return new Scene(terrainData);
 	}
 }

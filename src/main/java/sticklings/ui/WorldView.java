@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -22,6 +23,11 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
+import javafx.animation.Animation;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 
 /**
  *
@@ -257,7 +263,6 @@ public class WorldView extends Screen{
         lbl_progress.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_progress.setLayoutY(btn_reset.getLayoutY());
         
-  
         //Image star = new Image(WorldView.class.getResourceAsStream("/star.png"));
         //ImageView star1 = new ImageView(star);
         //star1.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
@@ -300,6 +305,17 @@ public class WorldView extends Screen{
         root.getChildren().add(lbl_goal);
         root.getChildren().add(lbl_progress);
         
+        root.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("mouse click detected! " + mouseEvent.getSource());
+                if (mouseEvent.isSecondaryButtonDown()){
+                    System.out.println("Secondary mouse pressed!");
+                    root.setCursor(Cursor.DEFAULT);
+                }
+            }
+        });
+                
         return root;
     }
 

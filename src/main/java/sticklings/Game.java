@@ -9,6 +9,7 @@ import sticklings.levels.Level;
 import sticklings.render.TextureManager;
 import sticklings.scene.Scene;
 import sticklings.ui.ScreenManager;
+import sticklings.util.ClasspathTextureSource;
 
 public class Game {
 	private final ScreenManager screenManager;
@@ -25,6 +26,10 @@ public class Game {
 	public Game(ScreenManager screenManager) {
 		this.screenManager = screenManager;
 		this.textureManager = new TextureManager();
+		
+		textureManager.addTextureSource(new ClasspathTextureSource(Game.class, textureManager));
+		
+		instance = this;
 	}
 	
 	/**
@@ -87,5 +92,14 @@ public class Game {
 	 */
 	public TextureManager getTextureManager() {
 		return textureManager;
+	}
+	
+	private static Game instance;
+	/**
+	 * Gets the games current instance
+	 * @return
+	 */
+	public static Game getInstance() {
+		return instance;
 	}
 }

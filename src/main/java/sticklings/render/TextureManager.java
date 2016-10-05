@@ -1,8 +1,15 @@
 package sticklings.render;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 
 import javafx.scene.image.Image;
 
@@ -10,16 +17,62 @@ import javafx.scene.image.Image;
  * Manages textures and enables dynamic / animated textures 
  */
 public class TextureManager {
+	private List<TextureSource> sources;
+	
 	// All access to either allTextures or dynamicTextures must be synchronized on allTextures
 	private List<AbstractTexture> allTextures;
 	private List<DynamicTexture> dynamicTextures;
+	
+	private Map<String, Optional<AbstractTexture>> loadedTextures;
 	
 	/**
 	 * Constructs a new empty texture manager
 	 */
 	public TextureManager() {
+		sources = new ArrayList<>();
+		loadedTextures = Maps.newHashMap();
+		
 		allTextures = new ArrayList<>();
 		dynamicTextures = new ArrayList<>();
+	}
+	
+	public void addTextureSource(TextureSource source) {
+		Preconditions.checkNotNull(source);
+		sources.add(source);
+	}
+	
+	public AbstractTexture getTexture(String path) {
+		Optional<AbstractTexture> texture = loadedTextures.get(path);
+		if (texture == null) {
+			// Source the texture
+			for (TextureSource source : sources) {
+				try {
+					texture = Optional.of(source.provideTexture(path));
+				} catch (NoSuchFileException e) {
+					texture = Optional.absent();
+				} catch (IOException e) {
+					System.err.println("Failed to source texture " + path + ". IOException:");
+					e.printStackTrace();
+					break;
+				}
+			}
+			
+			if (texture != null) {
+				loadedTextures.put(path, texture);
+				
+				if (texture.isPresent()) {
+					return texture.get();
+				} else {
+					System.err.println("Failed to source texture " + path + ". File not found");
+				}
+			} else {
+				loadedTextures.put(path, Optional.absent());
+			}
+		} else if (texture.isPresent()) {
+			return texture.get();
+		}
+		
+		return NullTexture.get();
 	}
 	
 	/**

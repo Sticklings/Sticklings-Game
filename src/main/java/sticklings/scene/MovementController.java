@@ -1,8 +1,12 @@
 package sticklings.scene;
 
 import java.util.EnumSet;
+import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 import javafx.geometry.BoundingBox;
+import sticklings.scene.Collideable.Action;
 import sticklings.scene.sticklings.Stickling;
 import sticklings.terrain.TerrainData;
 import sticklings.terrain.TerrainType;
@@ -19,9 +23,12 @@ public class MovementController {
 	
 	private EnumSet<MovementType> allowedTypes;
 	
+	private Set<Entity> collidingWith;
+	
 	public MovementController(Stickling entity) {
 		this.entity = entity;
 		allowedTypes = EnumSet.noneOf(MovementType.class);
+		collidingWith = Sets.newIdentityHashSet();
 		
 		// Defaults
 		fallSpeed = 60;
@@ -99,6 +106,29 @@ public class MovementController {
 				}
 				
 				myLocation.x += moveDist;
+			}
+			
+			// Handle collisions
+			for (Entity entity : scene.getAllEntities()) {
+				if (!(entity instanceof Collideable) || entity == this.entity) {
+					continue;
+				}
+				
+				Collideable collideable = (Collideable)entity;
+				BoundingBox targetBounds = collideable.getBounds();
+				if (bounds.intersects(targetBounds)) {
+					if (collidingWith.add(entity)) {
+						// New collision
+						if (collideable.onCollide(entity) == Action.BLOCK) {
+							// TODO: Not sure if this will be enough
+							this.entity.setFacing(this.entity.getFacing().getOpposite());
+						}
+					}
+				} else {
+					if (collidingWith.remove(entity)) {
+						// No longer colliding
+					}
+				}
 			}
 			// TODO: Terrain collisions / collisions
 			

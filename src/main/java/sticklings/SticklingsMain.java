@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.Level;
 import sticklings.render.TextureManager;
+import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
 import sticklings.scene.StartGate;
 import sticklings.terrain.TerrainTexture;
@@ -45,6 +46,10 @@ public class SticklingsMain extends Application {
 		StartGate gate = new StartGate();
 		gate.setLocation(200, 180);
 		scene.addEntity(gate);
+		
+		EndGate end = new EndGate();
+		end.setLocation(400, 300);
+		scene.addEntity(end);
 		
 		TerrainTexture terrainTex = new TerrainTexture(scene.getTerrain());
 		terrainTex.setTexture(TerrainType.AIR, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-background.png")));

@@ -160,7 +160,7 @@ public abstract class Entity {
 	 * Marks the entity for removal in the scene.
 	 */
 	public final void remove() {
-		throw new UnsupportedOperationException("Not yet implemented");
+		scene.removeEntity(getEntityId());
 	}
 	
 	/**

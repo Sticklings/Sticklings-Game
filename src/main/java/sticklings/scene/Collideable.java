@@ -1,9 +1,9 @@
 package sticklings.scene;
 
-import sticklings.util.Bounds;
+import javafx.geometry.BoundingBox;
 
 public interface Collideable {
-	public Bounds getBounds();
+	public BoundingBox getBounds();
 	
 	public Action onCollide(Entity entity);
 	

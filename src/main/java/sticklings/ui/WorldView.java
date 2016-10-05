@@ -23,6 +23,9 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
+import sticklings.Game;
+import sticklings.GameRenderer;
+import sticklings.scene.Scene;
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -39,6 +42,16 @@ public class WorldView extends Screen{
     int btn_stickling_height = 75;
     int btn_stickling_width = 50;
     int label_height = 20;
+    
+    private Label lbl_progress; 
+    
+    private final Scene scene;
+    private final GameRenderer renderer;
+    
+    public WorldView(Scene scene, GameRenderer renderer) {
+    	this.scene = scene;
+    	this.renderer = renderer;
+    }
     
     public Label set_qty_label(Button btn, Label lbl){
         lbl.setText("0");
@@ -60,8 +73,9 @@ public class WorldView extends Screen{
     
     @Override
     public Parent initialize() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Pane root = new Pane();
+        
+        SceneWindow window = new SceneWindow(renderer);
         
         Button btn_speed_normal = new Button();
         Button btn_speed_fast = new Button();
@@ -88,8 +102,8 @@ public class WorldView extends Screen{
         Label  qty_exploder = new Label();
         
         
+        lbl_progress = new Label();
         Label lbl_goal = new Label();
-        Label lbl_progress = new Label();
         
         BackgroundSize  btn_stickling_bg_size = new BackgroundSize(btn_stickling_width, btn_stickling_height, true, true, true, false);
         
@@ -237,12 +251,15 @@ public class WorldView extends Screen{
         lbl_goal.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_goal.setLayoutY(btn_speed_faster.getLayoutY());
         
-        lbl_progress.setText("0 / 150");
         lbl_progress.setTextAlignment(TextAlignment.CENTER);
         lbl_progress.setFont(javafx.scene.text.Font.font(20));
         lbl_progress.setMinSize(60, 25);
         lbl_progress.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_progress.setLayoutY(btn_reset.getLayoutY());
+        
+        window.setLayoutX(0);
+        window.setLayoutY(0);
+        
         
         //Image star = new Image(WorldView.class.getResourceAsStream("/star.png"));
         //ImageView star1 = new ImageView(star);
@@ -285,6 +302,7 @@ public class WorldView extends Screen{
         
         root.getChildren().add(lbl_goal);
         root.getChildren().add(lbl_progress);
+        root.getChildren().add(window);
         
         root.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
@@ -312,7 +330,6 @@ public class WorldView extends Screen{
 
     @Override
     public void update(double deltaTime) {
-    
+    	lbl_progress.setText(String.format("%d/%d", scene.getSuccessfulSticklings(), scene.getTotalSticklings()));
     }
-    
 }

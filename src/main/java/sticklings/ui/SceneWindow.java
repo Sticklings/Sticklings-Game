@@ -16,7 +16,6 @@ public class SceneWindow extends BorderPane {
 		ImageView view = new ImageView(renderer.getFrameImage());
 		
 		setCenter(view);
-		setBottom(new Label("This is checking layout works"));
 		
 		setFocusTraversable(true);
 		setOnKeyPressed(e -> {

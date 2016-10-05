@@ -56,9 +56,9 @@ public class SticklingsMain extends Application {
 		terrainTex.setTexture(TerrainType.WATER, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-water.png")));
 		game.getTextureManager().addDynanic(terrainTex);
 		
-		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, HEIGHT);
+		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, 385);
 		
-		WorldView uitest = new WorldView();
+		WorldView uitest = new WorldView(scene, renderer);
 		screenManager.gotoScreen(uitest);
 		
 		GameTimer timer = new GameTimer(game, renderer);

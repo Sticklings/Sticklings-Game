@@ -82,4 +82,12 @@ public class GameRenderer {
 		
 		frameDrawer.endFrame();
 	}
+	
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+	
+	public int getScreenHeight() {
+		return screenHeight;
+	}
 }

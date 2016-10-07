@@ -1,7 +1,7 @@
 package sticklings.ui;
 
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import sticklings.GameRenderer;
@@ -18,6 +18,12 @@ public class SceneWindow extends BorderPane {
 	private final GameRenderer renderer;
 	private SticklingType selectedType;
 	
+	// Panning
+	private boolean isPanning;
+	private double panMouseX;
+	private double panMouseY;
+	private Location panInitial;
+	
 	public SceneWindow(Scene scene, GameRenderer renderer) {
 		this.scene = scene;
 		this.renderer = renderer;
@@ -27,6 +33,41 @@ public class SceneWindow extends BorderPane {
 		setCenter(view);
 		
 		setFocusTraversable(true);
+		
+		// Pan
+		setOnMousePressed(e -> {
+			if (e.getButton() == MouseButton.SECONDARY) {
+				isPanning = true;
+				
+				panMouseX = e.getX();
+				panMouseY = e.getY();
+				panInitial = renderer.getViewOffset();
+			}
+		});
+		
+		setOnMouseReleased(e -> {
+			if (e.getButton() == MouseButton.SECONDARY) {
+				isPanning = false;
+			}
+		});
+		
+		setOnMouseDragged(e -> {
+			if (isPanning) {
+				double deltaX = e.getX() - panMouseX;
+				double deltaY = e.getY() - panMouseY;
+				
+				double targetX = panInitial.x + deltaX;
+				double targetY = panInitial.y + deltaY;
+				
+				double maxX = scene.getWidth() - renderer.getScreenWidth();
+				double maxY = scene.getHeight() - renderer.getScreenHeight();
+				
+				targetX = Math.min(maxX, Math.max(0, targetX));
+				targetY = Math.min(maxY, Math.max(0, targetY));
+				
+				renderer.setViewOffset(new Location(targetX, targetY));
+			}
+		});
 		setOnKeyPressed(e -> {
 			switch (e.getCode()) {
 			case RIGHT:
@@ -48,8 +89,8 @@ public class SceneWindow extends BorderPane {
 		
 		setOnMouseMoved(e -> {
 			Location offset = renderer.getViewOffset();
-			double x = e.getX() - offset.x;
-			double y = e.getY() - offset.y;
+			double x = e.getX() + offset.x;
+			double y = e.getY() + offset.y;
 			
 			
 		});

@@ -77,12 +77,15 @@ public class MovementController {
 				double fallDepth = (allowedTypes.contains(MovementType.Float) ? floatSpeed : fallSpeed) * deltaTime;
 				if (groundDepth > fallDepth) {
 					myLocation.y += fallDepth;
+					entity.setDistanceFallen(entity.getDistanceFallen() + fallDepth);
 				} else {
 					myLocation.y += groundDepth;
+					entity.setDistanceFallen(entity.getDistanceFallen() + groundDepth);
 				}
 			} else if (allowedTypes.contains(MovementType.Walk)) {
 				// On ground
 				int dir = entity.getFacing().getDir();
+				entity.setDistanceFallen(0);
 				
 				double moveDist = walkSpeed * deltaTime * dir;
 				

@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 public enum SticklingType {
 	Basic(BasicStickling::new),
-	Miner(null),
+	Miner(MinerStickling::new),
 	Exploder(null),
 	Swimmer(null),
 	Floater(null),

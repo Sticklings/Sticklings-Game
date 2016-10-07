@@ -5,17 +5,14 @@
  */
 package sticklings.ui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -23,13 +20,9 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
-import sticklings.Game;
 import sticklings.GameRenderer;
 import sticklings.scene.Scene;
-import javafx.animation.Animation;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import sticklings.scene.sticklings.SticklingType;
 
 
 /**
@@ -43,17 +36,27 @@ public class WorldView extends Screen{
     int btn_stickling_width = 50;
     int label_height = 20;
     
+    private Pane root;
+    
+    private final Image img_miner = new Image(WorldView.class.getResourceAsStream("/ui/btn_miner.png"));
+    private final Image img_floater = new Image(WorldView.class.getResourceAsStream("/ui/btn_floater.png"));
+    private final Image img_blocker = new Image(WorldView.class.getResourceAsStream("/ui/btn_blocker.png"));
+    private final Image img_swimmer = new Image(WorldView.class.getResourceAsStream("/ui/btn_swimmer.png"));
+    private final Image img_exploder = new Image(WorldView.class.getResourceAsStream("/ui/btn_exploder.png"));
+    
     private Label lbl_progress; 
     
     private final Scene scene;
     private final GameRenderer renderer;
+    
+    private SceneWindow window;
     
     public WorldView(Scene scene, GameRenderer renderer) {
     	this.scene = scene;
     	this.renderer = renderer;
     }
     
-    public Label set_qty_label(Button btn, Label lbl){
+    public Label set_qty_label(ToggleButton btn, Label lbl){
         lbl.setText("0");
         lbl.setMinSize(btn_stickling_width, label_height);
         lbl.setAlignment(Pos.CENTER);
@@ -62,7 +65,7 @@ public class WorldView extends Screen{
         return lbl;
     }
     
-    public Label set_name_label(String s, Button btn, Label lbl){
+    public Label set_name_label(String s, ToggleButton btn, Label lbl){
         lbl.setText(s);
         lbl.setMinSize(btn_stickling_width, label_height);
         lbl.setAlignment(Pos.CENTER);
@@ -73,9 +76,9 @@ public class WorldView extends Screen{
     
     @Override
     public Parent initialize() {
-        Pane root = new Pane();
+        root = new Pane();
         
-        SceneWindow window = new SceneWindow(renderer);
+        window = new SceneWindow(scene, renderer);
         
         Button btn_speed_normal = new Button();
         Button btn_speed_fast = new Button();
@@ -83,11 +86,11 @@ public class WorldView extends Screen{
         Button btn_kill_all = new Button();
         Button btn_reset = new Button();
                 
-        Button btn_miner = new Button();
-        Button btn_floater = new Button();
-        Button btn_blocker = new Button();
-        Button btn_swimmer = new Button();
-        Button btn_exploder = new Button();
+        ToggleButton btn_miner = new ToggleButton();
+        ToggleButton btn_floater = new ToggleButton();
+        ToggleButton btn_blocker = new ToggleButton();
+        ToggleButton btn_swimmer = new ToggleButton();
+        ToggleButton btn_exploder = new ToggleButton();
         
         Label  lbl_miner = new Label();
         Label  lbl_floater = new Label();
@@ -107,12 +110,6 @@ public class WorldView extends Screen{
         
         BackgroundSize  btn_stickling_bg_size = new BackgroundSize(btn_stickling_width, btn_stickling_height, true, true, true, false);
         
-        final Image img_miner = new Image(WorldView.class.getResourceAsStream("/ui/btn_miner.png"));
-        final Image img_floater = new Image(WorldView.class.getResourceAsStream("/ui/btn_floater.png"));
-        final Image img_blocker = new Image(WorldView.class.getResourceAsStream("/ui/btn_blocker.png"));
-        final Image img_swimmer = new Image(WorldView.class.getResourceAsStream("/ui/btn_swimmer.png"));
-        final Image img_exploder = new Image(WorldView.class.getResourceAsStream("/ui/btn_exploder.png"));
-        
         //---------------------------------------------------------------------- 
         BackgroundImage btn_miner_image_bg = new BackgroundImage(img_miner, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
         Background btn_miner_bg = new Background(btn_miner_image_bg);
@@ -122,12 +119,7 @@ public class WorldView extends Screen{
         btn_miner.setLayoutY(game_height - btn_stickling_height - label_height);
         btn_miner.setBackground(btn_miner_bg);
         btn_miner.setCursor(Cursor.HAND);
-        btn_miner.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_miner, img_miner.getWidth()/2, img_miner.getHeight()/2));                
-            }
-        });
+        btn_miner.setOnAction(e -> selectType(btn_miner, SticklingType.Miner));
        
         qty_miner = set_qty_label(btn_miner, qty_miner);      
         
@@ -142,12 +134,7 @@ public class WorldView extends Screen{
         btn_floater.setLayoutY(game_height - btn_stickling_height - label_height);
         btn_floater.setBackground(btn_floater_bg);
         btn_floater.setCursor(Cursor.HAND);
-        btn_floater.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_floater, img_floater.getWidth()/2, img_floater.getHeight()/2));                
-            }
-        });
+        btn_floater.setOnAction(e -> selectType(btn_floater, SticklingType.Floater));
         
         qty_floater = set_qty_label(btn_floater, qty_floater);
         
@@ -162,12 +149,7 @@ public class WorldView extends Screen{
         btn_blocker.setLayoutY(game_height - btn_stickling_height - label_height);
         btn_blocker.setBackground(btn_blocker_bg);
         btn_blocker.setCursor(Cursor.HAND);
-        btn_blocker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_blocker, img_blocker.getWidth()/2, img_blocker.getHeight()/2));                
-            }
-        });
+        btn_blocker.setOnAction(e -> selectType(btn_blocker, SticklingType.Blocker));
         
         qty_blocker = set_qty_label(btn_blocker, qty_blocker);
         
@@ -182,13 +164,8 @@ public class WorldView extends Screen{
         btn_swimmer.setLayoutY(game_height - btn_stickling_height - label_height);
         btn_swimmer.setBackground(btn_swimmer_bg);
         btn_swimmer.setCursor(Cursor.HAND);
-        btn_swimmer.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_swimmer, img_swimmer.getWidth()/2, img_swimmer.getHeight()/2));                
-            }
-        });
-          
+        btn_swimmer.setOnAction(e -> selectType(btn_swimmer, SticklingType.Swimmer));
+        
         qty_swimmer = set_qty_label(btn_swimmer, qty_swimmer);
         
         lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
@@ -202,12 +179,7 @@ public class WorldView extends Screen{
         btn_exploder.setLayoutY(game_height - btn_stickling_height - label_height);
         btn_exploder.setBackground(btn_exploder_bg);
         btn_exploder.setCursor(Cursor.HAND);
-        btn_exploder.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_exploder, img_exploder.getWidth()/2, img_exploder.getHeight()/2));                
-            }
-        });
+        btn_exploder.setOnAction(e -> selectType(btn_exploder, SticklingType.Exploder));
         
         qty_exploder = set_qty_label(btn_exploder, qty_exploder);
         
@@ -303,19 +275,40 @@ public class WorldView extends Screen{
         root.getChildren().add(lbl_goal);
         root.getChildren().add(lbl_progress);
         root.getChildren().add(window);
-        
-        root.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                System.out.println("mouse click detected! " + mouseEvent.getSource());
-                if (mouseEvent.isSecondaryButtonDown()){
-                    System.out.println("Secondary mouse pressed!");
-                    root.setCursor(Cursor.DEFAULT);
-                }
-            }
-        });
                 
         return root;
+    }
+    
+    private void selectType(ToggleButton button, SticklingType type) {
+    	if (!button.isSelected()) {
+    		root.setCursor(Cursor.DEFAULT);
+    		window.selectType(null);
+    		return;
+    	}
+    	
+    	Image cursorImage;
+    	switch (type) {
+		case Blocker:
+			cursorImage = img_blocker;
+			break;
+		case Exploder:
+			cursorImage = img_exploder;
+			break;
+		case Floater:
+			cursorImage = img_floater;
+			break;
+		case Miner:
+			cursorImage = img_miner;
+			break;
+		case Swimmer:
+			cursorImage = img_swimmer;
+			break;
+		default:
+			throw new AssertionError(type);
+    	}
+    	
+    	window.selectType(type);
+    	root.setCursor(new ImageCursor(cursorImage));
     }
 
     @Override

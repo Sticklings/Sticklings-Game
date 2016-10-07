@@ -38,6 +38,12 @@ public abstract class Stickling extends Entity {
 		this.facing = facing;
 	}
 	
+	public void copyFrom(Stickling other) {
+		setLocation(other.getLocation().copy());
+		this.locomotor.setAllowedMovement(locomotor.getAllowedMovement());
+		this.facing = other.facing;
+	}
+	
 	/**
 	 * Called every operate tick
 	 */

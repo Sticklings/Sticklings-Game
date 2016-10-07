@@ -51,6 +51,10 @@ public class MovementController {
 		allowedTypes.remove(type);
 	}
 	
+	public EnumSet<MovementType> getAllowedMovement() {
+		return allowedTypes;
+	}
+	
 	/**
 	 * Performs movement on the entity
 	 * @param deltaTime
@@ -154,6 +158,10 @@ public class MovementController {
 					// Off screen
 					depth = Integer.MAX_VALUE;
 					break;
+				}
+				
+				if (y < 0) {
+					continue;
 				}
 				
 				TerrainType type = data[x + y * width];

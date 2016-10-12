@@ -99,11 +99,11 @@ public class Scene {
 		int id = nextEntityId++;
 		entity.setScene(this, id);
 		
-		if (isUpdating) {
+		//if (isUpdating) {
 			toAdd.put(id, entity);
-		} else {
-			entityMap.put(id, entity);
-		}
+//		} else {
+//			entityMap.put(id, entity);
+//		}
 	}
 	
 	/**
@@ -112,11 +112,11 @@ public class Scene {
 	 * @param entityId The ID of the entity to remove
 	 */
 	public void removeEntity(int entityId) {
-		if (isUpdating) {
+		// if (isUpdating) {
 			toRemove.add(entityId);
-		} else {
-			entityMap.remove(entityId);
-		}
+//		} else {
+//			entityMap.remove(entityId);
+//		}
 	}
 	
 	/**
@@ -143,22 +143,27 @@ public class Scene {
 	 * @param deltaTime The time in seconds between the last update and this
 	 */
 	public void update(double deltaTime) {
+            processChanges();
 		isUpdating = true;
 		for (Entity entity : entityMap.values()) {
 			entity.update(deltaTime);
 		}
 		isUpdating = false;
 		
-		// Add all new
-		entityMap.putAll(toAdd);
-		toAdd.clear();
-		
-		// Remove all marked
-		for (Integer id : toRemove) {
-			entityMap.remove(id);
-		}
-		toRemove.clear();
+		processChanges();
 	}
+        
+        private void processChanges() {
+            // Add all new
+            entityMap.putAll(toAdd);
+            toAdd.clear();
+
+            // Remove all marked
+            for (Integer id : toRemove) {
+                entityMap.remove(id);
+            }
+            toRemove.clear();
+        }
 	
 	/**
 	 * Gets all entities of the given type

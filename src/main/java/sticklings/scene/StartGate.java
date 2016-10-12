@@ -1,5 +1,7 @@
 package sticklings.scene;
 
+import javafx.scene.image.Image;
+import sticklings.render.BasicTexture;
 import sticklings.render.DebugTexture;
 import sticklings.scene.sticklings.BasicStickling;
 import sticklings.util.Location;
@@ -13,7 +15,9 @@ public class StartGate extends Entity {
 	private double lastSpawnTime = 0;
 	
 	public StartGate() {
-		setTexture(new DebugTexture(60, 60), new Location(-30, -30));
+            Image entry = new Image(StartGate.class.getResourceAsStream("/ui/entry.png"));
+		//setTexture(new DebugTexture(60, 60), new Location(-30, -30));
+                setTexture(new BasicTexture(entry), new Location(-30, -30));
 	}
 	
 	@Override

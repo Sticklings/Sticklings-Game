@@ -63,9 +63,9 @@ public class MinerStickling extends Stickling {
 			++stepCount;
 		}
 	}
-	
-	private enum State {
+		private enum State {
 		Mining,
 		Walking
 	}
+
 }

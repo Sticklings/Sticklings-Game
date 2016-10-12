@@ -5,25 +5,29 @@
  */
 package sticklings.ui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
 import sticklings.GameRenderer;
 import sticklings.scene.Scene;
+import sticklings.Game;
+import sticklings.levels.Level;
+import sticklings.scene.sticklings.Stickling;
+import sticklings.scene.sticklings.SticklingType;
 
 
 /**
@@ -37,51 +41,115 @@ public class WorldView extends Screen{
     int btn_stickling_width = 50;
     int label_height = 20;
     
+    private Pane root;
+    
+    ToggleButton btn_miner = new ToggleButton();
+    ToggleButton btn_floater = new ToggleButton();
+    ToggleButton btn_blocker = new ToggleButton();
+    ToggleButton btn_swimmer = new ToggleButton();
+    ToggleButton btn_exploder = new ToggleButton();
+    
+    final Image button_background = new Image(WorldView.class.getResourceAsStream("/ui/btn_background.png"));
+    
+    private final Image img_miner_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_miner_selected.png"));
+    private final Image img_floater_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_floater_selected.png"));
+    private final Image img_blocker_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_blocker_selected.png"));
+    private final Image img_swimmer_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_swimmer_selected.png"));
+    private final Image img_exploder_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_exploder_selected.png"));
+    
+    private final Image img_miner_unsel = new Image(WorldView.class.getResourceAsStream("/ui/btn_miner_unselected.png"));
+    private final Image img_floater_unsel = new Image(WorldView.class.getResourceAsStream("/ui/btn_floater_unselected.png"));
+    private final Image img_blocker_unsel = new Image(WorldView.class.getResourceAsStream("/ui/btn_blocker_unselected.png"));
+    private final Image img_swimmer_unsel = new Image(WorldView.class.getResourceAsStream("/ui/btn_swimmer_unselected.png"));
+    private final Image img_exploder_unsel = new Image(WorldView.class.getResourceAsStream("/ui/btn_exploder_unselected.png"));
+    
+    private final Image cur_miner = new Image(WorldView.class.getResourceAsStream("/ui/miner_cursor.png"));
+    private final Image cur_floater = new Image(WorldView.class.getResourceAsStream("/ui/floater_cursor.png"));
+    private final Image cur_blocker = new Image(WorldView.class.getResourceAsStream("/ui/blocker_cursor.png"));
+    private final Image cur_swimmer = new Image(WorldView.class.getResourceAsStream("/ui/swimmer_cursor.png"));
+    private final Image cur_exploder = new Image(WorldView.class.getResourceAsStream("/ui/exploder_cursor.png"));
+    
+      Image star = new Image(WorldView.class.getResourceAsStream("/ui/star.png"));
+      ImageView star1 = new ImageView(star);
+        
+        
+        ImageView star2 = new ImageView(star);
+        
+        
+        
+        ImageView star3 = new ImageView(star);
+       
+    
+    BackgroundSize  btn_stickling_bg_size = new BackgroundSize(btn_stickling_width, btn_stickling_height, true, true, true, false);
+    
+    BackgroundImage btn_miner_image_bg_sel = new BackgroundImage(img_miner_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_miner_bg_sel = new Background(btn_miner_image_bg_sel);
+    BackgroundImage btn_miner_image_bg_unsel = new BackgroundImage(img_miner_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_miner_bg_unsel = new Background(btn_miner_image_bg_unsel);
+    
+    BackgroundImage btn_floater_image_bg_sel = new BackgroundImage(img_floater_sel,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_floater_bg_sel = new Background(btn_floater_image_bg_sel);
+    BackgroundImage btn_floater_image_bg_unsel = new BackgroundImage(img_floater_unsel,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_floater_bg_unsel = new Background(btn_floater_image_bg_unsel);
+    
+    BackgroundImage btn_blocker_image_bg_sel = new BackgroundImage(img_blocker_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_blocker_bg_sel = new Background(btn_blocker_image_bg_sel);
+    BackgroundImage btn_blocker_image_bg_unsel = new BackgroundImage(img_blocker_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_blocker_bg_unsel = new Background(btn_blocker_image_bg_unsel);
+    
+    BackgroundImage btn_swimmer_image_bg_sel = new BackgroundImage(img_swimmer_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_swimmer_bg_sel = new Background(btn_swimmer_image_bg_sel);
+    BackgroundImage btn_swimmer_image_bg_unsel = new BackgroundImage(img_swimmer_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_swimmer_bg_unsel = new Background(btn_swimmer_image_bg_unsel);
+    
+    BackgroundImage btn_exploder_image_bg_sel = new BackgroundImage(img_exploder_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_exploder_bg_sel = new Background(btn_exploder_image_bg_sel);
+    BackgroundImage btn_exploder_image_bg_unsel = new BackgroundImage(img_exploder_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_exploder_bg_unsel = new Background(btn_exploder_image_bg_unsel);
+        
     private Label lbl_progress; 
     
     private final Scene scene;
     private final GameRenderer renderer;
+    
+    private SceneWindow window;
     
     public WorldView(Scene scene, GameRenderer renderer) {
     	this.scene = scene;
     	this.renderer = renderer;
     }
     
-    public Label set_qty_label(Button btn, Label lbl){
+    public Label set_qty_label(ToggleButton btn, Label lbl){
         lbl.setText("0");
         lbl.setMinSize(btn_stickling_width, label_height);
         lbl.setAlignment(Pos.CENTER);
         lbl.setLayoutX(btn.getLayoutX());
         lbl.setLayoutY(btn.getLayoutY() - label_height);
+        lbl.setTextFill(Paint.valueOf("White"));
         return lbl;
     }
     
-    public Label set_name_label(String s, Button btn, Label lbl){
+    public Label set_name_label(String s, ToggleButton btn, Label lbl){
         lbl.setText(s);
         lbl.setMinSize(btn_stickling_width, label_height);
         lbl.setAlignment(Pos.CENTER);
         lbl.setLayoutX(btn.getLayoutX());
         lbl.setLayoutY(btn.getLayoutY() + btn_stickling_height);
+        lbl.setTextFill(Paint.valueOf("White"));
         return lbl;
     }
     
     @Override
     public Parent initialize() {
-        Pane root = new Pane();
+        root = new Pane();
         
-        SceneWindow window = new SceneWindow(renderer);
+        window = new SceneWindow(scene, renderer);
         
         Button btn_speed_normal = new Button();
         Button btn_speed_fast = new Button();
         Button btn_speed_faster = new Button();
         Button btn_kill_all = new Button();
-        Button btn_reset = new Button();
-                
-        Button btn_miner = new Button();
-        Button btn_floater = new Button();
-        Button btn_blocker = new Button();
-        Button btn_swimmer = new Button();
-        Button btn_exploder = new Button();
+        Button btn_reset = new Button();        
         
         Label  lbl_miner = new Label();
         Label  lbl_floater = new Label();
@@ -93,115 +161,67 @@ public class WorldView extends Screen{
         Label  qty_floater = new Label();
         Label  qty_blocker = new Label();
         Label  qty_swimmer = new Label();
-        Label  qty_exploder = new Label();
-        
+        Label  qty_exploder = new Label();        
         
         lbl_progress = new Label();
-        Label lbl_goal = new Label();
-        
-        BackgroundSize  btn_stickling_bg_size = new BackgroundSize(btn_stickling_width, btn_stickling_height, true, true, true, false);
-        
-        final Image img_miner = new Image(WorldView.class.getResourceAsStream("/ui/btn_miner.png"));
-        final Image img_floater = new Image(WorldView.class.getResourceAsStream("/ui/btn_floater.png"));
-        final Image img_blocker = new Image(WorldView.class.getResourceAsStream("/ui/btn_blocker.png"));
-        final Image img_swimmer = new Image(WorldView.class.getResourceAsStream("/ui/btn_swimmer.png"));
-        final Image img_exploder = new Image(WorldView.class.getResourceAsStream("/ui/btn_exploder.png"));
-        
+        Label lbl_goal = new Label();        
         //---------------------------------------------------------------------- 
-        BackgroundImage btn_miner_image_bg = new BackgroundImage(img_miner, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
-        Background btn_miner_bg = new Background(btn_miner_image_bg);
-                
         btn_miner.setMinSize(btn_stickling_width, btn_stickling_height);
         btn_miner.setLayoutX(0);
         btn_miner.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_miner.setBackground(btn_miner_bg);
+        btn_miner.setBackground(btn_miner_bg_unsel);
         btn_miner.setCursor(Cursor.HAND);
-        btn_miner.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_miner, img_miner.getWidth()/2, img_miner.getHeight()/2));                
-            }
-        });
-       
+        btn_miner.setOnAction(e -> selectType(btn_miner, SticklingType.Miner));
+        
         qty_miner = set_qty_label(btn_miner, qty_miner);      
         
         lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);
         
         //---------------------------------------------------------------------- 
-        BackgroundImage btn_floater_image_bg = new BackgroundImage(img_floater,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
-        Background btn_floater_bg = new Background(btn_floater_image_bg);
-                
         btn_floater.setMinSize(btn_stickling_width, btn_stickling_height);
         btn_floater.setLayoutX(btn_miner.getLayoutX() + btn_stickling_width);
         btn_floater.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_floater.setBackground(btn_floater_bg);
+        btn_floater.setBackground(btn_floater_bg_unsel);
         btn_floater.setCursor(Cursor.HAND);
-        btn_floater.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_floater, img_floater.getWidth()/2, img_floater.getHeight()/2));                
-            }
-        });
+        btn_floater.setOnAction(e -> selectType(btn_floater, SticklingType.Floater));
         
         qty_floater = set_qty_label(btn_floater, qty_floater);
         
         lbl_floater = set_name_label("Floater", btn_floater, lbl_floater);
 
         //---------------------------------------------------------------------- 
-        BackgroundImage btn_blocker_image_bg = new BackgroundImage(img_blocker, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
-        Background btn_blocker_bg = new Background(btn_blocker_image_bg);
-        
         btn_blocker.setMinSize(btn_stickling_width, btn_stickling_height);
         btn_blocker.setLayoutX(btn_floater.getLayoutX() + btn_stickling_width);
         btn_blocker.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_blocker.setBackground(btn_blocker_bg);
+        btn_blocker.setBackground(btn_blocker_bg_unsel);
         btn_blocker.setCursor(Cursor.HAND);
-        btn_blocker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_blocker, img_blocker.getWidth()/2, img_blocker.getHeight()/2));                
-            }
-        });
+        btn_blocker.setOnAction(e -> selectType(btn_blocker, SticklingType.Blocker));
         
         qty_blocker = set_qty_label(btn_blocker, qty_blocker);
         
         lbl_blocker = set_name_label("Blocker", btn_blocker, lbl_blocker);
         
         //----------------------------------------------------------------------
-        BackgroundImage btn_swimmer_image_bg = new BackgroundImage(img_swimmer, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
-        Background btn_swimmer_bg = new Background(btn_swimmer_image_bg);
+        
         
         btn_swimmer.setMinSize(btn_stickling_width, btn_stickling_height);
         btn_swimmer.setLayoutX(btn_blocker.getLayoutX() + btn_stickling_width);
         btn_swimmer.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_swimmer.setBackground(btn_swimmer_bg);
+        btn_swimmer.setBackground(btn_swimmer_bg_unsel);
         btn_swimmer.setCursor(Cursor.HAND);
-        btn_swimmer.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_swimmer, img_swimmer.getWidth()/2, img_swimmer.getHeight()/2));                
-            }
-        });
-          
+        btn_swimmer.setOnAction(e -> selectType(btn_swimmer, SticklingType.Swimmer));
+        
         qty_swimmer = set_qty_label(btn_swimmer, qty_swimmer);
         
         lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
        
         //----------------------------------------------------------------------
-        BackgroundImage btn_exploder_image_bg = new BackgroundImage(img_exploder, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
-        Background btn_exploder_bg = new Background(btn_exploder_image_bg);
-        
         btn_exploder.setMinSize(btn_stickling_width, btn_stickling_height);
         btn_exploder.setLayoutX(btn_swimmer.getLayoutX() + btn_stickling_width);
         btn_exploder.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_exploder.setBackground(btn_exploder_bg);
+        btn_exploder.setBackground(btn_exploder_bg_unsel);
         btn_exploder.setCursor(Cursor.HAND);
-        btn_exploder.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
-                root.setCursor(new ImageCursor(img_exploder, img_exploder.getWidth()/2, img_exploder.getHeight()/2));                
-            }
-        });
+        btn_exploder.setOnAction(e -> selectType(btn_exploder, SticklingType.Exploder));
         
         qty_exploder = set_qty_label(btn_exploder, qty_exploder);
         
@@ -238,35 +258,50 @@ public class WorldView extends Screen{
         btn_kill_all.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_kill_all.setLayoutY(btn_reset.getLayoutY() + 35);
         
+        btn_kill_all.setOnAction(e -> scene.findEntities(Stickling.class).forEach(stick -> {
+            Stickling newStickling = SticklingType.Exploder.create();
+            newStickling.copyFrom(stick);            
+            scene.addEntity(newStickling);
+            stick.remove();
+            
+        }));
+        
         lbl_goal.setText("Goal:");
         lbl_goal.setTextAlignment(TextAlignment.CENTER);
         lbl_goal.setFont(javafx.scene.text.Font.font(20));
         lbl_goal.setMinSize(60, 25);
         lbl_goal.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_goal.setLayoutY(btn_speed_faster.getLayoutY());
+        lbl_goal.setTextFill(Paint.valueOf("White"));
         
         lbl_progress.setTextAlignment(TextAlignment.CENTER);
         lbl_progress.setFont(javafx.scene.text.Font.font(20));
         lbl_progress.setMinSize(60, 25);
         lbl_progress.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_progress.setLayoutY(btn_reset.getLayoutY());
+        lbl_progress.setTextFill(Paint.valueOf("White"));
         
         window.setLayoutX(0);
         window.setLayoutY(0);
         
+        star1.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
+        star1.setLayoutY(btn_kill_all.getLayoutY());
+        star1.setVisible(false);
+        star2.setLayoutX(star1.getLayoutX() + 20 + 10);
+        star2.setLayoutY(btn_kill_all.getLayoutY());
+        star2.setVisible(false);
+        star3.setLayoutX(star2.getLayoutX() + 20 + 10);
+        star3.setLayoutY(btn_kill_all.getLayoutY());
+        star3.setVisible(false);
+      
+        ImageView button_bg = new ImageView(button_background);
+        button_bg.setLayoutX(0);
+        button_bg.setLayoutY(385);
+        root.getChildren().add(button_bg);
         
-        //Image star = new Image(WorldView.class.getResourceAsStream("/star.png"));
-        //ImageView star1 = new ImageView(star);
-        //star1.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
-        //star1.setLayoutY(btn_kill_all.getLayoutY());
-        
-        //ImageView star2 = new ImageView(star);
-        //star2.setLayoutX(star1.getLayoutX() + 20 + 10);
-        //star2.setLayoutY(btn_kill_all.getLayoutY());
-        
-        //ImageView star3 = new ImageView(star);
-        //star3.setLayoutX(star2.getLayoutX() + 20 + 10);
-        //star3.setLayoutY(btn_kill_all.getLayoutY());
+        root.getChildren().add(star1);
+        root.getChildren().add(star2);
+        root.getChildren().add(star3);
         
         root.getChildren().add(qty_miner);
         root.getChildren().add(btn_miner);
@@ -297,19 +332,81 @@ public class WorldView extends Screen{
         root.getChildren().add(lbl_goal);
         root.getChildren().add(lbl_progress);
         root.getChildren().add(window);
-        
-        root.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                System.out.println("mouse click detected! " + mouseEvent.getSource());
-                if (mouseEvent.isSecondaryButtonDown()){
-                    System.out.println("Secondary mouse pressed!");
-                    root.setCursor(Cursor.DEFAULT);
-                }
-            }
-        });
                 
         return root;
+    }
+    
+    private void selectType(ToggleButton button, SticklingType type) {
+    	if (!button.isSelected()) {
+    		root.setCursor(Cursor.DEFAULT);
+    		window.selectType(null);
+                switch (type) {
+                    case Blocker:
+                        btn_blocker.setBackground(btn_blocker_bg_unsel);
+                        break;
+                    case Exploder:
+                        btn_exploder.setBackground(btn_exploder_bg_unsel);
+                        break;
+                    case Floater:
+                        btn_floater.setBackground(btn_floater_bg_unsel);
+                        break;
+                    case Miner:
+                        btn_miner.setBackground(btn_miner_bg_unsel);
+                        break;
+                    case Swimmer:
+                        btn_swimmer.setBackground(btn_swimmer_bg_unsel);
+                        break;
+                    default:
+			throw new AssertionError(type);
+                }             
+                
+    		return;
+    	} else
+        {
+            switch (type) {
+                    case Blocker:
+                        btn_blocker.setBackground(btn_blocker_bg_sel);
+                        break;
+                         case Exploder:
+                        btn_exploder.setBackground(btn_exploder_bg_sel);
+                        break;
+                    case Floater:
+                        btn_floater.setBackground(btn_floater_bg_sel);
+                        break;
+                    case Miner:
+                        btn_miner.setBackground(btn_miner_bg_sel);
+                        break;
+                    case Swimmer:
+                        btn_swimmer.setBackground(btn_swimmer_bg_sel);
+                        break;
+                    default:
+			throw new AssertionError(type);
+                }   
+        }
+    	
+    	Image cursorImage;
+    	switch (type) {
+		case Blocker:
+			cursorImage = cur_blocker;
+			break;
+		case Exploder:
+			cursorImage = cur_exploder;
+			break;
+		case Floater:
+			cursorImage = cur_floater;
+			break;
+		case Miner:
+			cursorImage = cur_miner;
+			break;
+		case Swimmer:
+			cursorImage = cur_swimmer;
+			break;
+		default:
+			throw new AssertionError(type);
+    	}
+    	
+    	window.selectType(type);
+    	root.setCursor(new ImageCursor(cursorImage));
     }
 
     @Override
@@ -324,6 +421,17 @@ public class WorldView extends Screen{
 
     @Override
     public void update(double deltaTime) {
+        Level stats = Game.getInstance().getLevel().get();
     	lbl_progress.setText(String.format("%d/%d", scene.getSuccessfulSticklings(), scene.getTotalSticklings()));
+        //do star stuff here
+        if(scene.getSuccessfulSticklings() > (0.3 * scene.getTotalSticklings())){
+            star1.setVisible(true);
+        }
+        if(scene.getSuccessfulSticklings() > (0.6 * scene.getTotalSticklings())){
+            star2.setVisible(true);
+        }
+        if(scene.getSuccessfulSticklings() > (0.9 * scene.getTotalSticklings())){
+            star3.setVisible(true);
+        }
     }
 }

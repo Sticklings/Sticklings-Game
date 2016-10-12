@@ -51,6 +51,10 @@ public class MovementController {
 		allowedTypes.remove(type);
 	}
 	
+	public EnumSet<MovementType> getAllowedMovement() {
+		return allowedTypes;
+	}
+	
 	/**
 	 * Performs movement on the entity
 	 * @param deltaTime
@@ -73,12 +77,15 @@ public class MovementController {
 				double fallDepth = (allowedTypes.contains(MovementType.Float) ? floatSpeed : fallSpeed) * deltaTime;
 				if (groundDepth > fallDepth) {
 					myLocation.y += fallDepth;
+					entity.setDistanceFallen(entity.getDistanceFallen() + fallDepth);
 				} else {
 					myLocation.y += groundDepth;
+					entity.setDistanceFallen(entity.getDistanceFallen() + groundDepth);
 				}
 			} else if (allowedTypes.contains(MovementType.Walk)) {
 				// On ground
 				int dir = entity.getFacing().getDir();
+				entity.setDistanceFallen(0);
 				
 				double moveDist = walkSpeed * deltaTime * dir;
 				
@@ -154,6 +161,10 @@ public class MovementController {
 					// Off screen
 					depth = Integer.MAX_VALUE;
 					break;
+				}
+				
+				if (y < 0) {
+					continue;
 				}
 				
 				TerrainType type = data[x + y * width];

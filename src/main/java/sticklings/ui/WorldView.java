@@ -22,6 +22,8 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
+import sticklings.Game;
+import sticklings.levels.Level;
 import sticklings.GameRenderer;
 import sticklings.scene.Scene;
 import sticklings.scene.sticklings.Stickling;
@@ -419,6 +421,7 @@ public class WorldView extends Screen{
 
     @Override
     public void update(double deltaTime) {
+        Level stats = Game.getInstance().getLevel().get();
     	lbl_progress.setText(String.format("%d/%d", scene.getSuccessfulSticklings(), scene.getTotalSticklings()));
         //do star stuff here
         if(scene.getSuccessfulSticklings() > (0.3 * scene.getTotalSticklings())){

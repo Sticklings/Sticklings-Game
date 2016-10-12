@@ -1,5 +1,6 @@
 package sticklings.ui;
 
+import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -42,12 +43,14 @@ public class SceneWindow extends BorderPane {
 				panMouseX = e.getX();
 				panMouseY = e.getY();
 				panInitial = renderer.getViewOffset();
+				//setCursor(Cursor.MOVE);
 			}
 		});
 		
 		setOnMouseReleased(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
 				isPanning = false;
+				//setCursor(Cursor.DEFAULT);
 			}
 		});
 		
@@ -126,6 +129,11 @@ public class SceneWindow extends BorderPane {
 		// Change its type
 		if (selectedType == SticklingType.Exploder) {
 			// TODO: Special case
+                        Stickling newStickling = selectedType.create();
+			newStickling.copyFrom(selected);
+			
+			scene.addEntity(newStickling);
+			selected.remove();
 		} else {
 			Stickling newStickling = selectedType.create();
 			newStickling.copyFrom(selected);

@@ -47,7 +47,7 @@ public class SticklingsMain extends Application {
 		scene.addEntity(gate);
 		
 		EndGate end = new EndGate();
-		end.setLocation(400, 300);
+		end.setLocation(1190, 438);
 		scene.addEntity(end);
 		
 		TerrainTexture terrainTex = new TerrainTexture(scene.getTerrain());

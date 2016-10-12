@@ -24,6 +24,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
 import sticklings.GameRenderer;
 import sticklings.scene.Scene;
+import sticklings.scene.sticklings.Stickling;
 import sticklings.scene.sticklings.SticklingType;
 
 
@@ -254,6 +255,14 @@ public class WorldView extends Screen{
         btn_kill_all.setMinSize(120, 25);
         btn_kill_all.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_kill_all.setLayoutY(btn_reset.getLayoutY() + 35);
+        
+        btn_kill_all.setOnAction(e -> scene.findEntities(Stickling.class).forEach(stick -> {
+            Stickling newStickling = SticklingType.Exploder.create();
+            newStickling.copyFrom(stick);            
+            scene.addEntity(newStickling);
+            stick.remove();
+            
+        }));
         
         lbl_goal.setText("Goal:");
         lbl_goal.setTextAlignment(TextAlignment.CENTER);

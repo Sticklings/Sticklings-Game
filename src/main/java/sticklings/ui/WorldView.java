@@ -43,11 +43,7 @@ public class WorldView extends Screen{
     
     private Pane root;
     
-    ToggleButton btn_miner = new ToggleButton();
-    ToggleButton btn_floater = new ToggleButton();
-    ToggleButton btn_blocker = new ToggleButton();
-    ToggleButton btn_swimmer = new ToggleButton();
-    ToggleButton btn_exploder = new ToggleButton();
+    private ToggleButton[] typeButtons = new ToggleButton[SticklingType.values().length-1];
     
     final Image button_background = new Image(WorldView.class.getResourceAsStream("/ui/btn_background.png"));
     
@@ -119,6 +115,44 @@ public class WorldView extends Screen{
     	this.renderer = renderer;
     }
     
+    private Image loadImage(String path) {
+    	return new Image(WorldView.class.getResourceAsStream(path));
+    }
+    
+    private ToggleButton createTypeButton(SticklingType type, double x, Image selected, Image unselected, Image cursor) {
+    	ToggleButton button = new ToggleButton();
+    	
+    	// Layout settings
+    	button.setMinSize(btn_stickling_width, btn_stickling_height);
+        button.setLayoutX(x);
+        button.setLayoutY(game_height - btn_stickling_height - label_height);
+        
+        // Background settings
+        BackgroundSize  size = new BackgroundSize(btn_stickling_width, btn_stickling_height, true, true, true, false);
+        
+        Background selectedBackground = new Background(new BackgroundImage(selected, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, size));
+        Background unselectedBackground = new Background(new BackgroundImage(unselected, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, size));
+        
+        // Allow the background to be changed automatically based on the state
+        button.setBackground(unselectedBackground);
+        button.selectedProperty().addListener((btn, old, current) -> {
+        	if (current) {
+        		button.setBackground(selectedBackground);
+        	} else {
+        		button.setBackground(unselectedBackground);
+        	}
+        });
+        
+        // Other options
+        button.setCursor(Cursor.HAND);
+
+        // Action
+        button.setOnAction(e -> selectType(button, type));
+        
+        typeButtons[type.ordinal()-1] = button;
+        return button;
+    }
+    
     public Label set_qty_label(ToggleButton btn, Label lbl){
         lbl.setText("0");
         lbl.setMinSize(btn_stickling_width, label_height);
@@ -165,63 +199,66 @@ public class WorldView extends Screen{
         
         lbl_progress = new Label();
         Label lbl_goal = new Label();        
-        //---------------------------------------------------------------------- 
-        btn_miner.setMinSize(btn_stickling_width, btn_stickling_height);
-        btn_miner.setLayoutX(0);
-        btn_miner.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_miner.setBackground(btn_miner_bg_unsel);
-        btn_miner.setCursor(Cursor.HAND);
-        btn_miner.setOnAction(e -> selectType(btn_miner, SticklingType.Miner));
+        //----------------------------------------------------------------------
+        ToggleButton btn_miner = createTypeButton(
+        		SticklingType.Miner,
+        		0,
+        		loadImage("/ui/btn_miner_selected.png"),
+        		loadImage("/ui/btn_miner_unselected.png"),
+        		loadImage("/ui/miner_cursor.png")
+        		);
         
         qty_miner = set_qty_label(btn_miner, qty_miner);      
         
         lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);
         
-        //---------------------------------------------------------------------- 
-        btn_floater.setMinSize(btn_stickling_width, btn_stickling_height);
-        btn_floater.setLayoutX(btn_miner.getLayoutX() + btn_stickling_width);
-        btn_floater.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_floater.setBackground(btn_floater_bg_unsel);
-        btn_floater.setCursor(Cursor.HAND);
-        btn_floater.setOnAction(e -> selectType(btn_floater, SticklingType.Floater));
+        //----------------------------------------------------------------------
+        ToggleButton btn_floater = createTypeButton(
+        		SticklingType.Floater,
+        		btn_miner.getLayoutX() + btn_stickling_width,
+        		loadImage("/ui/btn_floater_selected.png"),
+        		loadImage("/ui/btn_floater_unselected.png"),
+        		loadImage("/ui/floater_cursor.png")
+        		);
         
         qty_floater = set_qty_label(btn_floater, qty_floater);
         
         lbl_floater = set_name_label("Floater", btn_floater, lbl_floater);
 
-        //---------------------------------------------------------------------- 
-        btn_blocker.setMinSize(btn_stickling_width, btn_stickling_height);
-        btn_blocker.setLayoutX(btn_floater.getLayoutX() + btn_stickling_width);
-        btn_blocker.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_blocker.setBackground(btn_blocker_bg_unsel);
-        btn_blocker.setCursor(Cursor.HAND);
-        btn_blocker.setOnAction(e -> selectType(btn_blocker, SticklingType.Blocker));
+        //----------------------------------------------------------------------
+        ToggleButton btn_blocker = createTypeButton(
+        		SticklingType.Blocker,
+        		btn_floater.getLayoutX() + btn_stickling_width,
+        		loadImage("/ui/btn_blocker_selected.png"),
+        		loadImage("/ui/btn_blocker_unselected.png"),
+        		loadImage("/ui/blocker_cursor.png")
+        		);
         
         qty_blocker = set_qty_label(btn_blocker, qty_blocker);
         
         lbl_blocker = set_name_label("Blocker", btn_blocker, lbl_blocker);
         
         //----------------------------------------------------------------------
-        
-        
-        btn_swimmer.setMinSize(btn_stickling_width, btn_stickling_height);
-        btn_swimmer.setLayoutX(btn_blocker.getLayoutX() + btn_stickling_width);
-        btn_swimmer.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_swimmer.setBackground(btn_swimmer_bg_unsel);
-        btn_swimmer.setCursor(Cursor.HAND);
-        btn_swimmer.setOnAction(e -> selectType(btn_swimmer, SticklingType.Swimmer));
+        ToggleButton btn_swimmer = createTypeButton(
+        		SticklingType.Swimmer,
+        		btn_blocker.getLayoutX() + btn_stickling_width,
+        		loadImage("/ui/btn_swimmer_selected.png"),
+        		loadImage("/ui/btn_swimmer_unselected.png"),
+        		loadImage("/ui/swimmer_cursor.png")
+        		);
         
         qty_swimmer = set_qty_label(btn_swimmer, qty_swimmer);
         
         lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
        
         //----------------------------------------------------------------------
-        btn_exploder.setMinSize(btn_stickling_width, btn_stickling_height);
-        btn_exploder.setLayoutX(btn_swimmer.getLayoutX() + btn_stickling_width);
-        btn_exploder.setLayoutY(game_height - btn_stickling_height - label_height);
-        btn_exploder.setBackground(btn_exploder_bg_unsel);
-        btn_exploder.setCursor(Cursor.HAND);
-        btn_exploder.setOnAction(e -> selectType(btn_exploder, SticklingType.Exploder));
+        ToggleButton btn_exploder = createTypeButton(
+        		SticklingType.Exploder,
+        		btn_swimmer.getLayoutX() + btn_stickling_width,
+        		loadImage("/ui/btn_exploder_selected.png"),
+        		loadImage("/ui/btn_exploder_unselected.png"),
+        		loadImage("/ui/exploder_cursor.png")
+        		);
         
         qty_exploder = set_qty_label(btn_exploder, qty_exploder);
         
@@ -340,48 +377,14 @@ public class WorldView extends Screen{
     	if (!button.isSelected()) {
     		root.setCursor(Cursor.DEFAULT);
     		window.selectType(null);
-                switch (type) {
-                    case Blocker:
-                        btn_blocker.setBackground(btn_blocker_bg_unsel);
-                        break;
-                    case Exploder:
-                        btn_exploder.setBackground(btn_exploder_bg_unsel);
-                        break;
-                    case Floater:
-                        btn_floater.setBackground(btn_floater_bg_unsel);
-                        break;
-                    case Miner:
-                        btn_miner.setBackground(btn_miner_bg_unsel);
-                        break;
-                    case Swimmer:
-                        btn_swimmer.setBackground(btn_swimmer_bg_unsel);
-                        break;
-                    default:
-			throw new AssertionError(type);
-                }             
-                
     		return;
-    	} else
-        {
-            switch (type) {
-                    case Blocker:
-                        btn_blocker.setBackground(btn_blocker_bg_sel);
-                        break;
-                         case Exploder:
-                        btn_exploder.setBackground(btn_exploder_bg_sel);
-                        break;
-                    case Floater:
-                        btn_floater.setBackground(btn_floater_bg_sel);
-                        break;
-                    case Miner:
-                        btn_miner.setBackground(btn_miner_bg_sel);
-                        break;
-                    case Swimmer:
-                        btn_swimmer.setBackground(btn_swimmer_bg_sel);
-                        break;
-                    default:
-			throw new AssertionError(type);
-                }   
+    	} else {
+    		// Deselect previous buttons
+    		for (ToggleButton other : typeButtons) {
+    			if (other != button) {
+    				other.setSelected(false);
+    			}
+    		}   
         }
     	
     	Image cursorImage;

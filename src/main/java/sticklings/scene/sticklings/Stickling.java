@@ -3,7 +3,6 @@ package sticklings.scene.sticklings;
 import sticklings.scene.Entity;
 import sticklings.scene.MovementController;
 import sticklings.scene.MovementController.MovementDir;
-import sticklings.scene.Scene;
 
 public abstract class Stickling extends Entity {
 	private static final double OPERATE_TICK_LENGTH = 0.05;

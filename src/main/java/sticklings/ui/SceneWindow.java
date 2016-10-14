@@ -14,6 +14,7 @@ import sticklings.util.Location;
 
 public class SceneWindow extends BorderPane {
 	private int VIEWMOVE = 10;
+	private static final double PAN_SCALE = 1;
 	
 	private final Scene scene;
 	private final GameRenderer renderer;
@@ -59,8 +60,8 @@ public class SceneWindow extends BorderPane {
 				double deltaX = e.getX() - panMouseX;
 				double deltaY = e.getY() - panMouseY;
 				
-				double targetX = panInitial.x + deltaX;
-				double targetY = panInitial.y + deltaY;
+				double targetX = panInitial.x - deltaX * PAN_SCALE;
+				double targetY = panInitial.y - deltaY * PAN_SCALE;
 				
 				double maxX = scene.getWidth() - renderer.getScreenWidth();
 				double maxY = scene.getHeight() - renderer.getScreenHeight();

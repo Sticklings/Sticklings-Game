@@ -275,18 +275,21 @@ public class WorldView extends Screen{
         btn_speed_normal.setMinSize(30, 25);
         btn_speed_normal.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_speed_normal.setLayoutY(btn_exploder.getLayoutY());
+        btn_speed_normal.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_NORMAL));
         
         btn_speed_fast.setText(">>");
         btn_speed_fast.setTextAlignment(TextAlignment.CENTER);
         btn_speed_fast.setMinSize(30, 25);
         btn_speed_fast.setLayoutX(btn_speed_normal.getLayoutX() + 30 + 10);
         btn_speed_fast.setLayoutY(btn_exploder.getLayoutY());
+        btn_speed_fast.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_FAST));
         
         btn_speed_faster.setText(">>>");
         btn_speed_faster.setTextAlignment(TextAlignment.CENTER);
         btn_speed_faster.setMinSize(30, 25);
         btn_speed_faster.setLayoutX(btn_speed_fast.getLayoutX() + 30 + 10);
         btn_speed_faster.setLayoutY(btn_exploder.getLayoutY());
+        btn_speed_faster.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_FASTEST));
         
         btn_reset.setText("Reset");
         btn_reset.setTextAlignment(TextAlignment.CENTER);

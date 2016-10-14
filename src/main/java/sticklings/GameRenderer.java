@@ -1,13 +1,17 @@
 package sticklings;
 
+import java.io.IOException;
+
 import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
+import sticklings.levels.Level;
 import sticklings.render.AbstractTexture;
 import sticklings.render.FrameDrawer;
 import sticklings.render.TextureManager;
 import sticklings.scene.Entity;
 import sticklings.scene.Scene;
 import sticklings.terrain.TerrainTexture;
+import sticklings.terrain.TerrainType;
 import sticklings.util.Location;
 
 public class GameRenderer {
@@ -21,16 +25,29 @@ public class GameRenderer {
 	
 	private TerrainTexture terrainTexture;
 	
-	public GameRenderer(TextureManager textureManager, Scene scene, TerrainTexture terrainTexture, int screenWidth, int screenHeight) {
+	public GameRenderer(TextureManager textureManager, Scene scene, int screenWidth, int screenHeight) {
 		this.textureManager = textureManager;
 		this.scene = scene;
-		this.terrainTexture = terrainTexture;
 		
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		
 		frameDrawer = new FrameDrawer(screenWidth, screenHeight);
 		viewOffset = new Location();
+		
+		// Load the textures for the level
+		terrainTexture = new TerrainTexture(scene.getTerrain());
+		
+		Level level = Game.getInstance().getLevel().get();
+		try {
+			terrainTexture.setTexture(TerrainType.AIR, textureManager.createBasic(level.getTerrainBackgroundURL().openStream()));
+			terrainTexture.setTexture(TerrainType.GROUND, textureManager.createBasic(level.getTerrainForegroundURL().openStream()));
+			terrainTexture.setTexture(TerrainType.WATER, textureManager.getTexture("/debug/test-water.png"));
+			
+			textureManager.addDynanic(terrainTexture);
+		} catch (IOException e) {
+			// TODO: Handle this
+		}
 	}
 	
 	/**

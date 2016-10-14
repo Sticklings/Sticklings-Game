@@ -7,7 +7,11 @@ import com.google.common.base.Preconditions;
 
 import sticklings.levels.Level;
 import sticklings.render.TextureManager;
+import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
+import sticklings.scene.StartGate;
+import sticklings.terrain.TerrainTexture;
+import sticklings.terrain.TerrainType;
 import sticklings.ui.ScreenManager;
 import sticklings.util.ClasspathTextureSource;
 
@@ -82,6 +86,15 @@ public class Game {
 		// TODO: Cleanup existing scene
 		scene = Scene.fromLevel(level);
 		currentLevel = level;
+		
+		// Add the start and end gates
+		StartGate gate = new StartGate();
+		gate.setLocation(level.getStartLocation());
+		scene.addEntity(gate);
+		
+		EndGate end = new EndGate();
+		end.setLocation(level.getEndLocation());
+		scene.addEntity(end);
 		
 		return scene;
 	}

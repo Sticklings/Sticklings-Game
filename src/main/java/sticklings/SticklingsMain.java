@@ -3,6 +3,7 @@ package sticklings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.Level;
+import sticklings.levels.LevelLoader;
 import sticklings.levels.SticklingAvailability;
 import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
@@ -40,28 +41,13 @@ public class SticklingsMain extends Application {
 		// Launch the game
 		Game game = new Game(screenManager);
 		
-		// DEBUG
-		SticklingAvailability availability = new SticklingAvailability()
-				.setTotal(SticklingType.Blocker, 3)
-				.setTotal(SticklingType.Miner, 4);
-		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"), 30, 20, availability);
+		LevelLoader loader = new LevelLoader();
 		
-		Scene scene = game.loadLevel(debugLevel);
-		StartGate gate = new StartGate();
-		gate.setLocation(200, 180);
-		scene.addEntity(gate);
+		Level level = loader.load(SticklingsMain.class.getResource("/levels/level1/")); 
 		
-		EndGate end = new EndGate();
-		end.setLocation(1190, 438);
-		scene.addEntity(end);
+		Scene scene = game.loadLevel(level);
 		
-		TerrainTexture terrainTex = new TerrainTexture(scene.getTerrain());
-		terrainTex.setTexture(TerrainType.AIR, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-background.png")));
-		terrainTex.setTexture(TerrainType.GROUND, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-foreground.png")));
-		terrainTex.setTexture(TerrainType.WATER, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-water.png")));
-		game.getTextureManager().addDynanic(terrainTex);
-		
-		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, 385);
+		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, WIDTH, 385);
 		
 		WorldView uitest = new WorldView(scene, renderer);
 		screenManager.gotoScreen(uitest);

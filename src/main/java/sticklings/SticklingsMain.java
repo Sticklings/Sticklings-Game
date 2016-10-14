@@ -3,9 +3,11 @@ package sticklings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.Level;
+import sticklings.levels.SticklingAvailability;
 import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
 import sticklings.scene.StartGate;
+import sticklings.scene.sticklings.SticklingType;
 import sticklings.terrain.TerrainTexture;
 import sticklings.terrain.TerrainType;
 import sticklings.ui.ScreenManager;
@@ -39,7 +41,10 @@ public class SticklingsMain extends Application {
 		Game game = new Game(screenManager);
 		
 		// DEBUG
-		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"), 30, 20);
+		SticklingAvailability availability = new SticklingAvailability()
+				.setTotal(SticklingType.Blocker, 3)
+				.setTotal(SticklingType.Miner, 4);
+		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"), 30, 20, availability);
 		
 		Scene scene = game.loadLevel(debugLevel);
 		StartGate gate = new StartGate();

@@ -150,17 +150,22 @@ public class WorldView extends Screen{
         button.setOnAction(e -> selectType(button, type));
         
         typeButtons[type.ordinal()-1] = button;
+        
+        // Setup quantity label
+        
         return button;
     }
     
-    public Label set_qty_label(ToggleButton btn, Label lbl){
-        lbl.setText("0");
-        lbl.setMinSize(btn_stickling_width, label_height);
-        lbl.setAlignment(Pos.CENTER);
-        lbl.setLayoutX(btn.getLayoutX());
-        lbl.setLayoutY(btn.getLayoutY() - label_height);
-        lbl.setTextFill(Paint.valueOf("White"));
-        return lbl;
+    public Label set_qty_label(SticklingType type, ToggleButton button) {
+    	Label quantityLabel = new Label("-");
+        quantityLabel.setMinSize(btn_stickling_width, label_height);
+        quantityLabel.setAlignment(Pos.CENTER);
+        quantityLabel.setLayoutX(button.getLayoutX());
+        quantityLabel.setLayoutY(button.getLayoutY() - label_height);
+        quantityLabel.setTextFill(Paint.valueOf("White"));
+        quantityLabel.textProperty().bind(scene.getSticklingAvailability().remainingProperty(type).asString());
+        
+        return quantityLabel;
     }
     
     public Label set_name_label(String s, ToggleButton btn, Label lbl){
@@ -208,7 +213,7 @@ public class WorldView extends Screen{
         		loadImage("/ui/miner_cursor.png")
         		);
         
-        qty_miner = set_qty_label(btn_miner, qty_miner);      
+        qty_miner = set_qty_label(SticklingType.Miner, btn_miner);      
         
         lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);
         
@@ -221,7 +226,7 @@ public class WorldView extends Screen{
         		loadImage("/ui/floater_cursor.png")
         		);
         
-        qty_floater = set_qty_label(btn_floater, qty_floater);
+        qty_floater = set_qty_label(SticklingType.Floater, btn_floater);
         
         lbl_floater = set_name_label("Floater", btn_floater, lbl_floater);
 
@@ -234,7 +239,7 @@ public class WorldView extends Screen{
         		loadImage("/ui/blocker_cursor.png")
         		);
         
-        qty_blocker = set_qty_label(btn_blocker, qty_blocker);
+        qty_blocker = set_qty_label(SticklingType.Blocker, btn_blocker);
         
         lbl_blocker = set_name_label("Blocker", btn_blocker, lbl_blocker);
         
@@ -247,7 +252,7 @@ public class WorldView extends Screen{
         		loadImage("/ui/swimmer_cursor.png")
         		);
         
-        qty_swimmer = set_qty_label(btn_swimmer, qty_swimmer);
+        qty_swimmer = set_qty_label(SticklingType.Swimmer, btn_swimmer);
         
         lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
        
@@ -260,7 +265,7 @@ public class WorldView extends Screen{
         		loadImage("/ui/exploder_cursor.png")
         		);
         
-        qty_exploder = set_qty_label(btn_exploder, qty_exploder);
+        qty_exploder = set_qty_label(SticklingType.Exploder, btn_exploder);
         
         lbl_exploder = set_name_label("Exploder", btn_exploder, lbl_exploder);
 
@@ -379,6 +384,12 @@ public class WorldView extends Screen{
     		window.selectType(null);
     		return;
     	} else {
+    		// Prevent selecting ones that are not available
+    		if (scene.getSticklingAvailability().getRemaining(type) == 0) {
+    			button.setSelected(false);
+    			return;
+    		}
+    		
     		// Deselect previous buttons
     		for (ToggleButton other : typeButtons) {
     			if (other != button) {

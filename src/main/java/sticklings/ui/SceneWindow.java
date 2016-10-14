@@ -105,6 +105,11 @@ public class SceneWindow extends BorderPane {
 			return;
 		}
 		
+		// Dont permit changing type when none available
+		if (scene.getSticklingAvailability().getRemaining(selectedType) == 0) {
+			return;
+		}
+		
 		Location offset = renderer.getViewOffset();
 		double x = event.getX() + offset.x;
 		double y = event.getY() + offset.y;
@@ -144,6 +149,8 @@ public class SceneWindow extends BorderPane {
 			
 			// TODO: Reduce available count
 		}
+		
+		scene.getSticklingAvailability().adjustUsed(selectedType, 1);
 	}
 	
 	private void moveViewport(int dX, int dY) {

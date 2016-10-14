@@ -7,7 +7,7 @@ public enum SticklingType {
 	Miner(MinerStickling::new),
 	Exploder(ExploderStickling::new),
 	Swimmer(null),
-	Floater(null),
+	Floater(FloaterStickling::new),
 	Blocker(BlockerStickling::new);
 	
 	private Supplier<Stickling> creator;

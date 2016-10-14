@@ -1,7 +1,6 @@
 package sticklings.scene.sticklings;
 
 import sticklings.Game;
-import sticklings.scene.MovementController.MovementType;
 import sticklings.util.Location;
 /**
  *
@@ -29,7 +28,6 @@ public class ExploderStickling extends Stickling {
             getScene().getTerrain().clearCircleAt((int)pos.x, (int)pos.y, 50);
             remove();
         }else {
-            locomotor.allowMovement(MovementType.Walk);
             nextStateChange = WALK_TIME;
 	}
     }
@@ -47,6 +45,12 @@ public class ExploderStickling extends Stickling {
         }else {
             ++stepCount;
 	}
+    }
+    
+    @Override
+    public void copyFrom(Stickling other) {
+    	super.copyFrom(other);
+    	locomotor.setAllowedMovement(other.locomotor.getAllowedMovement());
     }
     
     private enum State {

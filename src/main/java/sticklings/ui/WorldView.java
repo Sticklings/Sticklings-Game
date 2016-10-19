@@ -299,6 +299,8 @@ public class WorldView extends Screen{
         btn_reset.setMinSize(120, 25);
         btn_reset.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_reset.setLayoutY(btn_speed_normal.getLayoutY() + 35);
+        // DEBUG: Remove this
+        btn_reset.setOnAction(e -> Game.getInstance().getScreenManager().gotoScreen(new LevelEndScreen(Game.getInstance(), scene)));
                               
         btn_kill_all.setText("Kill All");
         btn_kill_all.setTextAlignment(TextAlignment.CENTER);

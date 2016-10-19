@@ -10,10 +10,9 @@ import sticklings.render.TextureManager;
 import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
 import sticklings.scene.StartGate;
-import sticklings.terrain.TerrainTexture;
-import sticklings.terrain.TerrainType;
 import sticklings.ui.ScreenManager;
 import sticklings.util.ClasspathTextureSource;
+import sticklings.util.GameTimer;
 
 public class Game {
 	public static final double SPEED_NORMAL = 1;
@@ -25,13 +24,13 @@ public class Game {
 	
 	private Level currentLevel;
 	private Scene scene;
+	private final GameTimer timer;
 	
 	private double gameSpeed;
 	
 	/**
 	 * Constructs a new game with the needed managers
 	 * @param screenManager The screen manager for updating the UI
-	 * @param renderer The game renderer for updating the scene
 	 */
 	public Game(ScreenManager screenManager) {
 		this.screenManager = screenManager;
@@ -40,6 +39,8 @@ public class Game {
 		textureManager.addTextureSource(new ClasspathTextureSource(Game.class, textureManager));
 		
 		gameSpeed = 1;
+		timer = new GameTimer(this);
+		timer.start();
 		instance = this;
 	}
 	
@@ -85,6 +86,10 @@ public class Game {
 		Preconditions.checkNotNull(level);
 		
 		// TODO: Cleanup existing scene
+		// Reset
+		gameSpeed = 1;
+		
+		// Load level data
 		scene = Scene.fromLevel(level);
 		currentLevel = level;
 		
@@ -98,6 +103,14 @@ public class Game {
 		scene.addEntity(end);
 		
 		return scene;
+	}
+	
+	/**
+	 * Sets the renderer instance for updating
+	 * @param renderer The renderer instance
+	 */
+	public void setRenderer(GameRenderer renderer) {
+		timer.setRenderer(renderer);
 	}
 	
 	/**

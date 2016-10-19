@@ -13,25 +13,42 @@ public class GameTimer extends AnimationTimer {
 	private static final double NANO_PER_SEC = TimeUnit.SECONDS.toNanos(1);
 	
 	private final Game game;
-	private final GameRenderer renderer;
 	private long lastTime;
+	
+	private GameRenderer renderer;
 	
 	/**
 	 * Constructs the game timer
 	 * @param game The game instance to update
-	 * @param renderer The game renderer part 
 	 */
-	public GameTimer(Game game, GameRenderer renderer) {
+	public GameTimer(Game game) {
 		this.game = game;
-		this.renderer = renderer;
 		lastTime = System.nanoTime();
+	}
+	
+	/**
+	 * Sets the game renderer instance
+	 * @param renderer The renderer
+	 */
+	public void setRenderer(GameRenderer renderer) {
+		this.renderer = renderer;
+	}
+	
+	/**
+	 * Gets the game renderer instance
+	 * @return The renderer
+	 */
+	public GameRenderer getRenderer() {
+		return renderer;
 	}
 	
 	@Override
 	public void handle(long now) {
 		double deltaTime = (now - lastTime) / NANO_PER_SEC;
 		game.update(deltaTime);
-		renderer.draw();
+		if (renderer != null) {
+			renderer.draw();
+		}
 		lastTime = now;
 	}
 }

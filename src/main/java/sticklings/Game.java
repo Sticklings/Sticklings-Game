@@ -38,6 +38,17 @@ public class Game {
 		gameSpeed = 1;
 		instance = this;
 	}
+        
+        public void clearLevel(){
+            scene = null;
+            //currentLevel = null;
+            
+            //currentLevel = new Level("name", 
+            //this.getLevel().get().getTerrainMaskURL(), 
+            //this.getLevel().get().getTotalSticklings(), 
+            //this.getLevel().get().getRequiredSticklings(), 
+            //this.getLevel().get().getTypeAvailability());
+        }
 	
 	/**
 	 * Sets the games speed as a percent of real-time.

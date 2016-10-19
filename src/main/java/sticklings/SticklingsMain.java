@@ -1,5 +1,7 @@
 package sticklings;
 
+import com.google.common.collect.Iterables;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.Level;
@@ -41,9 +43,12 @@ public class SticklingsMain extends Application {
 		// Launch the game
 		Game game = new Game(screenManager);
 		
-		LevelLoader loader = new LevelLoader();
+		// Load all levels
+		LevelLoader loader = new LevelLoader(SticklingsMain.class.getResource("/levels/"));
+		loader.loadAll();
 		
-		Level level = loader.load(SticklingsMain.class.getResource("/levels/level1/")); 
+		// Debug:
+		Level level = Iterables.getFirst(loader.getLevels(), null); 
 		
 		Scene scene = game.loadLevel(level);
 		

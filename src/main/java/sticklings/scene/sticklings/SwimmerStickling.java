@@ -30,6 +30,8 @@ public class SwimmerStickling extends Stickling {
     public SwimmerStickling() {
         setTexture(Game.getInstance().getTextureManager().getTexture("/sprites/stickling/swimmer.png"));
         setTextureOffset(new Location(-10, -10));
+        locomotor.allowMovement(MovementType.Walk);
+        locomotor.allowMovement(MovementType.Swim);
         setState(State.Walking);
     }
 
@@ -71,10 +73,8 @@ public class SwimmerStickling extends Stickling {
         stepCount = 0;    
         
         if (state == State.Swimming){
-            locomotor.allowMovement(MovementType.Swim);
             nextStateChange = SWIM_TIME;
         } else {
-            locomotor.allowMovement(MovementType.Walk);
             nextStateChange = WALK_TIME;
         }
     }

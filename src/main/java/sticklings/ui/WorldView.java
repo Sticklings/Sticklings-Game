@@ -47,6 +47,10 @@ public class WorldView extends Screen{
     
     final Image button_background = new Image(WorldView.class.getResourceAsStream("/ui/btn_background.png"));
     
+    final Image closed = new Image(WorldView.class.getResourceAsStream("/ui/closed.png"));
+    
+    final Image lbl_bg_i = new Image(WorldView.class.getResourceAsStream("/ui/lbl_bg.png"));
+    
     private final Image img_miner_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_miner_selected.png"));
     private final Image img_floater_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_floater_selected.png"));
     private final Image img_blocker_sel = new Image(WorldView.class.getResourceAsStream("/ui/btn_blocker_selected.png"));
@@ -65,43 +69,48 @@ public class WorldView extends Screen{
     private final Image cur_swimmer = new Image(WorldView.class.getResourceAsStream("/ui/swimmer_cursor.png"));
     private final Image cur_exploder = new Image(WorldView.class.getResourceAsStream("/ui/exploder_cursor.png"));
     
-      Image star = new Image(WorldView.class.getResourceAsStream("/ui/star.png"));
-      ImageView star1 = new ImageView(star);
-        
-        
-        ImageView star2 = new ImageView(star);
-        
-        
-        
-        ImageView star3 = new ImageView(star);
-       
+    //Stars to show how the user is progressing through the level
+    Image star = new Image(WorldView.class.getResourceAsStream("/ui/star.png"));
+    ImageView star1 = new ImageView(star);
+    ImageView star2 = new ImageView(star);
+    ImageView star3 = new ImageView(star);
     
+    //Label Backgrounds
+    BackgroundSize lbl_bg_size = new BackgroundSize(btn_stickling_width, label_height, true, true, true, false);    
+    BackgroundImage lbl_bg_image = new BackgroundImage(lbl_bg_i, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, lbl_bg_size);
+    Background lbl_bg = new Background(lbl_bg_image);
+    
+    //Standard size for the stickling buttons to avoid repetition
     BackgroundSize  btn_stickling_bg_size = new BackgroundSize(btn_stickling_width, btn_stickling_height, true, true, true, false);
     
+    //Miner
     BackgroundImage btn_miner_image_bg_sel = new BackgroundImage(img_miner_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_miner_bg_sel = new Background(btn_miner_image_bg_sel);
     BackgroundImage btn_miner_image_bg_unsel = new BackgroundImage(img_miner_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_miner_bg_unsel = new Background(btn_miner_image_bg_unsel);
-    
+    //Floater
     BackgroundImage btn_floater_image_bg_sel = new BackgroundImage(img_floater_sel,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_floater_bg_sel = new Background(btn_floater_image_bg_sel);
     BackgroundImage btn_floater_image_bg_unsel = new BackgroundImage(img_floater_unsel,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_floater_bg_unsel = new Background(btn_floater_image_bg_unsel);
-    
+    //Blocker
     BackgroundImage btn_blocker_image_bg_sel = new BackgroundImage(img_blocker_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_blocker_bg_sel = new Background(btn_blocker_image_bg_sel);
     BackgroundImage btn_blocker_image_bg_unsel = new BackgroundImage(img_blocker_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_blocker_bg_unsel = new Background(btn_blocker_image_bg_unsel);
-    
+    //Swimmer
     BackgroundImage btn_swimmer_image_bg_sel = new BackgroundImage(img_swimmer_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_swimmer_bg_sel = new Background(btn_swimmer_image_bg_sel);
     BackgroundImage btn_swimmer_image_bg_unsel = new BackgroundImage(img_swimmer_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_swimmer_bg_unsel = new Background(btn_swimmer_image_bg_unsel);
-    
+    //Exploder
     BackgroundImage btn_exploder_image_bg_sel = new BackgroundImage(img_exploder_sel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_exploder_bg_sel = new Background(btn_exploder_image_bg_sel);
     BackgroundImage btn_exploder_image_bg_unsel = new BackgroundImage(img_exploder_unsel, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_exploder_bg_unsel = new Background(btn_exploder_image_bg_unsel);
+    //Closed off stickling when the use can't put anymore onto the level
+    BackgroundImage btn_close_image_bg = new BackgroundImage(closed, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
+    Background btn_closed_bg = new Background(btn_close_image_bg);
         
     private Label lbl_progress; 
     
@@ -163,6 +172,7 @@ public class WorldView extends Screen{
         quantityLabel.setLayoutX(button.getLayoutX());
         quantityLabel.setLayoutY(button.getLayoutY() - label_height);
         quantityLabel.setTextFill(Paint.valueOf("White"));
+        quantityLabel.setBackground(lbl_bg);
         quantityLabel.textProperty().bind(scene.getSticklingAvailability().remainingProperty(type).asString());
         
         return quantityLabel;
@@ -175,6 +185,7 @@ public class WorldView extends Screen{
         lbl.setLayoutX(btn.getLayoutX());
         lbl.setLayoutY(btn.getLayoutY() + btn_stickling_height);
         lbl.setTextFill(Paint.valueOf("White"));
+        lbl.setBackground(lbl_bg);
         return lbl;
     }
     
@@ -212,9 +223,7 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_miner_unselected.png"),
         		loadImage("/ui/miner_cursor.png")
         		);
-        
         qty_miner = set_qty_label(SticklingType.Miner, btn_miner);      
-        
         lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);
         
         //----------------------------------------------------------------------
@@ -225,11 +234,9 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_floater_unselected.png"),
         		loadImage("/ui/floater_cursor.png")
         		);
-        
         qty_floater = set_qty_label(SticklingType.Floater, btn_floater);
-        
         lbl_floater = set_name_label("Floater", btn_floater, lbl_floater);
-
+        
         //----------------------------------------------------------------------
         ToggleButton btn_blocker = createTypeButton(
         		SticklingType.Blocker,
@@ -238,9 +245,8 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_blocker_unselected.png"),
         		loadImage("/ui/blocker_cursor.png")
         		);
-        
+ 
         qty_blocker = set_qty_label(SticklingType.Blocker, btn_blocker);
-        
         lbl_blocker = set_name_label("Blocker", btn_blocker, lbl_blocker);
         
         //----------------------------------------------------------------------
@@ -251,11 +257,9 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_swimmer_unselected.png"),
         		loadImage("/ui/swimmer_cursor.png")
         		);
-        
         qty_swimmer = set_qty_label(SticklingType.Swimmer, btn_swimmer);
-        
         lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
-       
+        
         //----------------------------------------------------------------------
         ToggleButton btn_exploder = createTypeButton(
         		SticklingType.Exploder,
@@ -266,9 +270,8 @@ public class WorldView extends Screen{
         		);
         
         qty_exploder = set_qty_label(SticklingType.Exploder, btn_exploder);
-        
         lbl_exploder = set_name_label("Exploder", btn_exploder, lbl_exploder);
-
+        
         //----------------------------------------------------------------------
         btn_speed_normal.setText(">");
         btn_speed_normal.setTextAlignment(TextAlignment.CENTER);

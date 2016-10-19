@@ -3,6 +3,8 @@ package sticklings.scene.sticklings;
 import sticklings.scene.Entity;
 import sticklings.scene.MovementController;
 import sticklings.scene.MovementController.MovementDir;
+import sticklings.terrain.TerrainType;
+import sticklings.util.Location;
 
 public abstract class Stickling extends Entity {
 	private static final double OPERATE_TICK_LENGTH = 0.05;
@@ -26,6 +28,11 @@ public abstract class Stickling extends Entity {
 		// Handle operations
 		if (timeSinceOperate > OPERATE_TICK_LENGTH) {
 			timeSinceOperate -= OPERATE_TICK_LENGTH;
+			Location pos = getLocation();
+			if (getScene().getTerrain().isType(TerrainType.WATER, (int)pos.x, (int)pos.y-8)) {
+				// Drown
+				remove();
+			}
 			operate();
 		}
 		

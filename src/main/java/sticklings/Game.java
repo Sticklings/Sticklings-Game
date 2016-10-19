@@ -12,11 +12,17 @@ import sticklings.ui.ScreenManager;
 import sticklings.util.ClasspathTextureSource;
 
 public class Game {
+	public static final double SPEED_NORMAL = 1;
+	public static final double SPEED_FAST = 3;
+	public static final double SPEED_FASTEST = 6;
+	
 	private final ScreenManager screenManager;
 	private final TextureManager textureManager;
 	
 	private Level currentLevel;
 	private Scene scene;
+	
+	private double gameSpeed;
 	
 	/**
 	 * Constructs a new game with the needed managers
@@ -33,15 +39,34 @@ public class Game {
 	}
 	
 	/**
+	 * Sets the games speed as a percent of real-time.
+	 * 1 = realtime
+	 * @param speed The new speed
+	 */
+	public void setGameSpeed(double speed) {
+		Preconditions.checkArgument(speed >= 0);
+		gameSpeed = speed;
+	}
+	
+	/**
+	 * Gets the games speed as a percent of real-time.
+	 * 1 = realtime
+	 * @return The games speed
+	 */
+	public double getGameSpeed() {
+		return gameSpeed;
+	}
+	
+	/**
 	 * Updates the game, progressing the game by {@code deltaTime} seconds
 	 * @param deltaTime The time between start of last frame and this frame in seconds
 	 */
 	public void update(double deltaTime) {
-		screenManager.update(deltaTime);
-		textureManager.update(deltaTime);
+		screenManager.update(deltaTime*gameSpeed);
+		textureManager.update(deltaTime*gameSpeed);
 		
 		if (scene != null) {
-			scene.update(deltaTime);
+			scene.update(deltaTime*gameSpeed);
 		}
 		// TODO: Game update method
 	}

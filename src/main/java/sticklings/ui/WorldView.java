@@ -159,9 +159,13 @@ public class WorldView extends Screen{
         button.setOnAction(e -> selectType(button, type));
         
         typeButtons[type.ordinal()-1] = button;
+        
+        // Setup quantity label
+        
         return button;
     }
     
+<<<<<<< HEAD
     public Label set_qty_label(ToggleButton btn, Label lbl){
         lbl.setText("0");
         lbl.setMinSize(btn_stickling_width, label_height);
@@ -171,6 +175,18 @@ public class WorldView extends Screen{
         lbl.setTextFill(Paint.valueOf("White"));
         lbl.setBackground(lbl_bg);
         return lbl;
+=======
+    public Label set_qty_label(SticklingType type, ToggleButton button) {
+    	Label quantityLabel = new Label("-");
+        quantityLabel.setMinSize(btn_stickling_width, label_height);
+        quantityLabel.setAlignment(Pos.CENTER);
+        quantityLabel.setLayoutX(button.getLayoutX());
+        quantityLabel.setLayoutY(button.getLayoutY() - label_height);
+        quantityLabel.setTextFill(Paint.valueOf("White"));
+        quantityLabel.textProperty().bind(scene.getSticklingAvailability().remainingProperty(type).asString());
+        
+        return quantityLabel;
+>>>>>>> refs/remotes/origin/game
     }
     
     public Label set_name_label(String s, ToggleButton btn, Label lbl){
@@ -218,8 +234,16 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_miner_unselected.png"),
         		loadImage("/ui/miner_cursor.png")
         		);
+<<<<<<< HEAD
         qty_miner = set_qty_label(btn_miner, qty_miner);
         lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);        
+=======
+        
+        qty_miner = set_qty_label(SticklingType.Miner, btn_miner);      
+        
+        lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);
+        
+>>>>>>> refs/remotes/origin/game
         //----------------------------------------------------------------------
         ToggleButton btn_floater = createTypeButton(
         		SticklingType.Floater,
@@ -228,7 +252,13 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_floater_unselected.png"),
         		loadImage("/ui/floater_cursor.png")
         		);
+<<<<<<< HEAD
         qty_floater = set_qty_label(btn_floater, qty_floater);
+=======
+        
+        qty_floater = set_qty_label(SticklingType.Floater, btn_floater);
+        
+>>>>>>> refs/remotes/origin/game
         lbl_floater = set_name_label("Floater", btn_floater, lbl_floater);
         //----------------------------------------------------------------------
         ToggleButton btn_blocker = createTypeButton(
@@ -238,7 +268,13 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_blocker_unselected.png"),
         		loadImage("/ui/blocker_cursor.png")
         		);
+<<<<<<< HEAD
         qty_blocker = set_qty_label(btn_blocker, qty_blocker);
+=======
+        
+        qty_blocker = set_qty_label(SticklingType.Blocker, btn_blocker);
+        
+>>>>>>> refs/remotes/origin/game
         lbl_blocker = set_name_label("Blocker", btn_blocker, lbl_blocker);
         //----------------------------------------------------------------------
         ToggleButton btn_swimmer = createTypeButton(
@@ -248,7 +284,13 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_swimmer_unselected.png"),
         		loadImage("/ui/swimmer_cursor.png")
         		);
+<<<<<<< HEAD
         qty_swimmer = set_qty_label(btn_swimmer, qty_swimmer);
+=======
+        
+        qty_swimmer = set_qty_label(SticklingType.Swimmer, btn_swimmer);
+        
+>>>>>>> refs/remotes/origin/game
         lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
         //----------------------------------------------------------------------
         ToggleButton btn_exploder = createTypeButton(
@@ -258,7 +300,13 @@ public class WorldView extends Screen{
         		loadImage("/ui/btn_exploder_unselected.png"),
         		loadImage("/ui/exploder_cursor.png")
         		);
+<<<<<<< HEAD
         qty_exploder = set_qty_label(btn_exploder, qty_exploder);
+=======
+        
+        qty_exploder = set_qty_label(SticklingType.Exploder, btn_exploder);
+        
+>>>>>>> refs/remotes/origin/game
         lbl_exploder = set_name_label("Exploder", btn_exploder, lbl_exploder);
         //----------------------------------------------------------------------
         btn_speed_normal.setText(">");
@@ -266,18 +314,21 @@ public class WorldView extends Screen{
         btn_speed_normal.setMinSize(30, 25);
         btn_speed_normal.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_speed_normal.setLayoutY(btn_exploder.getLayoutY());
+        btn_speed_normal.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_NORMAL));
         
         btn_speed_fast.setText(">>");
         btn_speed_fast.setTextAlignment(TextAlignment.CENTER);
         btn_speed_fast.setMinSize(30, 25);
         btn_speed_fast.setLayoutX(btn_speed_normal.getLayoutX() + 30 + 10);
         btn_speed_fast.setLayoutY(btn_exploder.getLayoutY());
+        btn_speed_fast.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_FAST));
         
         btn_speed_faster.setText(">>>");
         btn_speed_faster.setTextAlignment(TextAlignment.CENTER);
         btn_speed_faster.setMinSize(30, 25);
         btn_speed_faster.setLayoutX(btn_speed_fast.getLayoutX() + 30 + 10);
         btn_speed_faster.setLayoutY(btn_exploder.getLayoutY());
+        btn_speed_faster.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_FASTEST));
         
         btn_reset.setText("Reset");
         btn_reset.setTextAlignment(TextAlignment.CENTER);
@@ -375,6 +426,12 @@ public class WorldView extends Screen{
     		window.selectType(null);
     		return;
     	} else {
+    		// Prevent selecting ones that are not available
+    		if (scene.getSticklingAvailability().getRemaining(type) == 0) {
+    			button.setSelected(false);
+    			return;
+    		}
+    		
     		// Deselect previous buttons
     		for (ToggleButton other : typeButtons) {
     			if (other != button) {

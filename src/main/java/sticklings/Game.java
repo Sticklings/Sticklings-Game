@@ -39,6 +39,7 @@ public class Game {
 		
 		textureManager.addTextureSource(new ClasspathTextureSource(Game.class, textureManager));
 		
+		gameSpeed = 1;
 		instance = this;
 	}
 	

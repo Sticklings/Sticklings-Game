@@ -96,6 +96,9 @@ public class FrameDrawer {
 	 * @param height The height of the drawing
 	 */
 	public void draw(AbstractTexture texture, int x, int y, int srcX, int srcY, int width, int height) {
+		assert (srcX > 0);
+		assert (srcY > 0);
+		
 		IntBuffer raw = texture.getRawData();
 		int[] data = raw.array();
 		int[] out = frameBuffer.array();

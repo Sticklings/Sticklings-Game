@@ -70,7 +70,13 @@ public class MovementController {
 		BoundingBox bounds = entity.getBounds();
 		
 		try {
-			int groundDepth = getGroundDepth(bounds, terrainData, width);
+			int groundDepth = getGroundDepth(TerrainType.GROUND, bounds, terrainData, width);
+			if (allowedTypes.contains(MovementType.Swim)) {
+				int waterDepth = getGroundDepth(TerrainType.WATER, bounds, terrainData, width);
+				waterDepth += bounds.getHeight()/2;
+				
+				groundDepth = Math.min(groundDepth, waterDepth);
+			}
 			
 			if (groundDepth > 0) {
 				// In air
@@ -91,7 +97,13 @@ public class MovementController {
 				
 				BoundingBox desired = new BoundingBox(bounds.getMinX() + moveDist, bounds.getMinY(), bounds.getWidth(), bounds.getHeight());
 				
-				int forwardGroundDepth = getGroundDepth(desired, terrainData, width);
+				int forwardGroundDepth = getGroundDepth(TerrainType.GROUND, desired, terrainData, width);
+				if (allowedTypes.contains(MovementType.Swim)) {
+					int waterDepth = getGroundDepth(TerrainType.WATER, desired, terrainData, width);
+					waterDepth += bounds.getHeight()/2;
+					
+					forwardGroundDepth = Math.min(forwardGroundDepth, waterDepth);
+				}
 				
 				// Move up or down
 				if (forwardGroundDepth < 0) {
@@ -145,7 +157,7 @@ public class MovementController {
 		}
 	}
 	
-	private int getGroundDepth(BoundingBox bounds, TerrainType[] data, int width) {
+	private int getGroundDepth(TerrainType checkType, BoundingBox bounds, TerrainType[] data, int width) {
 		int minDepth = Integer.MAX_VALUE;
 		int middleX = (int)((bounds.getMinX() + bounds.getMaxX()) / 2);
 		for (int x = middleX - 2; x <= middleX + 2; ++x) {
@@ -168,7 +180,7 @@ public class MovementController {
 				}
 				
 				TerrainType type = data[x + y * width];
-				if (type != TerrainType.AIR) {
+				if ((checkType == null && type != TerrainType.AIR) || type == checkType) {
 					break;
 				}
 				

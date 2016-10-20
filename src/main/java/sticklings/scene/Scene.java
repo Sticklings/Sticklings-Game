@@ -32,6 +32,7 @@ public class Scene {
 	private int nextEntityId;
 	
 	private final TerrainData terrainData;
+	private final Level level;
 	
 	private final int sceneWidth;
 	private final int sceneHeight;
@@ -62,6 +63,7 @@ public class Scene {
 		totalSticklings = levelDefinition.getTotalSticklings();
 		remainingSticklings = totalSticklings;
 		typeAvailability = levelDefinition.getTypeAvailability().clone();
+		level = levelDefinition;
 	}
 	
 	/**
@@ -88,6 +90,14 @@ public class Scene {
 	 */
 	public TerrainData getTerrain() {
 		return terrainData;
+	}
+	
+	/**
+	 * Gets the level definition
+	 * @return The level instance
+	 */
+	public Level getLevel() {
+		return level;
 	}
 	
 	/**

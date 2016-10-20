@@ -63,8 +63,8 @@ public class SceneWindow extends BorderPane {
 				double targetX = panInitial.x - deltaX * PAN_SCALE;
 				double targetY = panInitial.y - deltaY * PAN_SCALE;
 				
-				double maxX = scene.getWidth() - renderer.getScreenWidth();
-				double maxY = scene.getHeight() - renderer.getScreenHeight();
+				double maxX = Math.max(0, scene.getWidth() - renderer.getScreenWidth());
+				double maxY = Math.max(0, scene.getHeight() - renderer.getScreenHeight());
 				
 				targetX = Math.min(maxX, Math.max(0, targetX));
 				targetY = Math.min(maxY, Math.max(0, targetY));

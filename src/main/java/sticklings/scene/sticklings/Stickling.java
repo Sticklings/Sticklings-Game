@@ -1,5 +1,6 @@
 package sticklings.scene.sticklings;
 
+
 import sticklings.scene.Entity;
 import sticklings.scene.MovementController;
 import sticklings.scene.MovementController.MovementDir;
@@ -30,12 +31,14 @@ public abstract class Stickling extends Entity {
 			timeSinceOperate -= OPERATE_TICK_LENGTH;
 			//Checking if Sticklings are falling from maximum falling distance
 			if (getDistanceFallen() >= MAX_FALL_DISTANCE) {
-				killFlag = true;
+					killFlag = true;
 			}
 			// if Sticklings fall from max_fall_distance, they will die
 			// when they touch the ground
 			if (killFlag && getDistanceFallen() <= 0) {
-				remove();
+				//pretending floater sticklings not to be died
+				if(!(this instanceof FloaterStickling))
+					remove();
 			}
 			operate();
 		}

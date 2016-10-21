@@ -29,12 +29,12 @@ public class SticklingsMain extends Application {
 		primaryStage.setTitle("Sticklings");
 		primaryStage.setResizable(false);
 		
-		// Launch the game
-		Game game = new Game(screenManager);
-		
 		// Load all levels
-		LevelLoader loader = new LevelLoader(SticklingsMain.class.getResource("/levels/"));
-		loader.loadAll();
+				LevelLoader loader = new LevelLoader(SticklingsMain.class.getResource("/levels/"));
+				loader.loadAll();
+		
+		// Launch the game
+		Game game = new Game(screenManager, loader);
 		
 		LevelSelectScreen screen = new LevelSelectScreen(loader, game);
 		screenManager.gotoScreen(screen);

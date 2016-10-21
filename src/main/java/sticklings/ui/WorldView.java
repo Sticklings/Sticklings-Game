@@ -6,6 +6,7 @@
 package sticklings.ui;
 
 import com.google.common.collect.Iterables;
+import java.io.IOException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -313,7 +315,24 @@ public class WorldView extends Screen {
         btn_reset.setLayoutY(btn_speed_normal.getLayoutY() + 35);
 
         // DEBUG: Remove this
-        btn_reset.setOnAction(e -> Game.getInstance().getScreenManager().gotoScreen(new LevelEndScreen(Game.getInstance(), scene)));
+        //btn_reset.setOnAction(e -> Game.getInstance().getScreenManager().gotoScreen(new LevelEndScreen(Game.getInstance(), scene)));
+        btn_reset.setOnAction(b -> {
+            try {
+                Game new_g = Game.getInstance();
+                Scene new_s = new_g.loadLevel(scene.getLevel());
+                GameRenderer renderer = new GameRenderer(new_g.getTextureManager(), new_s, 500, 385);
+                new_g.setRenderer(renderer);
+                WorldView uitest = new WorldView(new_s, renderer);
+                new_g.getScreenManager().gotoScreen(uitest);
+                new_g.setGameSpeed(1);
+            } catch (IOException e) {
+                Alert errorBox = new Alert(Alert.AlertType.ERROR);
+			errorBox.setTitle("Could not load level");
+			errorBox.setHeaderText("Could not load level");
+			errorBox.setContentText("The file data is corrupted");
+			errorBox.show();
+            }
+        });
 
         btn_kill_all.setText("Kill All");
         btn_kill_all.setTextAlignment(TextAlignment.CENTER);

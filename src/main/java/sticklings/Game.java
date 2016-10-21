@@ -46,13 +46,7 @@ public class Game {
         
         public void clearLevel(){
             scene = null;
-            //currentLevel = null;
-            
-            //currentLevel = new Level("name", 
-            //this.getLevel().get().getTerrainMaskURL(), 
-            //this.getLevel().get().getTotalSticklings(), 
-            //this.getLevel().get().getRequiredSticklings(), 
-            //this.getLevel().get().getTypeAvailability());
+            currentLevel = null;
         }
 	
 	/**

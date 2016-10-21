@@ -5,6 +5,7 @@
  */
 package sticklings.ui;
 
+import com.google.common.collect.Iterables;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -232,8 +233,6 @@ public class WorldView extends Screen {
         Label qty_swimmer;
         Label qty_exploder;
 
-        
-
         //----------------------------------------------------------------------
         ToggleButton btn_miner = createTypeButton(
                 SticklingType.Miner,
@@ -322,13 +321,15 @@ public class WorldView extends Screen {
         btn_kill_all.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_kill_all.setLayoutY(btn_reset.getLayoutY() + 35);
 
-        btn_kill_all.setOnAction(e -> scene.findEntities(Stickling.class).forEach(stick -> {
-            Stickling newStickling = SticklingType.Exploder.create();
-            newStickling.copyFrom(stick);
-            scene.addEntity(newStickling);
-            stick.remove();
-
-        }));
+        btn_kill_all.setOnAction(e -> {
+            scene.findEntities(Stickling.class).forEach(stick -> {
+                Stickling newStickling = SticklingType.Exploder.create();
+                newStickling.copyFrom(stick);
+                scene.addEntity(newStickling);
+                stick.remove();
+            });
+            scene.setRemainingSticklings(0);
+        });
 
         lbl_goal.setText(String.format("Goal: %d", scene.getLevel().getRequiredSticklings()));
         lbl_goal.setTextAlignment(TextAlignment.LEFT);
@@ -344,7 +345,7 @@ public class WorldView extends Screen {
         lbl_progress.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_progress.setLayoutY(lbl_goal.getLayoutY() + 25);
         lbl_progress.setTextFill(Paint.valueOf("White"));
-        
+
         lbl_avail.setText(String.format("Avail: %d", scene.getTotalSticklings()));
         lbl_avail.setTextAlignment(TextAlignment.LEFT);
         lbl_avail.setFont(javafx.scene.text.Font.font(20));
@@ -352,7 +353,7 @@ public class WorldView extends Screen {
         lbl_avail.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
         lbl_avail.setLayoutY(lbl_progress.getLayoutY() + 25);
         lbl_avail.setTextFill(Paint.valueOf("White"));
-        
+
         window.setLayoutX(0);
         window.setLayoutY(0);
 
@@ -404,7 +405,7 @@ public class WorldView extends Screen {
         root.getChildren().add(lbl_goal);
         root.getChildren().add(lbl_progress);
         root.getChildren().add(lbl_avail);
-        
+
         root.getChildren().add(window);
 
         return root;
@@ -467,18 +468,27 @@ public class WorldView extends Screen {
 
     @Override
     public void update(double deltaTime) {
+        int total = scene.getTotalSticklings();
+        int saved = scene.getSuccessfulSticklings();
+        int required = scene.getLevel().getRequiredSticklings();
+
         Level stats = Game.getInstance().getLevel().get();
-        lbl_progress.setText(String.format("Saved: %d", scene.getSuccessfulSticklings()));
+        lbl_progress.setText(String.format("Saved: %d", saved));
 
         //do star stuff here
-        if (scene.getSuccessfulSticklings() > (0.3 * scene.getTotalSticklings())) {
+        if (saved >= required) {
             star1.setVisible(true);
         }
-        if (scene.getSuccessfulSticklings() > (0.6 * scene.getTotalSticklings())) {
+
+        if (saved >= (((total - required) / 2) + required)) {
             star2.setVisible(true);
         }
-        if (scene.getSuccessfulSticklings() > (0.9 * scene.getTotalSticklings())) {
+        if (saved >= total) {
             star3.setVisible(true);
+        }
+
+        if (scene.getRemainingSticklings() == 0 && Iterables.isEmpty(scene.findEntities(Stickling.class))) {
+            Game.getInstance().getScreenManager().gotoScreen(new LevelEndScreen(Game.getInstance(), scene));
         }
     }
 }

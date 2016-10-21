@@ -346,7 +346,7 @@ public class WorldView extends Screen {
         lbl_progress.setLayoutY(lbl_goal.getLayoutY() + 25);
         lbl_progress.setTextFill(Paint.valueOf("White"));
 
-        lbl_avail.setText(String.format("Avail: %d", scene.getTotalSticklings()));
+        lbl_avail.setText(String.format("Left: %d", scene.getRemainingSticklings()));
         lbl_avail.setTextAlignment(TextAlignment.LEFT);
         lbl_avail.setFont(javafx.scene.text.Font.font(20));
         lbl_avail.setMinSize(60, 25);
@@ -474,6 +474,7 @@ public class WorldView extends Screen {
 
         Level stats = Game.getInstance().getLevel().get();
         lbl_progress.setText(String.format("Saved: %d", saved));
+        lbl_avail.setText(String.format("Left: %d", scene.getRemainingSticklings()));
 
         //do star stuff here
         if (saved >= required) {

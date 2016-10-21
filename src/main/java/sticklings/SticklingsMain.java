@@ -2,15 +2,9 @@ package sticklings;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import sticklings.levels.Level;
-import sticklings.scene.EndGate;
-import sticklings.scene.Scene;
-import sticklings.scene.StartGate;
-import sticklings.terrain.TerrainTexture;
-import sticklings.terrain.TerrainType;
+import sticklings.levels.LevelLoader;
+import sticklings.ui.LevelSelectScreen;
 import sticklings.ui.ScreenManager;
-import sticklings.ui.WorldView;
-import sticklings.util.GameTimer;
 
 /**
  * Main class for Sticklings
@@ -38,31 +32,25 @@ public class SticklingsMain extends Application {
 		// Launch the game
 		Game game = new Game(screenManager);
 		
-		// DEBUG
-		Level debugLevel = new Level("DEBUG", SticklingsMain.class.getResource("/debug/test-mask.png"), 30, 20);
+		// Load all levels
+		LevelLoader loader = new LevelLoader(SticklingsMain.class.getResource("/levels/"));
+		loader.loadAll();
 		
-		Scene scene = game.loadLevel(debugLevel);
-		StartGate gate = new StartGate();
-		gate.setLocation(200, 180);
-		scene.addEntity(gate);
+		LevelSelectScreen screen = new LevelSelectScreen(loader, game);
+		screenManager.gotoScreen(screen);
+//		
+//		// Debug:
+//		Level level = Iterables.getFirst(loader.getLevels(), null); 
+//		
+//		Scene scene = game.loadLevel(level);
+//		
+//		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, WIDTH, 385);
+//		
+//		WorldView uitest = new WorldView(scene, renderer);
+//		screenManager.gotoScreen(uitest);
 		
-		EndGate end = new EndGate();
-		end.setLocation(1190, 438);
-		scene.addEntity(end);
-		
-		TerrainTexture terrainTex = new TerrainTexture(scene.getTerrain());
-		terrainTex.setTexture(TerrainType.AIR, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-background.png")));
-		terrainTex.setTexture(TerrainType.GROUND, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-foreground.png")));
-		terrainTex.setTexture(TerrainType.WATER, game.getTextureManager().createBasic(SticklingsMain.class.getResourceAsStream("/debug/test-water.png")));
-		game.getTextureManager().addDynanic(terrainTex);
-		
-		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, terrainTex, WIDTH, 385);
-		
-		WorldView uitest = new WorldView(scene, renderer);
-		screenManager.gotoScreen(uitest);
-		
-		GameTimer timer = new GameTimer(game, renderer);
-		timer.start();
+//		GameTimer timer = new GameTimer(game, renderer);
+//		timer.start();
 		
 		// Make it visible
 		primaryStage.show();

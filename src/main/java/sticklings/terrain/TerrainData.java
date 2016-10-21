@@ -178,4 +178,36 @@ public class TerrainData {
 		markDirty(new BoundingBox(x-radius, y-radius, 2*radius, 2*radius));
 		lock.writeLock().unlock();
 	}
+	
+	/**
+	 * Checks if the type of terrain at the given coords is the given type
+	 * NOTE: This is relatively expensive and should be avoided when hundreds or more checks are needed at once
+	 * @param type The type to match
+	 * @param x The x coord to check
+	 * @param y The y coord to check
+	 * @return The type
+	 */
+	public boolean isType(TerrainType type, int x, int y) {
+		return getType(x, y) == type;
+	}
+	
+	/**
+	 * Gets the type of terrain at the given coords.
+	 * NOTE: This is relatively expensive and should be avoided when hundreds or more checks are needed at once
+	 * @param x The x coord to check
+	 * @param y The y coord to check
+	 * @return The type
+	 */
+	public TerrainType getType(int x, int y) {
+		if (x < 0 || y < 0 || x >= width || y >= height) {
+			return TerrainType.AIR;
+		}
+		
+		lock.readLock().lock();
+		try {
+			return terrainType[x + y * width];
+		} finally {
+			lock.readLock().unlock();
+		}
+	}
 }

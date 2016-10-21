@@ -13,6 +13,7 @@ import com.google.common.collect.Sets;
 
 import javafx.scene.image.Image;
 import sticklings.levels.Level;
+import sticklings.levels.SticklingAvailability;
 import sticklings.terrain.TerrainData;
 import sticklings.terrain.TerrainLoader;
 
@@ -31,6 +32,7 @@ public class Scene {
 	private int nextEntityId;
 	
 	private final TerrainData terrainData;
+	private final Level level;
 	
 	private final int sceneWidth;
 	private final int sceneHeight;
@@ -39,7 +41,7 @@ public class Scene {
 	private int totalSticklings;
 	private int remainingSticklings;
 	private int successfulSticklings;
-	
+	private final SticklingAvailability typeAvailability;
 	
 	/**
 	 * Constructs a new empty scene
@@ -60,6 +62,8 @@ public class Scene {
 		// Load settings from level
 		totalSticklings = levelDefinition.getTotalSticklings();
 		remainingSticklings = totalSticklings;
+		typeAvailability = levelDefinition.getTypeAvailability().clone();
+		level = levelDefinition;
 	}
 	
 	/**
@@ -86,6 +90,14 @@ public class Scene {
 	 */
 	public TerrainData getTerrain() {
 		return terrainData;
+	}
+	
+	/**
+	 * Gets the level definition
+	 * @return The level instance
+	 */
+	public Level getLevel() {
+		return level;
 	}
 	
 	/**
@@ -206,6 +218,14 @@ public class Scene {
 	public void setRemainingSticklings(int remaining) {
 		Preconditions.checkArgument(remaining >= 0 && remaining <= totalSticklings);
 		remainingSticklings = remaining;
+	}
+	
+	/**
+	 * Gets the number of each type that can be used
+	 * @return The availability object
+	 */
+	public SticklingAvailability getSticklingAvailability() {
+		return typeAvailability;
 	}
 	
 	/**

@@ -1,0 +1,23 @@
+# Details of level
+name=Swim Test
+terrain.mask=mask.png
+terrain.foreground=foreground.png
+terrain.background=background.png
+
+# No. of sticklings available and required
+total=20
+required=1
+
+# No. Available for each type
+type.miner=0
+type.exploder=0
+type.swimmer=20
+type.floater=0
+type.blocker=0
+
+# Start Gate position
+start.x=53
+start.y=199
+# End gate position
+end.x=623
+end.y=259

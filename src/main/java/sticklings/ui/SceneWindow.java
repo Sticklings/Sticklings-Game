@@ -14,6 +14,7 @@ import sticklings.util.Location;
 
 public class SceneWindow extends BorderPane {
 	private int VIEWMOVE = 10;
+	private static final double PAN_SCALE = 1;
 	
 	private final Scene scene;
 	private final GameRenderer renderer;
@@ -59,11 +60,11 @@ public class SceneWindow extends BorderPane {
 				double deltaX = e.getX() - panMouseX;
 				double deltaY = e.getY() - panMouseY;
 				
-				double targetX = panInitial.x + deltaX;
-				double targetY = panInitial.y + deltaY;
+				double targetX = panInitial.x - deltaX * PAN_SCALE;
+				double targetY = panInitial.y - deltaY * PAN_SCALE;
 				
-				double maxX = scene.getWidth() - renderer.getScreenWidth();
-				double maxY = scene.getHeight() - renderer.getScreenHeight();
+				double maxX = Math.max(0, scene.getWidth() - renderer.getScreenWidth());
+				double maxY = Math.max(0, scene.getHeight() - renderer.getScreenHeight());
 				
 				targetX = Math.min(maxX, Math.max(0, targetX));
 				targetY = Math.min(maxY, Math.max(0, targetY));
@@ -101,6 +102,11 @@ public class SceneWindow extends BorderPane {
 	
 	private void mousePressed(MouseEvent event) {
 		if (selectedType == null) {
+			return;
+		}
+		
+		// Dont permit changing type when none available
+		if (scene.getSticklingAvailability().getRemaining(selectedType) == 0) {
 			return;
 		}
 		
@@ -143,6 +149,8 @@ public class SceneWindow extends BorderPane {
 			
 			// TODO: Reduce available count
 		}
+		
+		scene.getSticklingAvailability().adjustUsed(selectedType, 1);
 	}
 	
 	private void moveViewport(int dX, int dY) {

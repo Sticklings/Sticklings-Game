@@ -5,6 +5,7 @@
  */
 package sticklings.ui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -76,19 +77,10 @@ public class MainScreen extends Screen {
         btn_play.setOnAction(e -> game.getScreenManager().gotoScreen(new LevelSelectScreen(game)));
         
         Button btn_settings = new Button();
-        btn_settings.setText("Settings");
+        btn_settings.setText("Exit");
         btn_settings.setBackground(btn_settings_bg);
         btn_settings.setCursor(Cursor.HAND);
-        btn_settings.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Settings");
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Settings");
-                alert.setContentText("yeah not quite there yet");
-                alert.showAndWait();
-            }
-        });
+        btn_settings.setOnAction(e -> Platform.exit());
 
         Button btn_help = new Button();
         btn_help.setText("Help");

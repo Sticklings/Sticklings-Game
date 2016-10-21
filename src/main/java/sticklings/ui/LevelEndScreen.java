@@ -199,7 +199,7 @@ public class LevelEndScreen extends Screen {
 		List<Level> levels = game.getLevelLoader().getLevels();
 		int index = levels.indexOf(scene.getLevel());
 		
-		if (levels.size() < index+1) {
+		if (index+1 < levels.size()) {
 			return levels.get(index+1);
 		} else {
 			return null;

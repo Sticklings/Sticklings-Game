@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.google.common.base.Preconditions;
 
 import sticklings.levels.Level;
+import sticklings.levels.LevelLoader;
 import sticklings.render.TextureManager;
 import sticklings.scene.EndGate;
 import sticklings.scene.Scene;
@@ -21,6 +22,7 @@ public class Game {
 	
 	private final ScreenManager screenManager;
 	private final TextureManager textureManager;
+	private final LevelLoader levelLoader;
 	
 	private Level currentLevel;
 	private Scene scene;
@@ -31,9 +33,11 @@ public class Game {
 	/**
 	 * Constructs a new game with the needed managers
 	 * @param screenManager The screen manager for updating the UI
+	 * @param levelLoader The level loader instance
 	 */
-	public Game(ScreenManager screenManager) {
+	public Game(ScreenManager screenManager, LevelLoader levelLoader) {
 		this.screenManager = screenManager;
+		this.levelLoader = levelLoader;
 		this.textureManager = new TextureManager();
 		
 		textureManager.addTextureSource(new ClasspathTextureSource(Game.class, textureManager));
@@ -149,6 +153,14 @@ public class Game {
 	 */
 	public TextureManager getTextureManager() {
 		return textureManager;
+	}
+	
+	/**
+	 * Gets the level loader instance
+	 * @return The level loader
+	 */
+	public LevelLoader getLevelLoader() {
+		return levelLoader;
 	}
 	
 	private static Game instance;

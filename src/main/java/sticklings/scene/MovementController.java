@@ -32,7 +32,7 @@ public class MovementController {
 		
 		// Defaults
 		fallSpeed = 60;
-		floatSpeed = 5;
+		floatSpeed = 30;
 		walkSpeed = 15;
 		swimSpeed = 3;
 		

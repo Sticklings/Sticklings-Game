@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import sticklings.levels.LevelLoader;
 import sticklings.ui.LevelSelectScreen;
+import sticklings.ui.MainScreen;
 import sticklings.ui.ScreenManager;
 
 /**
@@ -36,21 +37,8 @@ public class SticklingsMain extends Application {
 		// Launch the game
 		Game game = new Game(screenManager, loader);
 		
-		LevelSelectScreen screen = new LevelSelectScreen(loader, game);
-		screenManager.gotoScreen(screen);
-//		
-//		// Debug:
-//		Level level = Iterables.getFirst(loader.getLevels(), null); 
-//		
-//		Scene scene = game.loadLevel(level);
-//		
-//		GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, WIDTH, 385);
-//		
-//		WorldView uitest = new WorldView(scene, renderer);
-//		screenManager.gotoScreen(uitest);
-		
-//		GameTimer timer = new GameTimer(game, renderer);
-//		timer.start();
+		MainScreen mainMenu = new MainScreen(game);
+		screenManager.gotoScreen(mainMenu);
 		
 		// Make it visible
 		primaryStage.show();

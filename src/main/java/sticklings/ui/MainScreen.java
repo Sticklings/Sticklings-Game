@@ -20,6 +20,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import sticklings.Game;
 
 /**
  *
@@ -29,6 +30,12 @@ import javafx.scene.layout.Pane;
 public class MainScreen extends Screen {
     public int btn_height = 75;
     public int btn_width = 150;
+    
+    private final Game game;
+    
+    public MainScreen(Game game) {
+    	this.game = game;
+    }
     
     @Override
     public Parent initialize() {
@@ -65,12 +72,7 @@ public class MainScreen extends Screen {
         btn_play.setText("Play");
         btn_play.setBackground(btn_play_bg);
         btn_play.setCursor(Cursor.HAND);
-        btn_play.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Play the game");
-            }
-        });
+        btn_play.setOnAction(e -> game.getScreenManager().gotoScreen(new LevelSelectScreen(game)));
         
         Button btn_settings = new Button();
         btn_settings.setText("Settings");
@@ -131,17 +133,13 @@ public class MainScreen extends Screen {
 
     @Override
     public void onShow() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void onHide() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void update(double deltaTime) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }    
 }

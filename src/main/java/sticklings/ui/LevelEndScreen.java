@@ -99,6 +99,7 @@ public class LevelEndScreen extends Screen {
 		Button levelSelectButton = new Button("Levels");
 		levelSelectButton.setPrefHeight(43);
 		levelSelectButton.setPrefWidth(122);
+		levelSelectButton.setOnAction(e -> game.getScreenManager().gotoScreen(new LevelSelectScreen(game)));
 		buttonPane.getChildren().add(levelSelectButton);
 		
 		// Retry button

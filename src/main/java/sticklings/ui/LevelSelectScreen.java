@@ -35,9 +35,9 @@ public class LevelSelectScreen extends Screen {
         BackgroundImage background_i = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, bg_size);
         Background background_bg = new Background(background_i);
         
-	public LevelSelectScreen(LevelLoader loader, Game game) {
-		this.loader = loader;
+	public LevelSelectScreen(Game game) {
 		this.game = game;
+		this.loader = game.getLevelLoader();
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class LevelSelectScreen extends Screen {
 		Button backButton = new Button("Back");
 		backButton.setPrefHeight(43);
 		backButton.setPrefWidth(122);
-		backButton.setOnAction(e -> game.getScreenManager().gotoScreen(new MainScreen()));
+		backButton.setOnAction(e -> game.getScreenManager().gotoScreen(new MainScreen(game)));
 		buttonPane.getChildren().add(backButton);
 		
 		root.setBottom(buttonPane);

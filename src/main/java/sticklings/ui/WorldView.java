@@ -116,7 +116,9 @@ public class WorldView extends Screen {
     BackgroundImage btn_close_image_bg = new BackgroundImage(closed, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, btn_stickling_bg_size);
     Background btn_closed_bg = new Background(btn_close_image_bg);
 
-    private Label lbl_progress;
+    private Label lbl_progress = new Label();
+    private Label lbl_goal = new Label();
+    private Label lbl_avail = new Label();
 
     private final Scene scene;
     private final GameRenderer renderer;
@@ -150,7 +152,7 @@ public class WorldView extends Screen {
         button.setBackground(unselectedBackground);
         button.selectedProperty().addListener((btn, old, current) -> {
             if (current) {
-                
+
                 button.setBackground(selectedBackground);
             } else if (!button.getBackground().equals(btn_closed_bg)) {
                 button.setBackground(unselectedBackground);
@@ -230,8 +232,8 @@ public class WorldView extends Screen {
         Label qty_swimmer;
         Label qty_exploder;
 
-        lbl_progress = new Label();
-        Label lbl_goal = new Label();
+        
+
         //----------------------------------------------------------------------
         ToggleButton btn_miner = createTypeButton(
                 SticklingType.Miner,
@@ -328,21 +330,29 @@ public class WorldView extends Screen {
 
         }));
 
-        lbl_goal.setText("Goal:");
-        lbl_goal.setTextAlignment(TextAlignment.CENTER);
+        lbl_goal.setText(String.format("Goal: %d", scene.getLevel().getRequiredSticklings()));
+        lbl_goal.setTextAlignment(TextAlignment.LEFT);
         lbl_goal.setFont(javafx.scene.text.Font.font(20));
         lbl_goal.setMinSize(60, 25);
         lbl_goal.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
-        lbl_goal.setLayoutY(btn_speed_faster.getLayoutY());
+        lbl_goal.setLayoutY(btn_speed_faster.getLayoutY() - 25);
         lbl_goal.setTextFill(Paint.valueOf("White"));
 
-        lbl_progress.setTextAlignment(TextAlignment.CENTER);
+        lbl_progress.setTextAlignment(TextAlignment.LEFT);
         lbl_progress.setFont(javafx.scene.text.Font.font(20));
         lbl_progress.setMinSize(60, 25);
         lbl_progress.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
-        lbl_progress.setLayoutY(btn_reset.getLayoutY());
+        lbl_progress.setLayoutY(lbl_goal.getLayoutY() + 25);
         lbl_progress.setTextFill(Paint.valueOf("White"));
-
+        
+        lbl_avail.setText(String.format("Avail: %d", scene.getTotalSticklings()));
+        lbl_avail.setTextAlignment(TextAlignment.LEFT);
+        lbl_avail.setFont(javafx.scene.text.Font.font(20));
+        lbl_avail.setMinSize(60, 25);
+        lbl_avail.setLayoutX(btn_reset.getLayoutX() + 120 + 10);
+        lbl_avail.setLayoutY(lbl_progress.getLayoutY() + 25);
+        lbl_avail.setTextFill(Paint.valueOf("White"));
+        
         window.setLayoutX(0);
         window.setLayoutY(0);
 
@@ -393,6 +403,8 @@ public class WorldView extends Screen {
 
         root.getChildren().add(lbl_goal);
         root.getChildren().add(lbl_progress);
+        root.getChildren().add(lbl_avail);
+        
         root.getChildren().add(window);
 
         return root;
@@ -456,7 +468,8 @@ public class WorldView extends Screen {
     @Override
     public void update(double deltaTime) {
         Level stats = Game.getInstance().getLevel().get();
-        lbl_progress.setText(String.format("%d/%d", scene.getSuccessfulSticklings(), scene.getTotalSticklings()));
+        lbl_progress.setText(String.format("Saved: %d", scene.getSuccessfulSticklings()));
+
         //do star stuff here
         if (scene.getSuccessfulSticklings() > (0.3 * scene.getTotalSticklings())) {
             star1.setVisible(true);

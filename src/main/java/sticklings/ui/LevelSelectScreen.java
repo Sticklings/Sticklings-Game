@@ -11,6 +11,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
@@ -24,6 +30,11 @@ public class LevelSelectScreen extends Screen {
 	private final LevelLoader loader;
 	private final Game game;
 	
+        Image background = new Image(LevelSelectScreen.class.getResourceAsStream("/ui/background.png"));
+        BackgroundSize bg_size = new BackgroundSize(500, 500, true, true, true, false);
+        BackgroundImage background_i = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, bg_size);
+        Background background_bg = new Background(background_i);
+        
 	public LevelSelectScreen(LevelLoader loader, Game game) {
 		this.loader = loader;
 		this.game = game;
@@ -33,7 +44,7 @@ public class LevelSelectScreen extends Screen {
 	public Parent initialize() {
 		BorderPane root = new BorderPane();
 		root.setPadding(new Insets(10));
-		
+		root.setBackground(background_bg);
 		// Title
 		Label title = new Label("Level Select");
 		title.setFont(Font.font(46));

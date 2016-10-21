@@ -1,6 +1,7 @@
 package sticklings.ui;
 
 import java.io.IOException;
+import java.util.List;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,6 +32,7 @@ import sticklings.scene.sticklings.SticklingType;
 public class LevelEndScreen extends Screen {
 	private final Game game;
 	private final Scene scene;
+	private Level nextLevel;
 	
 	private final boolean wasSuccessful;
 	
@@ -44,7 +46,13 @@ public class LevelEndScreen extends Screen {
 		this.game = game;
 		this.scene = scene;
 		
-		wasSuccessful = scene.getSuccessfulSticklings() >= scene.getLevel().getRequiredSticklings();
+		if (scene.getSuccessfulSticklings() >= scene.getLevel().getRequiredSticklings()) {
+			nextLevel = getNextLevel();
+			wasSuccessful = true;
+		} else {
+			nextLevel = null;
+			wasSuccessful = false;
+		}
 	}
 	
 	@Override
@@ -106,6 +114,7 @@ public class LevelEndScreen extends Screen {
 		Button retryButton = new Button("Retry");
 		retryButton.setPrefHeight(43);
 		retryButton.setPrefWidth(122);
+		retryButton.setOnAction(e -> startLevel(scene.getLevel()));
 		buttonPane.getChildren().add(retryButton);
 		
 		if (wasSuccessful) {
@@ -113,6 +122,11 @@ public class LevelEndScreen extends Screen {
 			Button nextButton = new Button("Continue");
 			nextButton.setPrefHeight(43);
 			nextButton.setPrefWidth(122);
+			if (nextLevel != null) {
+				nextButton.setOnAction(e -> startLevel(nextLevel));
+			} else {
+				nextButton.setDisable(true);
+			}
 			buttonPane.getChildren().add(nextButton);
 		}
 		
@@ -179,7 +193,17 @@ public class LevelEndScreen extends Screen {
 			errorBox.setContentText("The file data is corrupted");
 			errorBox.show();
 		}
+	}
+	
+	private Level getNextLevel() {
+		List<Level> levels = game.getLevelLoader().getLevels();
+		int index = levels.indexOf(scene.getLevel());
 		
+		if (levels.size() < index+1) {
+			return levels.get(index+1);
+		} else {
+			return null;
+		}
 	}
 
 	@Override

@@ -108,21 +108,7 @@ public class LevelSelectScreen extends Screen {
 	}
 	
 	private void startLevel(Level level) {
-		try {
-			Scene scene = game.loadLevel(level);
-			
-			GameRenderer renderer = new GameRenderer(game.getTextureManager(), scene, 500, 385);
-			game.setRenderer(renderer);
-			WorldView uitest = new WorldView(scene, renderer);
-			game.getScreenManager().gotoScreen(uitest);
-		} catch (IOException e) {
-			Alert errorBox = new Alert(AlertType.ERROR);
-			errorBox.setTitle("Could not load level");
-			errorBox.setHeaderText("Could not load level");
-			errorBox.setContentText("The file data is corrupted");
-			errorBox.show();
-		}
-		
+		game.getScreenManager().gotoScreen(new LevelTitleScreen(game, level));
 	}
 
 	@Override

@@ -9,8 +9,8 @@ total=20
 required=1
 
 # No. Available for each type
-type.miner=0
-type.exploder=0
+type.miner=10
+type.exploder=10
 type.swimmer=20
 type.floater=0
 type.blocker=0

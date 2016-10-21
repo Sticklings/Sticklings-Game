@@ -72,11 +72,31 @@ public class TerrainData {
 	}
 	
 	/**
+	 * Locks the terrain data for write access.
+	 * This gives exclusive access to the terrain data.
+	 * Make sure you call {@link #unlockWrite()} when you are done
+	 * @return The terrain data array
+	 * @see #unlockWrite()
+	 */
+	TerrainType[] lockWrite() {
+		lock.writeLock().lock();
+		return terrainType;
+	}
+	
+	/**
+	 * Unlocks the terrain data after being modified
+	 * @see #lockWrite()
+	 */
+	void unlockWrite() {
+		lock.writeLock().unlock();
+	}
+	
+	/**
 	 * Marks a section of the terrain data as having been updated.
 	 * This allows quick and efficient rendering of terrain
 	 * @param bounds The area that was modified
 	 */
-	private void markDirty(BoundingBox bounds) {
+	void markDirty(BoundingBox bounds) {
 		if (dirtyRegion == null) {
 			dirtyRegion = bounds;
 		} else {

@@ -16,6 +16,7 @@ import sticklings.levels.Level;
 import sticklings.levels.SticklingAvailability;
 import sticklings.terrain.TerrainData;
 import sticklings.terrain.TerrainLoader;
+import sticklings.terrain.WaterUpdater;
 
 /**
  * Represents an entire scene, including the entities and terrain
@@ -32,6 +33,7 @@ public class Scene {
 	private int nextEntityId;
 	
 	private final TerrainData terrainData;
+	private final WaterUpdater waterUpdater;
 	private final Level level;
 	
 	private final int sceneWidth;
@@ -46,8 +48,9 @@ public class Scene {
 	/**
 	 * Constructs a new empty scene
 	 */
-	public Scene(TerrainData terrain, Level levelDefinition) {
+	public Scene(TerrainData terrain, WaterUpdater waterUpdater, Level levelDefinition) {
 		this.terrainData = terrain;
+		this.waterUpdater = waterUpdater;
 		this.sceneWidth = terrain.getWidth();
 		this.sceneHeight = terrain.getHeight();
 		
@@ -155,6 +158,8 @@ public class Scene {
 	 * @param deltaTime The time in seconds between the last update and this
 	 */
 	public void update(double deltaTime) {
+		waterUpdater.update(deltaTime);
+		
             processChanges();
 		isUpdating = true;
 		for (Entity entity : entityMap.values()) {
@@ -256,6 +261,7 @@ public class Scene {
 		Image terrainMask = new Image(level.getTerrainMaskURL().openStream());
 		
 		TerrainData terrainData = TerrainLoader.load(terrainMask);
-		return new Scene(terrainData, level);
+		WaterUpdater waterUpdater = new WaterUpdater(terrainData);
+		return new Scene(terrainData, waterUpdater, level);
 	}
 }

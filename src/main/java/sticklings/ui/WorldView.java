@@ -150,8 +150,9 @@ public class WorldView extends Screen {
         button.setBackground(unselectedBackground);
         button.selectedProperty().addListener((btn, old, current) -> {
             if (current) {
+                
                 button.setBackground(selectedBackground);
-            } else {
+            } else if (!button.getBackground().equals(btn_closed_bg)) {
                 button.setBackground(unselectedBackground);
             }
         });
@@ -164,10 +165,10 @@ public class WorldView extends Screen {
 
         typeButtons[type.ordinal() - 1] = button;
 
-        // Setup quantity label
         return button;
     }
 
+    // Setup quantity label
     public Label set_qty_label(SticklingType type, ToggleButton button) {
         Label quantityLabel = new Label("-");
         quantityLabel.setMinSize(btn_stickling_width, label_height);

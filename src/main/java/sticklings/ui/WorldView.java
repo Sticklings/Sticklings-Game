@@ -167,11 +167,7 @@ public class WorldView extends Screen {
         // Setup quantity label
         return button;
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> refs/remotes/origin/game
     public Label set_qty_label(SticklingType type, ToggleButton button) {
         Label quantityLabel = new Label("-");
         quantityLabel.setMinSize(btn_stickling_width, label_height);
@@ -237,7 +233,6 @@ public class WorldView extends Screen {
         Label lbl_goal = new Label();
         //----------------------------------------------------------------------
         ToggleButton btn_miner = createTypeButton(
-<<<<<<< HEAD
                 SticklingType.Miner,
                 0,
                 loadImage("/ui/btn_miner_selected.png"),
@@ -254,90 +249,39 @@ public class WorldView extends Screen {
                 loadImage("/ui/btn_floater_unselected.png"),
                 loadImage("/ui/floater_cursor.png")
         );
-=======
-        		SticklingType.Miner,
-        		0,
-        		loadImage("/ui/btn_miner_selected.png"),
-        		loadImage("/ui/btn_miner_unselected.png"),
-        		loadImage("/ui/miner_cursor.png")
-        		);
-        qty_miner = set_qty_label(SticklingType.Miner, btn_miner);      
-        lbl_miner = set_name_label("Miner", btn_miner, lbl_miner);
-        
-        //----------------------------------------------------------------------
-        ToggleButton btn_floater = createTypeButton(
-        		SticklingType.Floater,
-        		btn_miner.getLayoutX() + btn_stickling_width,
-        		loadImage("/ui/btn_floater_selected.png"),
-        		loadImage("/ui/btn_floater_unselected.png"),
-        		loadImage("/ui/floater_cursor.png")
-        		);
->>>>>>> refs/remotes/origin/game
         qty_floater = set_qty_label(SticklingType.Floater, btn_floater);
         lbl_floater = set_name_label("Floater", btn_floater, lbl_floater);
-        
         //----------------------------------------------------------------------
         ToggleButton btn_blocker = createTypeButton(
-<<<<<<< HEAD
                 SticklingType.Blocker,
                 btn_floater.getLayoutX() + btn_stickling_width,
                 loadImage("/ui/btn_blocker_selected.png"),
                 loadImage("/ui/btn_blocker_unselected.png"),
                 loadImage("/ui/blocker_cursor.png")
         );
-=======
-        		SticklingType.Blocker,
-        		btn_floater.getLayoutX() + btn_stickling_width,
-        		loadImage("/ui/btn_blocker_selected.png"),
-        		loadImage("/ui/btn_blocker_unselected.png"),
-        		loadImage("/ui/blocker_cursor.png")
-        		);
- 
->>>>>>> refs/remotes/origin/game
         qty_blocker = set_qty_label(SticklingType.Blocker, btn_blocker);
         lbl_blocker = set_name_label("Blocker", btn_blocker, lbl_blocker);
-        
         //----------------------------------------------------------------------
         ToggleButton btn_swimmer = createTypeButton(
-<<<<<<< HEAD
                 SticklingType.Swimmer,
                 btn_blocker.getLayoutX() + btn_stickling_width,
                 loadImage("/ui/btn_swimmer_selected.png"),
                 loadImage("/ui/btn_swimmer_unselected.png"),
                 loadImage("/ui/swimmer_cursor.png")
         );
-=======
-        		SticklingType.Swimmer,
-        		btn_blocker.getLayoutX() + btn_stickling_width,
-        		loadImage("/ui/btn_swimmer_selected.png"),
-        		loadImage("/ui/btn_swimmer_unselected.png"),
-        		loadImage("/ui/swimmer_cursor.png")
-        		);
->>>>>>> refs/remotes/origin/game
         qty_swimmer = set_qty_label(SticklingType.Swimmer, btn_swimmer);
         lbl_swimmer = set_name_label("Swimmer", btn_swimmer, lbl_swimmer);
-        
         //----------------------------------------------------------------------
         ToggleButton btn_exploder = createTypeButton(
-<<<<<<< HEAD
                 SticklingType.Exploder,
                 btn_swimmer.getLayoutX() + btn_stickling_width,
                 loadImage("/ui/btn_exploder_selected.png"),
                 loadImage("/ui/btn_exploder_unselected.png"),
                 loadImage("/ui/exploder_cursor.png")
         );
-=======
-        		SticklingType.Exploder,
-        		btn_swimmer.getLayoutX() + btn_stickling_width,
-        		loadImage("/ui/btn_exploder_selected.png"),
-        		loadImage("/ui/btn_exploder_unselected.png"),
-        		loadImage("/ui/exploder_cursor.png")
-        		);
-        
->>>>>>> refs/remotes/origin/game
         qty_exploder = set_qty_label(SticklingType.Exploder, btn_exploder);
         lbl_exploder = set_name_label("Exploder", btn_exploder, lbl_exploder);
-        
+
         //----------------------------------------------------------------------
         btn_speed_normal.setText(">");
         btn_speed_normal.setTextAlignment(TextAlignment.CENTER);
@@ -365,21 +309,10 @@ public class WorldView extends Screen {
         btn_reset.setMinSize(120, 25);
         btn_reset.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_reset.setLayoutY(btn_speed_normal.getLayoutY() + 35);
-<<<<<<< HEAD
-        btn_reset.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Reset Pressed");
-                Game test = Game.getInstance();
-                test.clearLevel();
-            }
-        });
 
-=======
         // DEBUG: Remove this
         btn_reset.setOnAction(e -> Game.getInstance().getScreenManager().gotoScreen(new LevelEndScreen(Game.getInstance(), scene)));
-                              
->>>>>>> refs/remotes/origin/game
+
         btn_kill_all.setText("Kill All");
         btn_kill_all.setTextAlignment(TextAlignment.CENTER);
         btn_kill_all.setMinSize(120, 25);

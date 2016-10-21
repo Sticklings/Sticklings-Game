@@ -11,6 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -29,6 +34,12 @@ public class LevelEndScreen extends Screen {
 	
 	private final boolean wasSuccessful;
 	
+        final Image end_success = new Image(LevelEndScreen.class.getResourceAsStream("/ui/end_success.png"));
+        
+        BackgroundSize bg_size = new BackgroundSize(500, 500, true, true, true, false);
+        BackgroundImage end_success_bg_i = new BackgroundImage(end_success, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, bg_size);
+        Background end_success_bg = new Background(end_success_bg_i);
+        
 	public LevelEndScreen(Game game, Scene scene) {
 		this.game = game;
 		this.scene = scene;
@@ -40,7 +51,7 @@ public class LevelEndScreen extends Screen {
 	public Parent initialize() {
 		BorderPane root = new BorderPane();
 		root.setPadding(new Insets(10));
-		
+		root.setBackground(end_success_bg);
 		// Title
 		Label title = new Label((wasSuccessful ? "Level Successful" : "Level Failed"));
 		title.setFont(Font.font(46));

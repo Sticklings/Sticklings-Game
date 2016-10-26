@@ -37,10 +37,13 @@ public class LevelEndScreen extends Screen {
 	private final boolean wasSuccessful;
 	
         final Image end_success = new Image(LevelEndScreen.class.getResourceAsStream("/ui/end_success.png"));
+        final Image end_fail    = new Image(LevelEndScreen.class.getResourceAsStream("/ui/background.png"));
         
         BackgroundSize bg_size = new BackgroundSize(500, 500, true, true, true, false);
         BackgroundImage end_success_bg_i = new BackgroundImage(end_success, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, bg_size);
+        BackgroundImage end_fail_bg_i = new BackgroundImage(end_fail, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, bg_size);
         Background end_success_bg = new Background(end_success_bg_i);
+        Background end_fail_bg = new Background(end_fail_bg_i);
         
 	public LevelEndScreen(Game game, Scene scene) {
 		this.game = game;
@@ -59,7 +62,11 @@ public class LevelEndScreen extends Screen {
 	public Parent initialize() {
 		BorderPane root = new BorderPane();
 		root.setPadding(new Insets(10));
-		root.setBackground(end_success_bg);
+                if (wasSuccessful) {
+                    root.setBackground(end_success_bg);
+                } else {
+                    root.setBackground(end_fail_bg);
+                }
 		// Title
 		Label title = new Label((wasSuccessful ? "Level Successful" : "Level Failed"));
 		title.setFont(Font.font(46));

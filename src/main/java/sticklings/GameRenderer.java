@@ -75,7 +75,7 @@ public class GameRenderer {
 	public void draw() {
 		frameDrawer.beginFrame();
 		
-		BoundingBox viewport = new BoundingBox(viewOffset.x, viewOffset.y, screenWidth, screenHeight);
+		BoundingBox viewport = new BoundingBox(Math.max(0, viewOffset.x), Math.max(0, viewOffset.y), screenWidth, screenHeight);
 		
 		// Render terrain
 		frameDrawer.draw(terrainTexture, 0, 0, (int)viewport.getMinX(), (int)viewport.getMinY(), screenWidth, screenHeight);

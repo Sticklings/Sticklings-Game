@@ -6,6 +6,7 @@
 package sticklings.ui;
 
 import com.google.common.collect.Iterables;
+import java.io.IOException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -186,12 +188,9 @@ public class WorldView extends Screen {
         if (quantityLabel.getText().equals("0")) {
             button.setBackground(btn_closed_bg);
         } else {
-            quantityLabel.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-                    if (t1.equals("0")) {
-                        button.setBackground(btn_closed_bg);
-                    }
+            quantityLabel.textProperty().addListener((ObservableValue<? extends String> ov, String t, String t1) -> {
+                if (t1.equals("0")) {
+                    button.setBackground(btn_closed_bg);
                 }
             });
         }
@@ -283,14 +282,19 @@ public class WorldView extends Screen {
         );
         qty_exploder = set_qty_label(SticklingType.Exploder, btn_exploder);
         lbl_exploder = set_name_label("Exploder", btn_exploder, lbl_exploder);
-
         //----------------------------------------------------------------------
+        Image btn_speed_i = new Image(WorldView.class.getResourceAsStream("/ui/speed_btn.png"));
+        BackgroundSize btn_speed_size = new BackgroundSize(30, 25, true, true, true, false);
+        BackgroundImage btn_speed_bg_i = new BackgroundImage(btn_speed_i, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, btn_speed_size);
+        Background btn_speed_bg = new Background(btn_speed_bg_i);
+
         btn_speed_normal.setText(">");
         btn_speed_normal.setTextAlignment(TextAlignment.CENTER);
         btn_speed_normal.setMinSize(30, 25);
         btn_speed_normal.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_speed_normal.setLayoutY(btn_exploder.getLayoutY());
         btn_speed_normal.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_NORMAL));
+        btn_speed_normal.setBackground(btn_speed_bg);
 
         btn_speed_fast.setText(">>");
         btn_speed_fast.setTextAlignment(TextAlignment.CENTER);
@@ -298,6 +302,7 @@ public class WorldView extends Screen {
         btn_speed_fast.setLayoutX(btn_speed_normal.getLayoutX() + 30 + 10);
         btn_speed_fast.setLayoutY(btn_exploder.getLayoutY());
         btn_speed_fast.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_FAST));
+        btn_speed_fast.setBackground(btn_speed_bg);
 
         btn_speed_faster.setText(">>>");
         btn_speed_faster.setTextAlignment(TextAlignment.CENTER);
@@ -305,6 +310,7 @@ public class WorldView extends Screen {
         btn_speed_faster.setLayoutX(btn_speed_fast.getLayoutX() + 30 + 10);
         btn_speed_faster.setLayoutY(btn_exploder.getLayoutY());
         btn_speed_faster.setOnAction(e -> Game.getInstance().setGameSpeed(Game.SPEED_FASTEST));
+        btn_speed_faster.setBackground(btn_speed_bg);
 
         btn_reset.setText("Reset");
         btn_reset.setTextAlignment(TextAlignment.CENTER);
@@ -312,8 +318,23 @@ public class WorldView extends Screen {
         btn_reset.setLayoutX(btn_exploder.getLayoutX() + btn_stickling_width + 10);
         btn_reset.setLayoutY(btn_speed_normal.getLayoutY() + 35);
 
-        // DEBUG: Remove this
-        btn_reset.setOnAction(e -> Game.getInstance().getScreenManager().gotoScreen(new LevelEndScreen(Game.getInstance(), scene)));
+        btn_reset.setOnAction(b -> {
+            try {
+                Game new_g = Game.getInstance();
+                Scene new_s = new_g.loadLevel(scene.getLevel());
+                GameRenderer renderer = new GameRenderer(new_g.getTextureManager(), new_s, 500, 385);
+                new_g.setRenderer(renderer);
+                WorldView uitest = new WorldView(new_s, renderer);
+                new_g.getScreenManager().gotoScreen(uitest);
+                new_g.setGameSpeed(1);
+            } catch (IOException e) {
+                Alert errorBox = new Alert(Alert.AlertType.ERROR);
+                errorBox.setTitle("Could not load level");
+                errorBox.setHeaderText("Could not load level");
+                errorBox.setContentText("The file data is corrupted");
+                errorBox.show();
+            }
+        });
 
         btn_kill_all.setText("Kill All");
         btn_kill_all.setTextAlignment(TextAlignment.CENTER);
@@ -471,23 +492,24 @@ public class WorldView extends Screen {
         int total = scene.getTotalSticklings();
         int saved = scene.getSuccessfulSticklings();
         int required = scene.getLevel().getRequiredSticklings();
-
-        Level stats = Game.getInstance().getLevel().get();
+        
+        //Update the user on how many sticklings have exited the level
         lbl_progress.setText(String.format("Saved: %d", saved));
         lbl_avail.setText(String.format("Left: %d", scene.getRemainingSticklings()));
 
-        //do star stuff here
+        //if the user has passed the level
         if (saved >= required) {
             star1.setVisible(true);
         }
-
+        //Halfway between the required and the total amount of sticklings
         if (saved >= (((total - required) / 2) + required)) {
             star2.setVisible(true);
         }
+        //All the sticklings have been saved
         if (saved >= total) {
             star3.setVisible(true);
         }
-
+        //If no sticklings are left and no more can spawn, end the level
         if (scene.getRemainingSticklings() == 0 && Iterables.isEmpty(scene.findEntities(Stickling.class))) {
             Game.getInstance().getScreenManager().gotoScreen(new LevelEndScreen(Game.getInstance(), scene));
         }

@@ -1,0 +1,23 @@
+# Details of level
+name=Level 1
+terrain.mask=mask.png
+terrain.foreground=foreground.png
+terrain.background=background.png
+
+# No. of sticklings available and required
+total=50
+required=40
+
+# No. Available for each type
+type.miner=20
+type.exploder=10
+type.swimmer=50
+type.floater=0
+type.blocker=10
+
+# Start Gate position
+start.x=1175
+start.y=125
+# End gate position
+end.x=1230
+end.y=510

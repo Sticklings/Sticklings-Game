@@ -35,7 +35,27 @@ public class SceneWindow extends BorderPane {
 		setCenter(view);
 		
 		setFocusTraversable(true);
-		
+                
+                Location loc = new Location();
+                loc = scene.getLevel().getStartLocation().copy();
+                loc.y -= renderer.getScreenHeight()/2;
+                loc.x -= renderer.getScreenWidth()/2;
+                if (loc.x < 0) {
+			loc.x = 0;
+		}
+		if (loc.y < 0) {
+			loc.y = 0;
+		}
+                if (loc.y > (scene.getHeight() - renderer.getScreenHeight())) {
+                    loc.y = (scene.getHeight() - renderer.getScreenHeight());
+                }
+                if (loc.x > (scene.getWidth() - renderer.getScreenWidth())){
+                    loc.x = scene.getWidth() - renderer.getScreenWidth();
+                }
+                
+		renderer.setViewOffset(loc);
+                
+                
 		// Pan
 		setOnMousePressed(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {

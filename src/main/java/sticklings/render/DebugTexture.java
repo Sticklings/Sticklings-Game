@@ -2,11 +2,21 @@ package sticklings.render;
 
 import java.nio.IntBuffer;
 
+/**
+ * A texture for testing rendering.
+ * It generates a purple and black checkerboard pattern.
+ */
 public class DebugTexture extends AbstractTexture {
 	private IntBuffer buffer;
 	private int width;
 	private int height;
 
+	/**
+	 * Constructs the debug texture
+	 * 
+	 * @param width The width of the texture
+	 * @param height The height of the texture
+	 */
 	public DebugTexture(int width, int height) {
 		this.width = width;
 		this.height = height;

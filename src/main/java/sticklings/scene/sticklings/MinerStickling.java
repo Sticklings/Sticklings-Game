@@ -4,6 +4,9 @@ import sticklings.Game;
 import sticklings.scene.MovementController.MovementType;
 import sticklings.util.Location;
 
+/**
+ * Stickling that digs a path through ground
+ */
 public class MinerStickling extends Stickling {
 	private static final int MINE_TIME = 6;
 	private static final int WALK_TIME = 6;

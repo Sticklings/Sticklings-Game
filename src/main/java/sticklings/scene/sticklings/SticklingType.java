@@ -2,6 +2,10 @@ package sticklings.scene.sticklings;
 
 import java.util.function.Supplier;
 
+/**
+ * Represents each type of stickling and provides a simple way to
+ * build sticklings from the type
+ */
 public enum SticklingType {
 	Basic(BasicStickling::new),
 	Miner(MinerStickling::new),
@@ -16,6 +20,10 @@ public enum SticklingType {
 		this.creator = creator;
 	}
 
+	/**
+	 * Creates a new instance of this stickling
+	 * @return The instance
+	 */
 	public Stickling create() {
 		return creator.get();
 	}

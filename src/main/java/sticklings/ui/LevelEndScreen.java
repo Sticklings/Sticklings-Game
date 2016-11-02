@@ -29,6 +29,9 @@ import sticklings.levels.Level;
 import sticklings.scene.Scene;
 import sticklings.scene.sticklings.SticklingType;
 
+/**
+ * The screen shown when the level is completed, or failed
+ */
 public class LevelEndScreen extends Screen {
 	private final Game game;
 	private final Scene scene;
@@ -142,6 +145,11 @@ public class LevelEndScreen extends Screen {
 		return root;
 	}
 
+	/**
+	 * Creates a bar which indicates how many of each type of stickling was used
+	 * 
+	 * @return The container
+	 */
 	private Parent generateSticklingUsage() {
 		// Find out how many basic sticklings were used
 		int usedBasic = scene.getSuccessfulSticklings();
@@ -173,6 +181,13 @@ public class LevelEndScreen extends Screen {
 		return layout;
 	}
 
+	/**
+	 * Creates the icon and label for stickling usage
+	 * 
+	 * @param type The stickling type
+	 * @param count The number to display
+	 * @return The container
+	 */
 	private Parent createSticklingUsage(SticklingType type, int count) {
 		Image icon = new Image(Game.class.getResourceAsStream("/sprites/stickling/" + type.name().toLowerCase() + ".png"));
 		ImageView view = new ImageView(icon);
@@ -185,6 +200,11 @@ public class LevelEndScreen extends Screen {
 		return layout;
 	}
 
+	/**
+	 * Launches the given level
+	 * 
+	 * @param level The level to launch
+	 */
 	private void startLevel(Level level) {
 		try {
 			Scene scene = game.loadLevel(level);
@@ -202,6 +222,11 @@ public class LevelEndScreen extends Screen {
 		}
 	}
 
+	/**
+	 * Gets the next level based on the current level
+	 * 
+	 * @return The next level
+	 */
 	private Level getNextLevel() {
 		List<Level> levels = game.getLevelLoader().getLevels();
 		int index = levels.indexOf(scene.getLevel());

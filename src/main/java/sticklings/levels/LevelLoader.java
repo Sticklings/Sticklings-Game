@@ -15,10 +15,18 @@ import java.util.Properties;
 import sticklings.scene.sticklings.SticklingType;
 import sticklings.util.Location;
 
+/**
+ * Loads level objects from level files
+ */
 public class LevelLoader {
 	private final URL rootPath;
 	private final List<Level> levels;
 
+	/**
+	 * Constructs a new LevelLoader providing the root path of the level definitions
+	 * 
+	 * @param rootPath The root path
+	 */
 	public LevelLoader(URL rootPath) {
 		this.rootPath = rootPath;
 		levels = new ArrayList<>();

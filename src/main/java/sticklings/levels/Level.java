@@ -106,14 +106,29 @@ public class Level {
 		return requiredSticklings;
 	}
 
+	/**
+	 * Gets the number of each type that is available to be used in the level
+	 * 
+	 * @return A SticklingAvailabilty object
+	 */
 	public SticklingAvailability getTypeAvailability() {
 		return typeAvailability;
 	}
 
+	/**
+	 * Gets the location of the start gate in the world
+	 * 
+	 * @return A Location
+	 */
 	public Location getStartLocation() {
 		return startLocation;
 	}
 
+	/**
+	 * Gets the location of the end gate in the world
+	 * 
+	 * @return A Location
+	 */
 	public Location getEndLocation() {
 		return endLocation;
 	}

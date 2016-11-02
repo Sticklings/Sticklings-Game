@@ -12,6 +12,10 @@ import sticklings.terrain.TerrainData;
 import sticklings.terrain.TerrainType;
 import sticklings.util.Location;
 
+/**
+ * Controls movement of sticklings based on the terrain and
+ * movement rules of the sticklings.
+ */
 public class MovementController {
 	private final Stickling entity;
 
@@ -25,6 +29,11 @@ public class MovementController {
 
 	private Set<Entity> collidingWith;
 
+	/**
+	 * Creates a new MovementController for the given stickling
+	 * 
+	 * @param entity The stickling
+	 */
 	public MovementController(Stickling entity) {
 		this.entity = entity;
 		allowedTypes = EnumSet.noneOf(MovementType.class);
@@ -39,18 +48,38 @@ public class MovementController {
 		maxHillClimb = 5;
 	}
 
+	/**
+	 * Sets the types of movement allowed by this controller
+	 * 
+	 * @param types An enum set of MovementType
+	 */
 	public void setAllowedMovement(EnumSet<MovementType> types) {
 		allowedTypes = types;
 	}
 
+	/**
+	 * Allows this controller to perform a specific type of movement
+	 * 
+	 * @param type The movement type
+	 */
 	public void allowMovement(MovementType type) {
 		allowedTypes.add(type);
 	}
 
+	/**
+	 * Disallows this controller from performing a specific type of movement
+	 * 
+	 * @param type The movement type
+	 */
 	public void blockMovement(MovementType type) {
 		allowedTypes.remove(type);
 	}
 
+	/**
+	 * Gets the allowed movement types on this controller
+	 * 
+	 * @return An EnumSet of MovementType
+	 */
 	public EnumSet<MovementType> getAllowedMovement() {
 		return allowedTypes;
 	}
@@ -58,7 +87,7 @@ public class MovementController {
 	/**
 	 * Performs movement on the entity
 	 * 
-	 * @param deltaTime
+	 * @param deltaTime The update time in seconds
 	 */
 	public void doMove(double deltaTime) {
 		Scene scene = entity.getScene();
@@ -198,10 +227,6 @@ public class MovementController {
 		return minDepth;
 	}
 
-	private int getFront(Location pos, BoundingBox bounds, TerrainType[] data, int width) {
-		return 0;
-	}
-
 	/**
 	 * Types of movement
 	 */
@@ -211,10 +236,18 @@ public class MovementController {
 		Float
 	}
 
+	/**
+	 * Direction of movement
+	 */
 	public enum MovementDir {
 		Right,
 		Left;
 
+		/**
+		 * Gets the direction as a signed integer.
+		 * 
+		 * @return -1 for Left, 1 for Right
+		 */
 		public int getDir() {
 			switch (this) {
 			case Right:
@@ -226,6 +259,11 @@ public class MovementController {
 			}
 		}
 
+		/**
+		 * Gets the opposite movement direction
+		 * 
+		 * @return The opposite
+		 */
 		public MovementDir getOpposite() {
 			switch (this) {
 			case Right:
@@ -236,6 +274,5 @@ public class MovementController {
 				throw new AssertionError();
 			}
 		}
-
 	}
 }

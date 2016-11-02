@@ -49,6 +49,11 @@ public class Location {
 		return hash;
 	}
 
+	/**
+	 * Clones this Location
+	 * 
+	 * @return A new Location that is exactly the same as this
+	 */
 	public Location copy() {
 		return new Location(x, y);
 	}

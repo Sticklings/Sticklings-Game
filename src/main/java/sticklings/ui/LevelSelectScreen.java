@@ -20,6 +20,9 @@ import sticklings.Game;
 import sticklings.levels.Level;
 import sticklings.levels.LevelLoader;
 
+/**
+ * A level select screen
+ */
 public class LevelSelectScreen extends Screen {
 	private final LevelLoader loader;
 	private final Game game;
@@ -101,6 +104,11 @@ public class LevelSelectScreen extends Screen {
 		}
 	}
 
+	/**
+	 * Launches the level
+	 * 
+	 * @param level The level
+	 */
 	private void startLevel(Level level) {
 		game.getScreenManager().gotoScreen(new LevelTitleScreen(game, level));
 	}

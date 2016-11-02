@@ -21,7 +21,7 @@ import javafx.scene.layout.Priority;
 import sticklings.Game;
 
 /**
- *
+ * The main menu
  * @author swann
  */
 public class MainScreen extends Screen {

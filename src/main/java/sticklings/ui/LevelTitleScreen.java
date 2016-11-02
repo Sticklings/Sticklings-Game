@@ -19,6 +19,9 @@ import sticklings.levels.Level;
 import sticklings.scene.Scene;
 import sticklings.scene.sticklings.SticklingType;
 
+/**
+ * A title screen which displays the name and requirements of the level
+ */
 public class LevelTitleScreen extends Screen {
 	private static final double DISPLAY_TIME = 6;
 
@@ -59,6 +62,11 @@ public class LevelTitleScreen extends Screen {
 		return root;
 	}
 
+	/**
+	 * Creates a bar that shows what types of sticklings are available
+	 * 
+	 * @return The container
+	 */
 	private Parent generateSticklingAvailability() {
 		HBox layout = new HBox();
 		layout.setSpacing(10);
@@ -78,6 +86,13 @@ public class LevelTitleScreen extends Screen {
 		return layout;
 	}
 
+	/**
+	 * Creates the icon and label for showing the available types
+	 * 
+	 * @param type The type to display
+	 * @param count The number to display
+	 * @return The container
+	 */
 	private Parent createSticklingIcon(SticklingType type, int count) {
 		Image icon = new Image(Game.class.getResourceAsStream("/sprites/stickling/" + type.name().toLowerCase() + ".png"));
 		ImageView view = new ImageView(icon);

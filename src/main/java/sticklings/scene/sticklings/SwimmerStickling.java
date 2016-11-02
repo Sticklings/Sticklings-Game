@@ -7,7 +7,7 @@ import sticklings.terrain.TerrainData;
 import sticklings.terrain.TerrainType;
 
 /**
- *
+ * A Stickling that can pass through water unharmed
  * @author swann
  */
 public class SwimmerStickling extends Stickling {

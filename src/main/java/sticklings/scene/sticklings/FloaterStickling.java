@@ -4,6 +4,9 @@ import sticklings.Game;
 import sticklings.scene.MovementController.MovementType;
 import sticklings.util.Location;
 
+/**
+ * Stickling that can fall from any height
+ */
 public class FloaterStickling extends Stickling {
 	private static final double MIN_FALL_DIST = 20;
 

@@ -15,6 +15,9 @@ import sticklings.ui.ScreenManager;
 import sticklings.util.ClasspathTextureSource;
 import sticklings.util.GameTimer;
 
+/**
+ * The game object. This ties everything together
+ */
 public class Game {
 	public static final double SPEED_NORMAL = 1;
 	public static final double SPEED_FAST = 3;

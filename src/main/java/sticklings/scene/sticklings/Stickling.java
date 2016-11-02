@@ -6,6 +6,10 @@ import sticklings.scene.MovementController.MovementDir;
 import sticklings.terrain.TerrainType;
 import sticklings.util.Location;
 
+/**
+ * The base stickling class. All types of sticklings should extend this.
+ * The operate() method is provided for subtypes to perform some every OPERATE_TICK_LENGTH seconds.
+ */
 public abstract class Stickling extends Entity {
 	private static final double OPERATE_TICK_LENGTH = 0.05;
 	private static final double MAX_FALL_DISTANCE = 60;
@@ -54,22 +58,47 @@ public abstract class Stickling extends Entity {
 		locomotor.doMove(deltaTime);
 	}
 
+	/**
+	 * Gets the sticklings forward direction
+	 * 
+	 * @return The forward direction
+	 */
 	public MovementDir getFacing() {
 		return facing;
 	}
 
+	/**
+	 * Sets the sticklings forward direction
+	 * 
+	 * @param facing The new forward direction
+	 */
 	public void setFacing(MovementDir facing) {
 		this.facing = facing;
 	}
 
+	/**
+	 * Gets the distance the stickling has fallen in units
+	 * 
+	 * @return The distance fallen
+	 */
 	public double getDistanceFallen() {
 		return distanceFallen;
 	}
 
+	/**
+	 * Sets the distance the stickling has fallen in units
+	 * 
+	 * @param distanceFallen The new distance fallen
+	 */
 	public void setDistanceFallen(double distanceFallen) {
 		this.distanceFallen = distanceFallen;
 	}
 
+	/**
+	 * Copies properties such as facing, movement types, and distance fallen from the other stickling.
+	 * 
+	 * @param other The stickling to copy from
+	 */
 	public void copyFrom(Stickling other) {
 		setLocation(other.getLocation().copy());
 		this.locomotor.setAllowedMovement(locomotor.getAllowedMovement());

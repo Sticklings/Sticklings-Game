@@ -1,6 +1,5 @@
 package sticklings.ui;
 
-import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -12,6 +11,9 @@ import sticklings.scene.sticklings.Stickling;
 import sticklings.scene.sticklings.SticklingType;
 import sticklings.util.Location;
 
+/**
+ * Displays the game world and handles game input
+ */
 public class SceneWindow extends BorderPane {
 	private int VIEWMOVE = 10;
 	private static final double PAN_SCALE = 1;
@@ -171,6 +173,12 @@ public class SceneWindow extends BorderPane {
 		scene.getSticklingAvailability().adjustUsed(selectedType, 1);
 	}
 
+	/**
+	 * Moves the viewport by the given amount
+	 * 
+	 * @param dX the change in X value
+	 * @param dY the change in Y value
+	 */
 	private void moveViewport(int dX, int dY) {
 		Location viewLocation = renderer.getViewOffset();
 		viewLocation.x += dX;
@@ -185,6 +193,11 @@ public class SceneWindow extends BorderPane {
 		}
 	}
 
+	/**
+	 * Selects the type used on click
+	 * 
+	 * @param type The stickling type, can be null
+	 */
 	public void selectType(SticklingType type) {
 		selectedType = type;
 	}

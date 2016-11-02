@@ -5,6 +5,9 @@ import sticklings.render.BasicTexture;
 import sticklings.scene.sticklings.Stickling;
 import sticklings.util.Location;
 
+/**
+ * The goal point for sticklings to get to
+ */
 public class EndGate extends Entity implements Collideable {
 	public EndGate() {
 		Image exit = new Image(EndGate.class.getResourceAsStream("/ui/exit.png"));

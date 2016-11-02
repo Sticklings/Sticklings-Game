@@ -28,7 +28,7 @@ import sticklings.scene.sticklings.Stickling;
 import sticklings.scene.sticklings.SticklingType;
 
 /**
- *
+ * The game hud
  * @author swann
  */
 public class WorldView extends Screen {

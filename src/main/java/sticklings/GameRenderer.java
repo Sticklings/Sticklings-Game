@@ -14,6 +14,9 @@ import sticklings.terrain.TerrainTexture;
 import sticklings.terrain.TerrainType;
 import sticklings.util.Location;
 
+/**
+ * Renders the current scene
+ */
 public class GameRenderer {
 	private final FrameDrawer frameDrawer;
 	private final TextureManager textureManager;

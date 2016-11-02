@@ -4,6 +4,9 @@ import java.util.Random;
 
 import javafx.geometry.BoundingBox;
 
+/**
+ * Updates water pixels within terrain data
+ */
 public class WaterUpdater {
 	private final TerrainData terrain;
 
@@ -20,6 +23,11 @@ public class WaterUpdater {
 
 	private Random rand;
 
+	/**
+	 * Contructs a WaterUpdater that updates water in the given TerrainData
+	 * 
+	 * @param terrain The terrain to update
+	 */
 	public WaterUpdater(TerrainData terrain) {
 		this.terrain = terrain;
 		rand = new Random();
@@ -33,6 +41,9 @@ public class WaterUpdater {
 		width = terrain.getWidth();
 	}
 
+	/**
+	 * Provides a random ordering of x values to eliminate water flow bias
+	 */
 	private void shuffleX() {
 		for (int i = xValues.length - 1; i > 0; i--) {
 			int index = rand.nextInt(i + 1);
@@ -43,6 +54,11 @@ public class WaterUpdater {
 		}
 	}
 
+	/**
+	 * Updates the water within the terrain
+	 * 
+	 * @param deltaTime The delta time in seconds
+	 */
 	public void update(double deltaTime) {
 		TerrainType[] data = terrain.lockWrite();
 
@@ -169,10 +185,23 @@ public class WaterUpdater {
 		terrain.unlockWrite();
 	}
 
+	/**
+	 * Gets the index in the terrain array given the coords
+	 * 
+	 * @param x The x coord
+	 * @param y The y coord
+	 * @return The array index
+	 */
 	private int g(int x, int y) {
 		return x + y * width;
 	}
 
+	/**
+	 * Tracks what area of the terrain has been modified
+	 * 
+	 * @param x The updated x coord
+	 * @param y The updated y coord
+	 */
 	private void recordUpdateArea(int x, int y) {
 		if (!updated) {
 			updateLeft = updateRight = x;

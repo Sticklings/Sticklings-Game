@@ -36,11 +36,21 @@ public class TextureManager {
 		dynamicTextures = new ArrayList<>();
 	}
 
+	/**
+	 * Adds a texture source for use when getting textures
+	 * 
+	 * @param source The texture source. May not be null
+	 */
 	public void addTextureSource(TextureSource source) {
 		Preconditions.checkNotNull(source);
 		sources.add(source);
 	}
 
+	/**
+	 * Gets or loads a texture with the given path
+	 * @param path The path of the texture
+	 * @return The loaded texture or an empty texture
+	 */
 	public AbstractTexture getTexture(String path) {
 		Optional<AbstractTexture> texture = loadedTextures.get(path);
 		if (texture == null) {

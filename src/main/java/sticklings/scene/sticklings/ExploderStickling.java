@@ -4,7 +4,7 @@ import sticklings.Game;
 import sticklings.util.Location;
 
 /**
- *
+ * Stickling that explodes after small delay
  * @author swann
  */
 public class ExploderStickling extends Stickling {

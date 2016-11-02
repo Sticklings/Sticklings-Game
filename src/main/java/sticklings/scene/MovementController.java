@@ -14,49 +14,50 @@ import sticklings.util.Location;
 
 public class MovementController {
 	private final Stickling entity;
-	
+
 	private double fallSpeed;
 	private double floatSpeed;
 	private double walkSpeed;
 	private double swimSpeed;
 	private double maxHillClimb;
-	
+
 	private EnumSet<MovementType> allowedTypes;
-	
+
 	private Set<Entity> collidingWith;
-	
+
 	public MovementController(Stickling entity) {
 		this.entity = entity;
 		allowedTypes = EnumSet.noneOf(MovementType.class);
 		collidingWith = Sets.newIdentityHashSet();
-		
+
 		// Defaults
 		fallSpeed = 60;
 		floatSpeed = 30;
 		walkSpeed = 15;
 		swimSpeed = 3;
-		
+
 		maxHillClimb = 5;
 	}
-	
+
 	public void setAllowedMovement(EnumSet<MovementType> types) {
 		allowedTypes = types;
 	}
-	
+
 	public void allowMovement(MovementType type) {
 		allowedTypes.add(type);
 	}
-	
+
 	public void blockMovement(MovementType type) {
 		allowedTypes.remove(type);
 	}
-	
+
 	public EnumSet<MovementType> getAllowedMovement() {
 		return allowedTypes;
 	}
-	
+
 	/**
 	 * Performs movement on the entity
+	 * 
 	 * @param deltaTime
 	 */
 	public void doMove(double deltaTime) {
@@ -65,19 +66,19 @@ public class MovementController {
 		TerrainData terrain = scene.getTerrain();
 		TerrainType[] terrainData = terrain.lockRead();
 		int width = terrain.getWidth();
-		
+
 		Location myLocation = entity.getLocation();
 		BoundingBox bounds = entity.getBounds();
-		
+
 		try {
 			int groundDepth = getGroundDepth(TerrainType.GROUND, bounds, terrainData, width);
 			if (allowedTypes.contains(MovementType.Swim)) {
 				int waterDepth = getGroundDepth(TerrainType.WATER, bounds, terrainData, width);
-				waterDepth += bounds.getHeight()/2;
-				
+				waterDepth += bounds.getHeight() / 2;
+
 				groundDepth = Math.min(groundDepth, waterDepth);
 			}
-			
+
 			if (groundDepth > 0) {
 				// In air
 				double fallDepth = (allowedTypes.contains(MovementType.Float) ? floatSpeed : fallSpeed) * deltaTime;
@@ -92,23 +93,23 @@ public class MovementController {
 				// On ground
 				int dir = entity.getFacing().getDir();
 				entity.setDistanceFallen(0);
-				
+
 				double moveDist = walkSpeed * deltaTime * dir;
-				
+
 				BoundingBox desired = new BoundingBox(bounds.getMinX() + moveDist, bounds.getMinY(), bounds.getWidth(), bounds.getHeight());
-				
+
 				int forwardGroundDepth = getGroundDepth(TerrainType.GROUND, desired, terrainData, width);
 				if (allowedTypes.contains(MovementType.Swim)) {
 					int waterDepth = getGroundDepth(TerrainType.WATER, desired, terrainData, width);
-					waterDepth += bounds.getHeight()/2;
-					
+					waterDepth += bounds.getHeight() / 2;
+
 					forwardGroundDepth = Math.min(forwardGroundDepth, waterDepth);
 				}
-				
+
 				// Move up or down
 				if (forwardGroundDepth < 0) {
 					// Go up
-					if (forwardGroundDepth > -maxHillClimb) { 
+					if (forwardGroundDepth > -maxHillClimb) {
 						myLocation.y += forwardGroundDepth;
 					} else {
 						entity.setFacing(entity.getFacing().getOpposite());
@@ -123,17 +124,17 @@ public class MovementController {
 						myLocation.y += forwardGroundDepth;
 					}
 				}
-				
+
 				myLocation.x += moveDist;
 			}
-			
+
 			// Handle collisions
 			for (Entity entity : scene.getAllEntities()) {
 				if (!(entity instanceof Collideable) || entity == this.entity) {
 					continue;
 				}
-				
-				Collideable collideable = (Collideable)entity;
+
+				Collideable collideable = (Collideable) entity;
 				BoundingBox targetBounds = collideable.getBounds();
 				if (bounds.intersects(targetBounds)) {
 					if (collidingWith.add(entity)) {
@@ -150,59 +151,57 @@ public class MovementController {
 				}
 			}
 			// TODO: Terrain collisions / collisions
-			
+
 			// DEBUG: Just move 5px/s to right
 		} finally {
 			terrain.unlockRead();
 		}
 	}
-	
+
 	private int getGroundDepth(TerrainType checkType, BoundingBox bounds, TerrainType[] data, int width) {
 		int minDepth = Integer.MAX_VALUE;
-		int middleX = (int)((bounds.getMinX() + bounds.getMaxX()) / 2);
+		int middleX = (int) ((bounds.getMinX() + bounds.getMaxX()) / 2);
 		for (int x = middleX - 2; x <= middleX + 2; ++x) {
 			// Check bounds
 			if (x < 0 || x >= width)
 				continue;
-			
+
 			int depth = 0;
-			for (int y = (int)bounds.getMinY(); y <= (int)(bounds.getMaxY() + bounds.getHeight()); ++y) {
+			for (int y = (int) bounds.getMinY(); y <= (int) (bounds.getMaxY() + bounds.getHeight()); ++y) {
 				// Check bounds
-				if (x + y * width > data.length) 
-				{
+				if (x + y * width > data.length) {
 					// Off screen
 					depth = Integer.MAX_VALUE;
 					break;
 				}
-				
+
 				if (y < 0) {
 					continue;
 				}
-				
+
 				TerrainType type = data[x + y * width];
 				if ((checkType == null && type != TerrainType.AIR) || type == checkType) {
 					break;
 				}
-				
+
 				++depth;
 			}
-			
+
 			if (minDepth < 0 || depth < minDepth) {
 				minDepth = depth;
 			}
 		}
-		
+
 		// 0 would be at top of bounds, offset it
-		minDepth -= (int)bounds.getHeight();
-		
-		
+		minDepth -= (int) bounds.getHeight();
+
 		return minDepth;
 	}
-	
+
 	private int getFront(Location pos, BoundingBox bounds, TerrainType[] data, int width) {
 		return 0;
 	}
-	
+
 	/**
 	 * Types of movement
 	 */
@@ -211,11 +210,11 @@ public class MovementController {
 		Swim,
 		Float
 	}
-	
+
 	public enum MovementDir {
 		Right,
 		Left;
-		
+
 		public int getDir() {
 			switch (this) {
 			case Right:
@@ -226,7 +225,7 @@ public class MovementController {
 				throw new AssertionError();
 			}
 		}
-		
+
 		public MovementDir getOpposite() {
 			switch (this) {
 			case Right:
@@ -237,6 +236,6 @@ public class MovementController {
 				throw new AssertionError();
 			}
 		}
-		
+
 	}
 }

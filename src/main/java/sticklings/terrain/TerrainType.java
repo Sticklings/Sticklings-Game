@@ -7,7 +7,7 @@ public enum TerrainType {
 	AIR,
 	GROUND,
 	WATER;
-	
+
 	@Override
 	public String toString() {
 		return name().substring(0, 1);

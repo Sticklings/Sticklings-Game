@@ -16,16 +16,16 @@ public class BlockerStickling extends Stickling implements Collideable {
 		setTexture(Game.getInstance().getTextureManager().getTexture("/sprites/stickling/blocker.png"));
 		setTextureOffset(new Location(-10, -10));
 		setBounds(20, 20);
-		
+
 		locomotor.setAllowedMovement(EnumSet.noneOf(MovementType.class));
 	}
-	
+
 	@Override
 	public Action onCollide(Entity entity) {
 		if (entity instanceof Stickling) {
 			return Action.BLOCK;
 		}
-		
+
 		return Action.NONE;
 	}
 

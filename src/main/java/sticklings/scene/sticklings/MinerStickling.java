@@ -7,37 +7,37 @@ import sticklings.util.Location;
 public class MinerStickling extends Stickling {
 	private static final int MINE_TIME = 6;
 	private static final int WALK_TIME = 6;
-	
+
 	private static final double MAX_FALL_DIST = 20;
-	
+
 	private State state;
 	private int stepCount;
 	private int nextStateChange;
-	
+
 	public MinerStickling() {
 		setTexture(Game.getInstance().getTextureManager().getTexture("/sprites/stickling/miner.png"));
 		setTextureOffset(new Location(-10, -10));
-		
+
 		setState(State.Mining);
 	}
-	
+
 	private void setState(State state) {
 		this.state = state;
 		stepCount = 0;
 		if (state == State.Mining) {
 			locomotor.blockMovement(MovementType.Walk);
 			nextStateChange = MINE_TIME;
-			
+
 			if (getScene() != null) {
 				Location pos = getLocation();
-				getScene().getTerrain().clearCircleAt((int)pos.x, (int)pos.y, 15);
+				getScene().getTerrain().clearCircleAt((int) pos.x, (int) pos.y, 15);
 			}
 		} else {
 			locomotor.allowMovement(MovementType.Walk);
 			nextStateChange = WALK_TIME;
 		}
 	}
-	
+
 	@Override
 	protected void operate() {
 		// Once they have fallen at least a certain amount, they will become a normal stickling again
@@ -49,7 +49,7 @@ public class MinerStickling extends Stickling {
 			getScene().addEntity(newStickling);
 			return;
 		}
-		
+
 		if (stepCount > nextStateChange) {
 			switch (state) {
 			case Mining:
@@ -63,9 +63,9 @@ public class MinerStickling extends Stickling {
 			++stepCount;
 		}
 	}
-		private enum State {
-		Mining,
-		Walking
+
+	private enum State {
+		Mining, Walking
 	}
 
 }

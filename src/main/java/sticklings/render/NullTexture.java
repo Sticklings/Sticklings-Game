@@ -7,26 +7,27 @@ import java.nio.IntBuffer;
  */
 public class NullTexture extends AbstractTexture {
 	private static NullTexture instance;
-	
+
 	/**
 	 * Gets the NullTexture instance
+	 * 
 	 * @return The instance
 	 */
 	public static NullTexture get() {
 		if (instance == null) {
 			instance = new NullTexture();
 		}
-		
+
 		return instance;
 	}
-	
+
 	private final IntBuffer buffer;
-	
+
 	private NullTexture() {
 		buffer = IntBuffer.allocate(1);
 		buffer.put(0, 0x00000000);
 	}
-	
+
 	@Override
 	public int getWidth() {
 		return 1;
@@ -41,5 +42,5 @@ public class NullTexture extends AbstractTexture {
 	public IntBuffer getRawData() {
 		return buffer;
 	}
-	
+
 }

@@ -8,8 +8,8 @@ import java.nio.file.NoSuchFileException;
  */
 public interface TextureSource {
 	/**
-	 * Asks this source to provide a texture at the given path.
-	 * This may do whatever it needs in order to create the texture
+	 * Asks this source to provide a texture at the given path. This may do whatever it needs in order to create the texture
+	 * 
 	 * @param path The path to load the texture from
 	 * @return The loaded texture
 	 * @throws NoSuchFileException Thrown if the path is not a texture

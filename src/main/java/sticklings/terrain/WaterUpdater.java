@@ -6,33 +6,33 @@ import javafx.geometry.BoundingBox;
 
 public class WaterUpdater {
 	private final TerrainData terrain;
-	
+
 	private int updateLeft;
 	private int updateRight;
 	private int updateTop;
 	private int updateBottom;
 	private boolean updated = false;
-	
+
 	private int bottom;
 	private int width;
-	
+
 	private int[] xValues;
-	
+
 	private Random rand;
-	
+
 	public WaterUpdater(TerrainData terrain) {
 		this.terrain = terrain;
 		rand = new Random();
-		
+
 		xValues = new int[terrain.getWidth()];
 		for (int i = 0; i < terrain.getWidth(); ++i) {
 			xValues[i] = i;
 		}
-		
+
 		bottom = terrain.getHeight() - 1;
 		width = terrain.getWidth();
 	}
-	
+
 	private void shuffleX() {
 		for (int i = xValues.length - 1; i > 0; i--) {
 			int index = rand.nextInt(i + 1);
@@ -42,18 +42,18 @@ public class WaterUpdater {
 			xValues[i] = a;
 		}
 	}
-	
+
 	public void update(double deltaTime) {
 		TerrainType[] data = terrain.lockWrite();
-		
+
 		// If we loop on x from 0 to width, then water will flow left
 		// If we loop on x from width-1 to 0, then water will flow right
 		// Randomness seems to be the only solution where water will
 		// flow to both sides
 		shuffleX();
-		
+
 		updated = false;
-		
+
 		// Go from the bottom to the top as water falls down
 		for (int y = bottom; y >= 0; --y) {
 			for (int x : xValues) {
@@ -63,19 +63,19 @@ public class WaterUpdater {
 						data[g(x, y)] = TerrainType.AIR;
 						recordUpdateArea(x, y);
 					} else {
-						boolean solidBelow = data[g(x, y+1)] != TerrainType.AIR;
-						
+						boolean solidBelow = data[g(x, y + 1)] != TerrainType.AIR;
+
 						int range = (solidBelow ? 30 : 10);
-						range = rand.nextInt(range)+1;
-						
+						range = rand.nextInt(range) + 1;
+
 						int left = 0;
 						int leftDown = 0;
 						int leftDist = 0;
 						while (leftDist < range) {
 							// See if we can go down and to the side
-							boolean canDown = (y+leftDown+1 < bottom && data[g(x-left, y+leftDown+1)] == TerrainType.AIR);
-							boolean canSide = (x-left-1 >= 0 && data[g(x-left-1, y+leftDown)] == TerrainType.AIR);
-							
+							boolean canDown = (y + leftDown + 1 < bottom && data[g(x - left, y + leftDown + 1)] == TerrainType.AIR);
+							boolean canSide = (x - left - 1 >= 0 && data[g(x - left - 1, y + leftDown)] == TerrainType.AIR);
+
 							if (canDown && canSide) {
 								// Both, choose one of them
 								if (rand.nextBoolean()) {
@@ -87,24 +87,24 @@ public class WaterUpdater {
 								// None, break
 								break;
 							}
-							
+
 							if (canDown) {
 								++leftDown;
 							} else {
 								++left;
 							}
-							
+
 							++leftDist;
 						}
-						
+
 						int right = 0;
 						int rightDown = 0;
 						int rightDist = 0;
 						while (rightDist < range) {
 							// See if we can go down and to the side
-							boolean canDown = (y+rightDown+1 < bottom && data[g(x+right, y+rightDown+1)] == TerrainType.AIR);
-							boolean canSide = (x+right+1 < width && data[g(x+right+1, y+rightDown)] == TerrainType.AIR);
-							
+							boolean canDown = (y + rightDown + 1 < bottom && data[g(x + right, y + rightDown + 1)] == TerrainType.AIR);
+							boolean canSide = (x + right + 1 < width && data[g(x + right + 1, y + rightDown)] == TerrainType.AIR);
+
 							if (canDown && canSide) {
 								// Both, choose one of them
 								if (rand.nextFloat() < 0.1f) {
@@ -116,16 +116,16 @@ public class WaterUpdater {
 								// None, break
 								break;
 							}
-							
+
 							if (canDown) {
 								++rightDown;
 							} else {
 								++right;
 							}
-							
+
 							++rightDist;
 						}
-						
+
 						if (leftDist != 0 && rightDist != 0) {
 							if (rand.nextFloat() < 0.1f) {
 								rightDist = 0;
@@ -133,46 +133,46 @@ public class WaterUpdater {
 								leftDist = 0;
 							}
 						}
-						
+
 						int destX;
 						int destY;
 						if (rightDist != 0) {
-							destX = x+right;
-							destY = y+rightDown;
+							destX = x + right;
+							destY = y + rightDown;
 						} else if (leftDist != 0) {
-							destX = x-left;
-							destY = y+leftDown;
+							destX = x - left;
+							destY = y + leftDown;
 						} else if (!solidBelow) {
 							destX = x;
-							destY = y+1;
+							destY = y + 1;
 						} else {
 							continue;
 						}
-						
-						//destY = y;
-						
+
+						// destY = y;
+
 						// Move it
 						data[g(destX, destY)] = TerrainType.WATER;
 						data[g(x, y)] = TerrainType.AIR;
-						
+
 						recordUpdateArea(x, y);
 						recordUpdateArea(destX, destY);
 					}
 				}
 			}
 		}
-		
+
 		if (updated) {
-			terrain.markDirty(new BoundingBox(updateLeft, updateTop, updateRight-updateLeft, updateBottom-updateTop));
-		} 
-		
+			terrain.markDirty(new BoundingBox(updateLeft, updateTop, updateRight - updateLeft, updateBottom - updateTop));
+		}
+
 		terrain.unlockWrite();
 	}
-	
+
 	private int g(int x, int y) {
 		return x + y * width;
 	}
-	
+
 	private void recordUpdateArea(int x, int y) {
 		if (!updated) {
 			updateLeft = updateRight = x;

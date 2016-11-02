@@ -9,13 +9,13 @@ public enum SticklingType {
 	Floater(FloaterStickling::new),
 	Swimmer(SwimmerStickling::new),
 	Blocker(BlockerStickling::new);
-	
+
 	private Supplier<Stickling> creator;
-	
+
 	private SticklingType(Supplier<Stickling> creator) {
 		this.creator = creator;
 	}
-	
+
 	public Stickling create() {
 		return creator.get();
 	}

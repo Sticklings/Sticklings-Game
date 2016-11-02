@@ -13,17 +13,18 @@ public class Level {
 	private final URL terrainMask;
 	private final URL terrainForeground;
 	private final URL terrainBackground;
-	
+
 	private final int totalSticklings;
 	private final int requiredSticklings;
-	
+
 	private final SticklingAvailability typeAvailability;
-	
+
 	private final Location startLocation;
 	private final Location endLocation;
-	
+
 	/**
 	 * Constructs a new level
+	 * 
 	 * @param name The name of the level
 	 * @param terrainMask Terrain mask
 	 * @param terrainForeground the foreground texture for the terrain
@@ -39,7 +40,7 @@ public class Level {
 		Preconditions.checkNotNull(terrainMask);
 		Preconditions.checkNotNull(terrainForeground);
 		Preconditions.checkNotNull(terrainBackground);
-		
+
 		this.levelName = name;
 		this.terrainMask = terrainMask;
 		this.terrainForeground = terrainForeground;
@@ -50,63 +51,69 @@ public class Level {
 		this.startLocation = startLocation;
 		this.endLocation = endLocation;
 	}
-	
+
 	/**
 	 * Gets the name of the level.
+	 * 
 	 * @return The name
 	 */
 	public String getName() {
 		return levelName;
 	}
-	
+
 	/**
 	 * Gets the URL where the terrain mask image is
+	 * 
 	 * @return The URL
 	 */
 	public URL getTerrainMaskURL() {
 		return terrainMask;
 	}
-	
+
 	/**
 	 * Gets the URL where the terrain foreground image is
+	 * 
 	 * @return The URL
 	 */
 	public URL getTerrainForegroundURL() {
 		return terrainForeground;
 	}
-	
+
 	/**
 	 * Gets the URL where the terrain background image is
+	 * 
 	 * @return The URL
 	 */
 	public URL getTerrainBackgroundURL() {
 		return terrainBackground;
 	}
-	
+
 	/**
 	 * Gets the total number of sticklings that will be spawned in the level
+	 * 
 	 * @return The total
 	 */
 	public int getTotalSticklings() {
 		return totalSticklings;
 	}
-	
+
 	/**
 	 * Gets the required number of sticklings to complete the level
+	 * 
 	 * @return The number
 	 */
 	public int getRequiredSticklings() {
 		return requiredSticklings;
 	}
-	
+
 	public SticklingAvailability getTypeAvailability() {
 		return typeAvailability;
 	}
-	
+
 	public Location getStartLocation() {
 		return startLocation;
 	}
-	
+
 	public Location getEndLocation() {
 		return endLocation;
 	}

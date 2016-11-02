@@ -14,33 +14,33 @@ import com.google.common.collect.Maps;
 import javafx.scene.image.Image;
 
 /**
- * Manages textures and enables dynamic / animated textures 
+ * Manages textures and enables dynamic / animated textures
  */
 public class TextureManager {
 	private List<TextureSource> sources;
-	
+
 	// All access to either allTextures or dynamicTextures must be synchronized on allTextures
 	private List<AbstractTexture> allTextures;
 	private List<DynamicTexture> dynamicTextures;
-	
+
 	private Map<String, Optional<AbstractTexture>> loadedTextures;
-	
+
 	/**
 	 * Constructs a new empty texture manager
 	 */
 	public TextureManager() {
 		sources = new ArrayList<>();
 		loadedTextures = Maps.newHashMap();
-		
+
 		allTextures = new ArrayList<>();
 		dynamicTextures = new ArrayList<>();
 	}
-	
+
 	public void addTextureSource(TextureSource source) {
 		Preconditions.checkNotNull(source);
 		sources.add(source);
 	}
-	
+
 	public AbstractTexture getTexture(String path) {
 		Optional<AbstractTexture> texture = loadedTextures.get(path);
 		if (texture == null) {
@@ -56,10 +56,10 @@ public class TextureManager {
 					break;
 				}
 			}
-			
+
 			if (texture != null) {
 				loadedTextures.put(path, texture);
-				
+
 				if (texture.isPresent()) {
 					return texture.get();
 				} else {
@@ -71,12 +71,13 @@ public class TextureManager {
 		} else if (texture.isPresent()) {
 			return texture.get();
 		}
-		
+
 		return NullTexture.get();
 	}
-	
+
 	/**
 	 * Creates a basic static texture from an image
+	 * 
 	 * @param input The texture input stream.
 	 * @return The texture
 	 */
@@ -86,11 +87,12 @@ public class TextureManager {
 		synchronized (allTextures) {
 			allTextures.add(texture);
 		}
-		return texture; 
+		return texture;
 	}
-	
+
 	/**
 	 * Creates an animated, sprite based, texture from an image
+	 * 
 	 * @param input The texture input stream
 	 * @param settings The settings for defining the animation
 	 * @return The texture
@@ -103,10 +105,10 @@ public class TextureManager {
 		}
 		return texture;
 	}
-	
+
 	/**
-	 * Adds a dynamic texture to the scene.
-	 * This texture will be updated during the game loop 
+	 * Adds a dynamic texture to the scene. This texture will be updated during the game loop
+	 * 
 	 * @param texture The texture to add
 	 */
 	public void addDynanic(DynamicTexture texture) {
@@ -115,9 +117,10 @@ public class TextureManager {
 			dynamicTextures.add(texture);
 		}
 	}
-	
+
 	/**
 	 * Removes a previously added texture from the manager.
+	 * 
 	 * @param texture The texture to remove
 	 */
 	public void removeTexture(AbstractTexture texture) {
@@ -128,7 +131,7 @@ public class TextureManager {
 			}
 		}
 	}
-	
+
 	/**
 	 * Removes all textures from the manager
 	 */
@@ -138,9 +141,10 @@ public class TextureManager {
 			dynamicTextures.clear();
 		}
 	}
-	
+
 	/**
 	 * Gets the number of loaded textures
+	 * 
 	 * @return The number of loaded texture
 	 */
 	public int getLoadedTextureCount() {
@@ -148,9 +152,10 @@ public class TextureManager {
 			return allTextures.size();
 		}
 	}
-	
+
 	/**
 	 * Updates dynamic textures
+	 * 
 	 * @param deltaTime The time in seconds between the last update and this one
 	 */
 	public void update(double deltaTime) {

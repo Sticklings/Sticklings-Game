@@ -15,6 +15,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import sticklings.Game;
 import sticklings.levels.Level;
@@ -44,6 +45,7 @@ public class LevelSelectScreen extends Screen {
 		root.setBackground(background_bg);
 		// Title
 		Label title = new Label("Level Select");
+                title.setTextFill(Paint.valueOf("White"));
 		title.setFont(Font.font(46));
 		title.setPadding(new Insets(0, 0, 0, 20));
 		title.setMaxWidth(Double.MAX_VALUE);

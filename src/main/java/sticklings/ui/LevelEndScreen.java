@@ -22,6 +22,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import sticklings.Game;
 import sticklings.GameRenderer;
@@ -40,7 +41,7 @@ public class LevelEndScreen extends Screen {
 	private final boolean wasSuccessful;
 
 	final Image end_success = new Image(LevelEndScreen.class.getResourceAsStream("/ui/end_success.png"));
-	final Image end_fail = new Image(LevelEndScreen.class.getResourceAsStream("/ui/background.png"));
+	final Image end_fail = new Image(LevelEndScreen.class.getResourceAsStream("/ui/background-end.png"));
 
 	BackgroundSize bg_size = new BackgroundSize(500, 500, true, true, true, false);
 	BackgroundImage end_success_bg_i = new BackgroundImage(end_success, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, bg_size);
@@ -193,6 +194,7 @@ public class LevelEndScreen extends Screen {
 		ImageView view = new ImageView(icon);
 
 		Label usedLabel = new Label(String.format("X %d", count));
+                usedLabel.setTextFill(Paint.valueOf("White"));
 
 		HBox layout = new HBox(view, usedLabel);
 		layout.setSpacing(8);
